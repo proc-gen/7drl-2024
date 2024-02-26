@@ -70,3 +70,75 @@ Land of the Fallen Magi
 	- Some sort of puzzle will be required to reach the magic wielder
 - Secretive
 	- One or more keys will need to be recovered to unlock the room of the magic wielder
+
+#### Algorithms
+
+TBD
+
+### UI
+
+#### Splash Screen
+
+TBD
+
+#### Main Menu
+
+- Has title at top
+- Buttons/options
+	- New Game
+		- Starts a new game and destroys any existing save file
+	- Continue Game
+		- Loads the game from a save file
+	- Settings
+		- Options for things (volume if sound/music is included)
+	- Quit
+		- Self explanatory
+
+#### New Game Screen
+
+#### Main Game Screen
+
+![Diagram of Main Game Screen](/images/game-screen.png)
+
+- A: Map/Player Area
+	- The character controlled by the player will move around in this area
+- B: Important Player Stats
+	- Stats for health and skills will appear here 
+- C: Message console
+	- Messages about occurences such as attacking, opening a door, hitting a button, etc.
+	- The 10 most recent messages will display here
+- D: Tile Info
+	- Info about the tile the player is standing on
+	- If in inspect mode, info about the selected tile and entities there if inside player FOV
+
+##### Inventory
+
+<p>
+	The inventory window will pop up over the main game screen. Top left will be character stats, top right will be equipped items, bottom left will be inventory items (max of 10?), and bottom right will be a description of the item selected. 
+</p>
+
+##### Skill Selection
+
+<p>
+	A series of 3 cards will be displayed over top of the main game screen. The name will be at the top of the card, a description of it just below, and then stats and targeting style will be at the bottom.
+</p>
+
+##### Level Up
+
+<p>
+	The player will have a chance to increase one of their base stats every time they level up. They will also receive an increase to their maximum health and be fully healed.
+</p>
+
+##### Mission Selection
+
+<p>
+	Similar to skill selection, 3 cards will be displayed. The title will be the name of the fallen mage and below that will be some information about enemies to face and skill usage to expect in battle.
+</p>
+
+##### Pause Menu
+
+<p>
+	Small menu that shows up over the screen with options to change settings or go back to the main menu.
+</p>
+
+#### Game Over Screen
