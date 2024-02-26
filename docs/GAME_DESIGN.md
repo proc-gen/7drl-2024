@@ -4,6 +4,20 @@
 
 Land of the Fallen Magi
 
+## Table of Contents
+
+- [Premise](#premise)
+- [Overview](#overview)
+	- [Game Start](#game-start)
+	- [Core Game Loop](#core-game-loop)
+	- [Level Generation](#level-generation)
+- [UI](#ui)
+	- [Splash Screen](#splash-screen)
+	- [Main Menu](#main-menu)
+	- [New Game Screen](#new-game-screen)
+	- [Main Game Screen](#main-game-screen)
+	- [Game Over Screen](#game-over-screen)
+
 ## Premise
 
 <p>
@@ -75,13 +89,13 @@ Land of the Fallen Magi
 
 TBD
 
-### UI
+## UI
 
-#### Splash Screen
+### Splash Screen
 
 TBD
 
-#### Main Menu
+### Main Menu
 
 - Has title at top
 - Buttons/options
@@ -94,9 +108,9 @@ TBD
 	- Quit
 		- Self explanatory
 
-#### New Game Screen
+### New Game Screen
 
-#### Main Game Screen
+### Main Game Screen
 
 ![Diagram of Main Game Screen](/images/game-screen.png)
 
@@ -111,34 +125,34 @@ TBD
 	- Info about the tile the player is standing on
 	- If in inspect mode, info about the selected tile and entities there if inside player FOV
 
-##### Inventory
+#### Inventory
 
 <p>
 	The inventory window will pop up over the main game screen. Top left will be character stats, top right will be equipped items, bottom left will be inventory items (max of 10?), and bottom right will be a description of the item selected. 
 </p>
 
-##### Skill Selection
+#### Skill Selection
 
 <p>
 	A series of 3 cards will be displayed over top of the main game screen. The name will be at the top of the card, a description of it just below, and then stats and targeting style will be at the bottom.
 </p>
 
-##### Level Up
+#### Level Up
 
 <p>
 	The player will have a chance to increase one of their base stats every time they level up. They will also receive an increase to their maximum health and be fully healed.
 </p>
 
-##### Mission Selection
+#### Mission Selection
 
 <p>
 	Similar to skill selection, 3 cards will be displayed. The title will be the name of the fallen mage and below that will be some information about enemies to face and skill usage to expect in battle.
 </p>
 
-##### Pause Menu
+#### Pause Menu
 
 <p>
 	Small menu that shows up over the screen with options to change settings or go back to the main menu.
 </p>
 
-#### Game Over Screen
+### Game Over Screen
