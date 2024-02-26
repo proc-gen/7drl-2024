@@ -72,6 +72,8 @@ Land of the Fallen Magi
 	The element will also determine what strengths and weaknesses the enemies in the tomb will have. Basically, using fire spells in a water mage's tomb is going to be a rough time.
 </p>
 
+See Also: [Elements](ELEMENTS.md)
+
 #### Mage Characteristics
 
 <p>
@@ -84,6 +86,8 @@ Land of the Fallen Magi
 	- Some sort of puzzle will be required to reach the magic wielder
 - Secretive
 	- One or more keys will need to be recovered to unlock the room of the magic wielder
+
+See Also: [Characteristics](CHARACTERISTICS.md)
 
 #### Algorithms
 
@@ -136,6 +140,8 @@ TBD
 <p>
 	A series of 3 cards will be displayed over top of the main game screen. The name will be at the top of the card, a description of it just below, and then stats and targeting style will be at the bottom.
 </p>
+
+See Also: [Magic](MAGIC.md)
 
 #### Level Up
 
