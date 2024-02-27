@@ -6,7 +6,6 @@
 
 ## Table of Contents
 
-- [Accurate](#accurate)
 - [Aggressive](#aggressive)
 - [Clumsy](#clumsy)
 - [Fearful](#fearful)
@@ -18,12 +17,7 @@
 - [Powerful](#powerful)
 - [Puzzle Master](#puzzle-master)
 - [Secretive](#secretive)
-- [Weak](#weak)
 - [Wild](#wild)
-
-## Accurate
-
-- Enemies have a higher chance to make their attacks
 
 ## Aggressive
 
@@ -32,7 +26,7 @@
 
 ## Clumsy
 
-- Enemies have a higher chance to miss their attacks
+- All attacks will have a higher chance to miss
 
 ## Fearful
 
@@ -50,8 +44,7 @@
 
 ## King
 
-- Larger, sparser dungeon
-- Magic wielder will send waves of enemies prior to fighting
+- Must kill all enemies before facing the magic wielder
 
 ## Lazy
 
@@ -73,10 +66,6 @@
 ## Secretive
 
 - One or more keys will need to be recovered to reach the magic wielder
-
-## Weak
-
-- Enemies will hit for less damage
 
 ## Wild
 
