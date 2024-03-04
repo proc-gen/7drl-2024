@@ -1,4 +1,7 @@
 ﻿using Arch.Core;
+using Arch.Core.Extensions;
+using Magi.Constants;
+using Magi.ECS.Components;
 using Magi.Maps;
 using Newtonsoft.Json;
 using System;
@@ -11,6 +14,7 @@ namespace Magi.Utils
 {
     public class GameWorld
     {
+        public GameState CurrentState { get; set; }
         [JsonIgnore]
         public World World { get; set; }
         [JsonIgnore]
@@ -25,6 +29,16 @@ namespace Magi.Utils
             PhysicsWorld = new PhysicsWorld();
             PlayerReference = EntityReference.Null;
             PlayerFov = new HashSet<Point>();
+        }
+
+        public void StartPlayerTurn(Point direction)
+        {
+            var input = PlayerReference.Entity.Get<Input>();
+            input.Direction = direction;
+            input.SkipTurn = direction == Point.None;
+            input.Processed = false;
+            PlayerReference.Entity.Set(input);
+            CurrentState = GameState.PlayerTurn;
         }
     }
 }
