@@ -1,0 +1,14 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace Magi.ECS.Components
+{
+    public struct CombatStats
+    {
+        public int MaxHealth { get; set; }
+        public int CurrentHealth { get; set; }
+    }
+}

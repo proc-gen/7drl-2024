@@ -16,7 +16,8 @@ namespace Magi.Maps.Spawners
                 new Input() { CanAct = true },
                 new Blocker(),
                 new Name() { EntityName = "Player" },
-                new ViewDistance() { Distance = 10 }
+                new ViewDistance() { Distance = 10 },
+                new CombatStats() { MaxHealth = 10, CurrentHealth = 10 }
             ).Reference();
 
             world.PhysicsWorld.AddEntity(world.PlayerReference, startingPosition);

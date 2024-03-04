@@ -80,6 +80,7 @@ namespace Magi.UI
 
             updateSystems = new List<IUpdateSystem>()
             {
+                new NonPlayerInputSystem(world),
                 new EntityActSystem(world),
             };
         }

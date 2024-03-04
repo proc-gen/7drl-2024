@@ -36,7 +36,8 @@ namespace Magi.Maps.Spawners
                 new ViewDistance() { Distance = enemyContainer.ViewDistance },
                 new Renderable() { Glyph = enemyContainer.Glyph, Color = new Color(enemyContainer.GlyphColorRed, enemyContainer.GlyphColorGreen, enemyContainer.GlyphColorBlue)},
                 new Input() { CanAct = true },
-                new Blocker()
+                new Blocker(),
+                new CombatStats() { MaxHealth = enemyContainer.Health, CurrentHealth = enemyContainer.Health }
             ).Reference();
 
             world.PhysicsWorld.AddEntity(reference, point);
