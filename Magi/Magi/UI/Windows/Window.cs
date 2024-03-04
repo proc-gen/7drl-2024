@@ -13,6 +13,12 @@ namespace Magi.UI.Windows
 
         public bool Visible { get; set; }
 
+        public Window() 
+        {
+            Console = new Console(GameSettings.GAME_WIDTH, GameSettings.GAME_HEIGHT);
+            Console.Position = Point.Zero;
+        }
+
         public Window(int x, int y, int width, int height)
         {
             Console = new Console(width, height);
@@ -21,7 +27,7 @@ namespace Magi.UI.Windows
 
         public abstract void Update(TimeSpan delta);
 
-        public abstract void HandleKeyboard(Keyboard keyboard);
+        public abstract bool HandleKeyboard(Keyboard keyboard);
 
         public abstract void Render(TimeSpan delta);
     }

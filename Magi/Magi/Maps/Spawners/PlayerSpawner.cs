@@ -13,7 +13,8 @@ namespace Magi.Maps.Spawners
                 new Player(),
                 new Position() { Point = startingPosition },
                 new Renderable() { Color = Color.DarkGreen, Glyph = '@' },
-                new Input() { CanAct = true }
+                new Input() { CanAct = true },
+                new Blocker()
             ).Reference();
 
             world.PhysicsWorld.AddEntity(world.PlayerReference, startingPosition);

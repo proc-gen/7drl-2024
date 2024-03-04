@@ -11,34 +11,43 @@ namespace Magi.UI.Windows
     public class GameWindow : Window
     {
         GameWorld world;
-        public GameWindow(int x, int y, int width, int height, GameWorld world) 
-            : base(x, y, width, height)
+        public GameWindow(GameWorld world) 
+            : base()
         {
             this.world = world;
+            Visible = true;
         }
 
-        public override void HandleKeyboard(Keyboard keyboard)
+        public override bool HandleKeyboard(Keyboard keyboard)
         {
+            bool retVal = false;
             if (keyboard.IsKeyPressed(Keys.Up))
             {
                 RequestMoveDirection(Direction.Up);
+                retVal = true;
             }
             else if (keyboard.IsKeyPressed(Keys.Down))
             {
                 RequestMoveDirection(Direction.Down);
+                retVal = true;
             }
             else if (keyboard.IsKeyPressed(Keys.Left))
             {
                 RequestMoveDirection(Direction.Left);
+                retVal = true;
             }
             else if (keyboard.IsKeyPressed(Keys.Right))
             {
                 RequestMoveDirection(Direction.Right);
+                retVal = true;
             }
             else if (keyboard.IsKeyPressed(Keys.Space))
             {
                 RequestMoveDirection(Direction.None);
+                retVal = true;
             }
+
+            return retVal;
         }
 
         private void RequestMoveDirection(Direction direction)

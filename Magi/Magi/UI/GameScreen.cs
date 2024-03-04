@@ -1,9 +1,11 @@
 ﻿using Magi.Constants;
 using Magi.ECS.Systems.RenderSystems;
+using Magi.ECS.Systems.UpdateSystems;
 using Magi.Maps;
 using Magi.Maps.Generators;
 using Magi.Maps.Spawners;
 using Magi.Scenes;
+using Magi.UI.Windows;
 using Magi.Utils;
 using SadConsole.Input;
 using System;
@@ -22,6 +24,8 @@ namespace Magi.UI
         GameWorld world;
 
         List<IRenderSystem> renderSystems;
+        List<IUpdateSystem> updateSystems;
+        List<Window> windows;
 
         public GameScreen(RootScreen rootScreen, bool loadGame)
         {
@@ -39,26 +43,99 @@ namespace Magi.UI
             new PlayerSpawner().SpawnPlayer(world, generator.GetPlayerStartingPosition());
             FieldOfView.CalculatePlayerFOV(world);
 
+            InitWindows();
+            InitSystems();
+
+            world.CurrentState = GameState.AwaitingPlayerInput;
+        }
+
+        private void InitSystems()
+        {
             renderSystems = new List<IRenderSystem>()
             {
                 new RenderMapSystem(world),
                 new RenderRenderablesSystem(world),
             };
+
+            updateSystems = new List<IUpdateSystem>()
+            {
+                new EntityActSystem(world),
+            };
+        }
+
+        private void InitWindows()
+        {
+            windows = new List<Window>()
+            {
+                new GameWindow(world),
+            };
         }
 
         public override void Update(TimeSpan delta)
         {
-            HandleKeyboard();
+            if (world.CurrentState == GameState.AwaitingPlayerInput)
+            {
+                HandleKeyboard();
+            }
+            else if (world.CurrentState == GameState.PlayerTurn
+                    || world.CurrentState == GameState.MonsterTurn)
+            {
+                foreach (var system in updateSystems)
+                {
+                    system.Update(delta);
+                }
+
+                switch (world.CurrentState)
+                {
+                    case GameState.PlayerTurn:
+                        world.CurrentState = GameState.MonsterTurn;
+                        break;
+                    case GameState.MonsterTurn:
+                        world.CurrentState = GameState.AwaitingPlayerInput;
+                        break;
+                    case GameState.PlayerDeath:
+                        GoToMainMenu();
+                        break;
+
+                }
+            }
+
+            foreach(var window in windows)
+            {
+                window.Update(delta);
+            }
+
             base.Update(delta);
         }
 
         private void HandleKeyboard()
         {
             var keyboard = Game.Instance.Keyboard;
-            if (keyboard.IsKeyPressed(Keys.Escape))
+            bool handled = false;
+            for(int i = windows.Count - 1; i >= 0; i--) 
             {
-                RootScreen.SwitchScreen(Screens.MainMenu, true);
+                if (windows[i].Visible)
+                {
+                    if (windows[i].HandleKeyboard(keyboard))
+                    {
+                        handled = true;
+                        break;
+                    }
+                }
             }
+
+            if(!handled && windows.Where(a => a.Visible).Count() == 1)
+            {
+                if(keyboard.IsKeyPressed(Keys.Escape))
+                {
+                    GoToMainMenu();
+                }
+            }
+        }
+
+        private void GoToMainMenu()
+        {
+            RootScreen.SwitchScreen(Screens.MainMenu, true);
         }
 
         public override void Render(TimeSpan delta)
@@ -67,6 +144,14 @@ namespace Magi.UI
             foreach (IRenderSystem renderSystem in renderSystems)
             {
                 renderSystem.Render(screen);
+            }
+
+            foreach(var window in windows)
+            {
+                if (window.Visible)
+                {
+                    window.Render(delta);
+                }
             }
             
             screen.Render(delta);
