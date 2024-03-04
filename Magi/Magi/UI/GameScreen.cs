@@ -1,5 +1,8 @@
 ﻿using Magi.Constants;
+using Magi.Maps;
+using Magi.Maps.Generators;
 using Magi.Scenes;
+using Magi.Utils;
 using SadConsole.Input;
 using System;
 using System.Collections.Generic;
@@ -13,6 +16,8 @@ namespace Magi.UI
     {
         RootScreen RootScreen;
         ScreenSurface screen;
+        Generator generator;
+        GameWorld world;
 
         public GameScreen(RootScreen rootScreen, bool loadGame)
         {
@@ -20,6 +25,13 @@ namespace Magi.UI
             screen = new ScreenSurface(GameSettings.GAME_WIDTH, GameSettings.GAME_HEIGHT);
 
             Children.Add(screen);
+
+            world = new GameWorld();
+
+            generator = new RoomsAndCorridorsGenerator(GameSettings.GAME_WIDTH, GameSettings.GAME_HEIGHT);
+            generator.Generate();
+
+            world.Map = generator.Map;
         }
 
         public override void Update(TimeSpan delta)
@@ -40,7 +52,21 @@ namespace Magi.UI
         public override void Render(TimeSpan delta)
         {
             screen.Clear();
-            screen.Print(20, 20, "Game Screen");
+            
+            for(int i = 0; i < world.Map.Width; i++)
+            {
+                for(int j = 0; j < world.Map.Height; j++)
+                {
+                    var tile = world.Map.GetTile(i, j);
+                    screen.Surface[i, j].Background = tile.BackgroundColor;
+                    if(tile.Glyph > 0)
+                    {
+                        screen.Surface[i, j].Foreground = tile.GlyphColor;
+                        screen.Surface[i, j].Glyph = tile.Glyph;
+                    }
+                }
+            }
+
             screen.Render(delta);
         }
     }
