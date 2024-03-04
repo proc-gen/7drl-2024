@@ -20,7 +20,6 @@ namespace Magi.UI
     {
         RootScreen RootScreen;
         ScreenSurface screen;
-        Generator generator;
         GameWorld world;
 
         List<IRenderSystem> renderSystems;
@@ -34,19 +33,36 @@ namespace Magi.UI
 
             Children.Add(screen);
 
-            world = new GameWorld();
-
-            generator = new RoomsAndCorridorsGenerator(GameSettings.GAME_WIDTH, GameSettings.GAME_HEIGHT);
-            generator.Generate();
-
-            world.Map = generator.Map;
-            new PlayerSpawner().SpawnPlayer(world, generator.GetPlayerStartingPosition());
-            FieldOfView.CalculatePlayerFOV(world);
+            if(loadGame)
+            {
+                LoadGame();
+            }
+            else
+            {
+                NewGame();
+            }            
 
             InitWindows();
             InitSystems();
 
             world.CurrentState = GameState.AwaitingPlayerInput;
+        }
+
+        private void NewGame()
+        {
+            world = SaveGameManager.NewGame();
+
+            var generator = new RoomsAndCorridorsGenerator(GameSettings.GAME_WIDTH, GameSettings.GAME_HEIGHT);
+            generator.Generate();
+
+            world.Map = generator.Map;
+            new PlayerSpawner().SpawnPlayer(world, generator.GetPlayerStartingPosition());
+            FieldOfView.CalculatePlayerFOV(world);
+        }
+
+        private void LoadGame()
+        {
+            world = SaveGameManager.LoadGame();
         }
 
         private void InitSystems()
@@ -94,7 +110,7 @@ namespace Magi.UI
                         world.CurrentState = GameState.AwaitingPlayerInput;
                         break;
                     case GameState.PlayerDeath:
-                        GoToMainMenu();
+                        GoToMainMenu(false);
                         break;
 
                 }
@@ -128,13 +144,17 @@ namespace Magi.UI
             {
                 if(keyboard.IsKeyPressed(Keys.Escape))
                 {
-                    GoToMainMenu();
+                    GoToMainMenu(true);
                 }
             }
         }
 
-        private void GoToMainMenu()
+        private void GoToMainMenu(bool saveGame)
         {
+            if(saveGame)
+            {
+                SaveGameManager.SaveGame(world);
+            }
             RootScreen.SwitchScreen(Screens.MainMenu, true);
         }
 
