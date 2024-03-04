@@ -28,7 +28,7 @@ namespace Magi.Utils
         public Map Map { get; set; }
         public HashSet<Point> PlayerFov { get; set; }
         public List<LogItem> LogItems { get; set; }
-
+         
         public GameWorld() 
         {
             World = World.Create();
