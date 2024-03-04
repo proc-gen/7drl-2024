@@ -3,6 +3,7 @@ using Arch.Core.Extensions;
 using Magi.Constants;
 using Magi.ECS.Components;
 using Magi.Maps;
+using Magi.Serialization;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -23,6 +24,7 @@ namespace Magi.Utils
         [JsonIgnore]
         public EntityReference PlayerReference { get; set; }
         public HashSet<Point> PlayerFov { get; set; }
+        public SerializableWorld SerializableWorld { get; set; }
         public GameWorld() 
         {
             World = World.Create();
