@@ -37,7 +37,19 @@ namespace Magi.Maps.Spawners
                 new Renderable() { Glyph = enemyContainer.Glyph, Color = new Color(enemyContainer.GlyphColorRed, enemyContainer.GlyphColorGreen, enemyContainer.GlyphColorBlue)},
                 new Input() { CanAct = true },
                 new Blocker(),
-                new CombatStats() { MaxHealth = enemyContainer.Health, CurrentHealth = enemyContainer.Health }
+                new CombatStats() 
+                { 
+                    MaxHealth = enemyContainer.Health, 
+                    CurrentHealth = enemyContainer.Health,
+                    BaseStrength = enemyContainer.Strength,
+                    CurrentStrength = enemyContainer.Strength,
+                    BaseIntelligence = enemyContainer.Intelligence,
+                    CurrentIntelligence = enemyContainer.Intelligence,
+                    BaseVitality = enemyContainer.Vitality,
+                    CurrentVitality = enemyContainer.Vitality,
+                    BaseDexterity = enemyContainer.Dexterity,
+                    CurrentDexterity = enemyContainer.Dexterity
+                }
             ).Reference();
 
             world.PhysicsWorld.AddEntity(reference, point);

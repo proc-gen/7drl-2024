@@ -82,6 +82,8 @@ namespace Magi.UI
             {
                 new NonPlayerInputSystem(world),
                 new EntityActSystem(world),
+                new MeleeAttackSystem(world),
+                new DeathSystem(world),
             };
         }
 
