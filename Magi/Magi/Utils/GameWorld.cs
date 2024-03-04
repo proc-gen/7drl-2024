@@ -1,6 +1,7 @@
 ﻿using Arch.Core;
 using Arch.Core.Extensions;
 using Magi.Constants;
+using Magi.Containers;
 using Magi.ECS.Components;
 using Magi.Maps;
 using Magi.Serialization;
@@ -26,6 +27,7 @@ namespace Magi.Utils
         public GameState CurrentState { get; set; }
         public Map Map { get; set; }
         public HashSet<Point> PlayerFov { get; set; }
+        public List<LogItem> LogItems { get; set; }
 
         public GameWorld() 
         {
@@ -33,6 +35,7 @@ namespace Magi.Utils
             PhysicsWorld = new PhysicsWorld();
             PlayerReference = EntityReference.Null;
             PlayerFov = new HashSet<Point>();
+            LogItems = new List<LogItem>();
         }
 
         public void StartPlayerTurn(Point direction)
