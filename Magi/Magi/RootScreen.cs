@@ -1,29 +1,64 @@
-﻿namespace Magi.Scenes
+﻿using Magi.Constants;
+using Magi.UI;
+
+namespace Magi.Scenes
 {
-    internal class RootScreen : ScreenObject
+    public class RootScreen : ScreenObject
     {
-        private ScreenSurface _mainSurface;
+        Dictionary<Screens, ScreenObject> ActiveScreens;
+        Screens ActiveScreen;
 
         public RootScreen()
         {
-            // Create a surface that's the same size as the screen.
-            _mainSurface = new ScreenSurface(GameSettings.GAME_WIDTH, GameSettings.GAME_HEIGHT);
+            ActiveScreens = new Dictionary<Screens, ScreenObject>
+            {
+                { Screens.MainMenu, new MainMenuScreen(this) }
+            };
 
-            // Fill the surface with random characters and colors
-            _mainSurface.FillWithRandomGarbage(_mainSurface.Font);
+            ActiveScreen = Screens.MainMenu;
+        }
 
-            // Create a rectangle box that has a violet foreground and black background.
-            // Characters are reset to 0 and mirroring is set to none. FillWithRandomGarbage will
-            // select random characters and mirroring, so this resets it within the box.
-            _mainSurface.Fill(new Rectangle(3, 3, 23, 3), Color.Violet, Color.Black, 0, Mirror.None);
+        public override void Update(TimeSpan delta)
+        {
+            ActiveScreens[ActiveScreen].Update(delta);
+            base.Update(delta);
+        }
 
-            // Print some text at (4, 4) using the foreground and background already there (violet and black)
-            _mainSurface.Print(4, 4, "Hello from SadConsole");
+        public override void Render(TimeSpan delta)
+        {
+            ActiveScreens[ActiveScreen].Render(delta);
+            base.Render(delta);
+        }
 
-            // Add _mainSurface as a child object of this one. This object, RootScreen, is a simple object
-            // and doesn't display anything itself. Since _mainSurface is going to be a child of it, _mainSurface
-            // will be displayed.
-            Children.Add(_mainSurface);
+        public void AddScreen(Screens screen, ScreenObject screenObject, bool makeActive = true)
+        {
+            ActiveScreens.Add(screen, screenObject);
+            if (makeActive)
+            {
+                ActiveScreen = screen;
+            }
+        }
+
+        public void RemoveScreen(Screens screen)
+        {
+            ActiveScreens.Remove(screen);
+        }
+
+        public void SwitchScreen(Screens screen, bool removeOthers = false)
+        {
+            ActiveScreen = screen;
+            if (removeOthers)
+            {
+                foreach (var key in ActiveScreens.Keys.Where(a => a != screen))
+                {
+                    ActiveScreens.Remove(key);
+                }
+            }
+        }
+
+        public bool HasScreen(Screens screen)
+        {
+            return ActiveScreens.ContainsKey(screen);
         }
     }
 }
