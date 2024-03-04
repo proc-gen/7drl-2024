@@ -13,7 +13,8 @@ namespace Magi.ECS.Systems.RenderSystems
 {
     public class RenderRenderablesSystem : ArchSystem, IRenderSystem
     {
-        QueryDescription renderEntitiesQuery = new QueryDescription().WithAll<Renderable, Position>();
+        QueryDescription renderEntitiesQuery = new QueryDescription().WithAll<Renderable, Position, Blocker>();
+        QueryDescription renderItemsQuery = new QueryDescription().WithAll<Renderable, Position, Item>();
 
         public RenderRenderablesSystem(GameWorld world)
             : base(world)
@@ -26,6 +27,11 @@ namespace Magi.ECS.Systems.RenderSystems
 
             int minX = position.X - GameSettings.GAME_WIDTH / 2;
             int minY = position.Y - GameSettings.GAME_HEIGHT / 2;
+
+            World.World.Query(in renderItemsQuery, (ref Renderable renderable, ref Position position) =>
+            {
+                RenderRenderable(screen, World.Map, minX, minY, renderable, position);
+            });
 
             World.World.Query(in renderEntitiesQuery, (ref Renderable renderable, ref Position position) =>
             {

@@ -1,0 +1,20 @@
+{
+  "data": [
+    {
+      "Name": "Small Health Potion",
+      "Glyph": 173,
+      "GlyphColorRed": 255,
+      "GlyphColorGreen": 0,
+      "GlyphColorBlue": 0,
+      "ItemType": 2
+    },
+    {
+      "Name": "Small Mana Potion",
+      "Glyph": 173,
+      "GlyphColorRed": 0,
+      "GlyphColorGreen": 0,
+      "GlyphColorBlue": 255,
+      "ItemType": 2
+    }
+  ]
+}

@@ -62,7 +62,11 @@ namespace Magi.UI
             var enemyTable = new RandomTable<string>()
                 .Add("Goblin", 1)
                 .Add("Ogre", 1);
-            generator.SpawnEntitiesForMap(world, enemyTable);
+            var itemTable = new RandomTable<string>()
+                .Add("Small Health Potion", 1)
+                .Add("Small Mana Potion", 1);
+
+            generator.SpawnEntitiesForMap(world, enemyTable, itemTable);
         }
 
         private void LoadGame()
