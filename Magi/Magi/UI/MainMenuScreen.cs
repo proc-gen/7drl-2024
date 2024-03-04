@@ -15,7 +15,6 @@ namespace Magi.UI
         RootScreen RootScreen;
 
         ScreenSurface screen;
-        bool dirty = true;
 
         int selectedButtonIndex = 0;
 
@@ -28,7 +27,6 @@ namespace Magi.UI
         public override void Update(TimeSpan delta)
         {
             HandleKeyboard();
-            RefreshScreen();
             base.Update(delta);
         }
 
@@ -46,7 +44,6 @@ namespace Magi.UI
                 {
                     selectedButtonIndex = 0;
                 }
-                dirty = true;
             }
             else if (keyboard.IsKeyPressed(Keys.Down) && selectedButtonIndex < 2)
             {
@@ -58,7 +55,6 @@ namespace Magi.UI
                 {
                     selectedButtonIndex = 2;
                 }
-                dirty = true;
             }
             else if (keyboard.IsKeyDown(Keys.Enter))
             {
@@ -74,30 +70,6 @@ namespace Magi.UI
                         Game.Instance.MonoGameInstance.Exit();
                         break;
                 }
-            }
-        }
-
-        private void RefreshScreen()
-        {
-            if (dirty)
-            {
-                screen.Clear();
-                printTitle();
-
-                int optionPosition = 24;
-
-                printMenuOption(screen.Width / 2 - 4, optionPosition, "New Game", selectedButtonIndex == 0);
-                optionPosition++;
-
-                if (showContinue())
-                {
-                    printMenuOption(screen.Width / 2 - 6, optionPosition, "Continue Game", selectedButtonIndex == 1);
-                    optionPosition++;
-                }
-
-                printMenuOption(screen.Width / 2 - 4, optionPosition, "Quit Game", selectedButtonIndex == 2);
-
-                dirty = false;
             }
         }
 
@@ -123,6 +95,22 @@ namespace Magi.UI
 
         public override void Render(TimeSpan delta)
         {
+            screen.Clear();
+            printTitle();
+
+            int optionPosition = 24;
+
+            printMenuOption(screen.Width / 2 - 4, optionPosition, "New Game", selectedButtonIndex == 0);
+            optionPosition++;
+
+            if (showContinue())
+            {
+                printMenuOption(screen.Width / 2 - 6, optionPosition, "Continue Game", selectedButtonIndex == 1);
+                optionPosition++;
+            }
+
+            printMenuOption(screen.Width / 2 - 4, optionPosition, "Quit Game", selectedButtonIndex == 2);
+
             screen.Render(delta);
         }
     }

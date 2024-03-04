@@ -110,7 +110,7 @@ namespace Magi.UI
                         world.CurrentState = GameState.AwaitingPlayerInput;
                         break;
                     case GameState.PlayerDeath:
-                        GoToMainMenu();
+                        GoToMainMenu(false);
                         break;
 
                 }
@@ -144,13 +144,17 @@ namespace Magi.UI
             {
                 if(keyboard.IsKeyPressed(Keys.Escape))
                 {
-                    GoToMainMenu();
+                    GoToMainMenu(true);
                 }
             }
         }
 
-        private void GoToMainMenu()
+        private void GoToMainMenu(bool saveGame)
         {
+            if(saveGame)
+            {
+                SaveGameManager.SaveGame(world);
+            }
             RootScreen.SwitchScreen(Screens.MainMenu, true);
         }
 

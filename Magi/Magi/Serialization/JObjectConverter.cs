@@ -20,7 +20,7 @@ namespace Magi.Serialization
         public T ConvertToTyped<T>(JObject data)
             where T : new()
         {
-            T retVal = Activator.CreateInstance<T>();
+            object retVal = Activator.CreateInstance<T>();
 
             var DeserializedType = typeof(T);
 

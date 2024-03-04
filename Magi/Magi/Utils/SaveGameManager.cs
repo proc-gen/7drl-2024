@@ -38,11 +38,11 @@ namespace Magi.Utils
                 }
             }
 
-            PostLoadProcessing(world);
+            world = PostLoadProcessing(world);
             return world;
         }
 
-        private static void PostLoadProcessing(GameWorld world)
+        private static GameWorld PostLoadProcessing(GameWorld world)
         {
             world.World = SerializableWorld.CreateWorldFromSerializableWorld(world.SerializableWorld);
 
@@ -56,6 +56,8 @@ namespace Magi.Utils
                     world.PlayerReference = reference;
                 }
             });
+
+            return world;
         }
 
         public static void SaveGame(GameWorld world)
