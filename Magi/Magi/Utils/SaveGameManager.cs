@@ -15,6 +15,7 @@ namespace Magi.Utils
     {
         public static GameWorld NewGame()
         {
+            DeleteSaveData();
             return new GameWorld();
         }
 
