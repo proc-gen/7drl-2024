@@ -81,6 +81,7 @@ namespace Magi.UI
         {
             if (dirty)
             {
+                screen.Clear();
                 printTitle();
 
                 int optionPosition = 24;
@@ -108,7 +109,11 @@ namespace Magi.UI
 
         private void printMenuOption(int x, int y, string text, bool active)
         {
-            screen.Print(x, y, text, active ? Color.Magenta : Color.White, Color.Black);
+            screen.Print(x, y, text, Color.White, Color.Black);
+            if (active)
+            {
+                screen.Print(x - 3, y, "->", Color.White, Color.Black);
+            }
         }
 
         private bool showContinue()
