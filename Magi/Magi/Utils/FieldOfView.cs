@@ -27,9 +27,9 @@ namespace Magi.Utils
         public static HashSet<Point> CalculateFOV(GameWorld world, EntityReference entity)
         {
             var entityPosition = entity.Entity.Get<Position>();
-            var entityViewDistance = 10; //entity.Entity.Get<ViewDistance>();
+            var entityViewDistance = entity.Entity.Get<ViewDistance>();
 
-            return CalculateFOV(world, entityPosition.Point, entityViewDistance); //.Distance);
+            return CalculateFOV(world, entityPosition.Point, entityViewDistance.Distance);
         }
 
         public static HashSet<Point> CalculateFOV(GameWorld world, Point originPoint, int viewDistance)

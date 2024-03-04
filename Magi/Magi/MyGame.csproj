@@ -21,4 +21,10 @@
     <PackageReference Include="SadConsole.Host.MonoGame" Version="10.0.0" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Update="Content\Datasets\enemies.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
 </Project>

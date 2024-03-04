@@ -15,7 +15,21 @@ namespace Magi.Maps.Spawners
                 new Renderable() { Color = Color.DarkGreen, Glyph = '@' },
                 new Input() { CanAct = true },
                 new Blocker(),
-                new Name() { EntityName = "Player" }
+                new Name() { EntityName = "Player" },
+                new ViewDistance() { Distance = 10 },
+                new CombatStats() 
+                { 
+                    MaxHealth = 10, 
+                    CurrentHealth = 10,
+                    BaseStrength = 10,
+                    CurrentStrength = 10,
+                    BaseIntelligence = 10,
+                    CurrentIntelligence = 10,
+                    BaseVitality = 10,
+                    CurrentVitality = 10,
+                    BaseDexterity = 10,
+                    CurrentDexterity = 10,
+                }
             ).Reference();
 
             world.PhysicsWorld.AddEntity(world.PlayerReference, startingPosition);

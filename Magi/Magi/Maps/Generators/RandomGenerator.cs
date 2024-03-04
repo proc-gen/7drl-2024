@@ -1,4 +1,6 @@
-﻿using Magi.Utils;
+﻿using CommunityToolkit.HighPerformance.Buffers;
+using Magi.Maps.Spawners;
+using Magi.Utils;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -74,9 +76,24 @@ namespace Magi.Maps.Generators
             
         }
 
-        public override void SpawnEntitiesForMap(GameWorld world)
+        public override void SpawnEntitiesForMap(GameWorld world, RandomTable<string> enemySpawnTable)
         {
-            
+            EnemySpawner enemySpawner = new EnemySpawner(enemySpawnTable, Random);
+            var room = Rooms.First();
+
+            int numSpawns = Random.Next(0, 4);
+            HashSet<Point> spawnLocations = new HashSet<Point>();
+
+            while (spawnLocations.Count < numSpawns)
+            {
+                var point = new Point(room.X + Random.Next(1, room.Width), room.Y + Random.Next(1, room.Height));
+                if (Map.GetTile(point).BaseTileType != Constants.TileTypes.Wall)
+                {
+                    spawnLocations.Add(point);
+                }
+            }
+
+            enemySpawner.SpawnEntitiesForPoints(world, spawnLocations);
         }
     }
 }

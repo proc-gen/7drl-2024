@@ -58,6 +58,11 @@ namespace Magi.UI
             world.Map = generator.Map;
             new PlayerSpawner().SpawnPlayer(world, generator.GetPlayerStartingPosition());
             FieldOfView.CalculatePlayerFOV(world);
+
+            var enemyTable = new RandomTable<string>()
+                .Add("Goblin", 1)
+                .Add("Ogre", 1);
+            generator.SpawnEntitiesForMap(world, enemyTable);
         }
 
         private void LoadGame()
@@ -75,7 +80,10 @@ namespace Magi.UI
 
             updateSystems = new List<IUpdateSystem>()
             {
+                new NonPlayerInputSystem(world),
                 new EntityActSystem(world),
+                new MeleeAttackSystem(world),
+                new DeathSystem(world),
             };
         }
 
@@ -179,7 +187,6 @@ namespace Magi.UI
                     window.Render(delta);
                 }
             }
-
         }
     }
 }
