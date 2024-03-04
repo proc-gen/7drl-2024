@@ -1,4 +1,6 @@
 ﻿using Arch.Core;
+using Arch.Core.Extensions;
+using Magi.ECS.Components;
 using Magi.UI.Helpers;
 using Magi.Utils;
 using SadConsole.Input;
@@ -114,6 +116,18 @@ namespace Magi.UI.Windows
                 Color.White,
                 Color.Black
             );
+
+            var position = world.PlayerReference.Entity.Get<Position>().Point;
+            string itemName = string.Empty;
+            var entitiesAtLocation = world.PhysicsWorld.GetEntitiesAtLocation(position);
+            if (entitiesAtLocation != null && entitiesAtLocation.Any(a => a.Entity.Has<Item>() || a.Entity.Has<Exit>()))
+            {
+                var item = entitiesAtLocation.Where(a => a.Entity.Has<Item>() || a.Entity.Has<Exit>()).FirstOrDefault();
+                itemName = item.Entity.Get<Name>().EntityName;
+            }
+
+            Console.Print(GameSettings.GAME_WIDTH * 3 / 4 + 2, GameSettings.GAME_HEIGHT - 9, string.Concat("Position: ", position));
+            Console.Print(GameSettings.GAME_WIDTH * 3 / 4 + 2, GameSettings.GAME_HEIGHT - 7, string.Concat("Ground: ", itemName));
         }
     }
 }
