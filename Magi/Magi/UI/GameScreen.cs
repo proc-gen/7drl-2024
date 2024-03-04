@@ -1,6 +1,8 @@
 ﻿using Magi.Constants;
+using Magi.ECS.Systems.RenderSystems;
 using Magi.Maps;
 using Magi.Maps.Generators;
+using Magi.Maps.Spawners;
 using Magi.Scenes;
 using Magi.Utils;
 using SadConsole.Input;
@@ -19,6 +21,8 @@ namespace Magi.UI
         Generator generator;
         GameWorld world;
 
+        List<IRenderSystem> renderSystems;
+
         public GameScreen(RootScreen rootScreen, bool loadGame)
         {
             RootScreen = rootScreen;
@@ -32,6 +36,14 @@ namespace Magi.UI
             generator.Generate();
 
             world.Map = generator.Map;
+            new PlayerSpawner().SpawnPlayer(world, generator.GetPlayerStartingPosition());
+            FieldOfView.CalculatePlayerFOV(world);
+
+            renderSystems = new List<IRenderSystem>()
+            {
+                new RenderMapSystem(world),
+                new RenderRenderablesSystem(world),
+            };
         }
 
         public override void Update(TimeSpan delta)
@@ -52,21 +64,11 @@ namespace Magi.UI
         public override void Render(TimeSpan delta)
         {
             screen.Clear();
-            
-            for(int i = 0; i < world.Map.Width; i++)
+            foreach (IRenderSystem renderSystem in renderSystems)
             {
-                for(int j = 0; j < world.Map.Height; j++)
-                {
-                    var tile = world.Map.GetTile(i, j);
-                    screen.Surface[i, j].Background = tile.BackgroundColor;
-                    if(tile.Glyph > 0)
-                    {
-                        screen.Surface[i, j].Foreground = tile.GlyphColor;
-                        screen.Surface[i, j].Glyph = tile.Glyph;
-                    }
-                }
+                renderSystem.Render(screen);
             }
-
+            
             screen.Render(delta);
         }
     }
