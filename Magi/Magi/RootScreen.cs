@@ -12,10 +12,10 @@ namespace Magi.Scenes
         {
             ActiveScreens = new Dictionary<Screens, ScreenObject>
             {
-                { Screens.MainMenu, new MainMenuScreen(this) }
+                { Screens.Splash, new SplashScreen(this) }
             };
 
-            ActiveScreen = Screens.MainMenu;
+            ActiveScreen = Screens.Splash;
         }
 
         public override void Update(TimeSpan delta)
