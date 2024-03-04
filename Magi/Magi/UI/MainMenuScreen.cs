@@ -1,5 +1,6 @@
 ﻿using Magi.Constants;
 using Magi.Scenes;
+using Magi.UI.Helpers;
 using SadConsole.Input;
 using System;
 using System.Collections.Generic;
@@ -101,8 +102,8 @@ namespace Magi.UI
 
         private void printTitle()
         {
-            //screen.DrawRLTKStyleBox(screen.Width / 2 - 12, 13, 27, 4, Color.White, Color.Black);
-            screen.Print(screen.Width / 2 - 12, 15, "Land of the Fallen Magi", Color.Yellow, Color.Black);
+            screen.DrawRLTKStyleBox(screen.Width / 2 - 15, 13, 30, 4, Color.White, Color.Black);
+            screen.Print(screen.Width / 2 - 11, 15, "Land of the Fallen Magi", Color.Yellow, Color.Black);
         }
 
         private void printMenuOption(int x, int y, string text, bool active)
