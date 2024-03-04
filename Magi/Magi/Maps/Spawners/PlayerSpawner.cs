@@ -14,7 +14,8 @@ namespace Magi.Maps.Spawners
                 new Position() { Point = startingPosition },
                 new Renderable() { Color = Color.DarkGreen, Glyph = '@' },
                 new Input() { CanAct = true },
-                new Blocker()
+                new Blocker(),
+                new Name() { EntityName = "Player" }
             ).Reference();
 
             world.PhysicsWorld.AddEntity(world.PlayerReference, startingPosition);

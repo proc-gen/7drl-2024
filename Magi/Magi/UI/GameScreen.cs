@@ -85,6 +85,11 @@ namespace Magi.UI
             {
                 new GameWindow(world),
             };
+
+            foreach(var window in windows)
+            {
+                Children.Add(window.Console);
+            }
         }
 
         public override void Update(TimeSpan delta)
@@ -165,16 +170,16 @@ namespace Magi.UI
             {
                 renderSystem.Render(screen);
             }
+            screen.Render(delta);
 
-            foreach(var window in windows)
+            foreach (var window in windows)
             {
                 if (window.Visible)
                 {
                     window.Render(delta);
                 }
             }
-            
-            screen.Render(delta);
+
         }
     }
 }

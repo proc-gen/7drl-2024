@@ -1,5 +1,6 @@
 ﻿using Arch.Core;
 using Arch.Core.Extensions;
+using Magi.Containers;
 using Magi.ECS.Components;
 using Magi.Serialization;
 using Newtonsoft.Json;
@@ -16,7 +17,9 @@ namespace Magi.Utils
         public static GameWorld NewGame()
         {
             DeleteSaveData();
-            return new GameWorld();
+            var world = new GameWorld();
+            world.LogItems.Add(new LogItem("Welcome justicar"));
+            return world;
         }
 
         public static GameWorld LoadGame()
@@ -57,6 +60,8 @@ namespace Magi.Utils
                     world.PlayerReference = reference;
                 }
             });
+
+            world.LogItems.Add(new LogItem("Welcome back justicar"));
 
             return world;
         }
