@@ -65,10 +65,10 @@ namespace Magi.UI
                 switch (selectedButtonIndex)
                 {
                     case 0:
-                        //RootScreen.AddScreen(Screens.Game, new GameScreen(RootScreen, false));
+                        RootScreen.AddScreen(Screens.Game, new GameScreen(RootScreen, false));
                         break;
                     case 1:
-                        //RootScreen.AddScreen(Screens.Game, new GameScreen(RootScreen, true));
+                        RootScreen.AddScreen(Screens.Game, new GameScreen(RootScreen, true));
                         break;
                     case 2:
                         Game.Instance.MonoGameInstance.Exit();
