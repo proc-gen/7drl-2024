@@ -13,6 +13,7 @@ namespace Magi.Constants
         PlayerTurn,
         MonsterTurn,
         ShowInventory,
+        Targeting,
         PlayerDeath,
     }
 }

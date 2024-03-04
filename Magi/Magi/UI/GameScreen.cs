@@ -96,6 +96,12 @@ namespace Magi.UI
             windows = new List<Window>()
             {
                 new GameWindow(world),
+                new InventoryWindow(
+                    GameSettings.GAME_WIDTH / 4,
+                    GameSettings.GAME_HEIGHT / 4 - 5,
+                    GameSettings.GAME_WIDTH / 2,
+                    GameSettings.GAME_HEIGHT / 2,
+                    world),
             };
 
             foreach(var window in windows)
@@ -106,7 +112,9 @@ namespace Magi.UI
 
         public override void Update(TimeSpan delta)
         {
-            if (world.CurrentState == GameState.AwaitingPlayerInput)
+            if (world.CurrentState == GameState.AwaitingPlayerInput
+                || world.CurrentState == GameState.ShowInventory
+                || world.CurrentState == GameState.Targeting)
             {
                 HandleKeyboard();
             }
@@ -149,11 +157,8 @@ namespace Magi.UI
             {
                 if (windows[i].Visible)
                 {
-                    if (windows[i].HandleKeyboard(keyboard))
-                    {
-                        handled = true;
-                        break;
-                    }
+                    handled = windows[i].HandleKeyboard(keyboard);
+                    break;
                 }
             }
 

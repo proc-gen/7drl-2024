@@ -50,6 +50,10 @@ namespace Magi.UI.Windows
                 RequestMoveDirection(Direction.None);
                 retVal = true;
             }
+            else if (keyboard.IsKeyPressed(Keys.I))
+            {
+                world.CurrentState = Constants.GameState.ShowInventory;
+            }
 
             return retVal;
         }
