@@ -20,7 +20,7 @@ namespace Magi.Maps.Generators
         public abstract void Generate();
 
         public abstract Point GetPlayerStartingPosition();
-        public abstract void SpawnEntitiesForMap(GameWorld world);
+        public abstract void SpawnEntitiesForMap(GameWorld world, RandomTable<string> enemySpawnTable);
         public abstract void SpawnExitForMap(GameWorld world);
     }
 }

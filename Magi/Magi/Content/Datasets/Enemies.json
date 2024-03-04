@@ -1,0 +1,20 @@
+{
+  "data": [
+    {
+      "Name": "Goblin",
+      "ViewDistance": 10,
+      "Glyph": "g",
+      "GlyphColorRed": 192,
+      "GlyphColorGreen": 0,
+      "GlyphColorBlue": 0
+    },
+    {
+      "Name": "Ogre",
+      "ViewDistance": 10,
+      "Glyph": "o",
+      "GlyphColorRed": 192,
+      "GlyphColorGreen": 0,
+      "GlyphColorBlue": 0
+    }
+  ]
+}
