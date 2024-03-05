@@ -25,7 +25,7 @@ namespace Magi.UI
         public override void Update(TimeSpan delta)
         {
             var keyboard = Game.Instance.Keyboard;
-            if (elapsedTime > 3f || keyboard.IsKeyPressed(Keys.Escape))
+            if (elapsedTime > 3f || keyboard.HasKeysDown)
             {
                 RootScreen.AddScreen(Screens.MainMenu, new MainMenuScreen(RootScreen));
             }
