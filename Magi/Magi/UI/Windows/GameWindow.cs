@@ -16,10 +16,12 @@ namespace Magi.UI.Windows
     public class GameWindow : Window
     {
         GameWorld world;
-        public GameWindow(GameWorld world) 
+        TargetingOverlay targetingOverlay;
+        public GameWindow(GameWorld world, TargetingOverlay targetingOverlay) 
             : base()
         {
             this.world = world;
+            this.targetingOverlay = targetingOverlay;
             Visible = true;
         }
 
@@ -58,6 +60,16 @@ namespace Magi.UI.Windows
             else if (keyboard.IsKeyPressed(Keys.G))
             {
                 TryPickUpItem();
+            }
+            else if (keyboard.IsKeyPressed(Keys.A))
+            {
+                var weapon = world.PlayerReference.Entity.Get<CombatEquipment>().MainHandReference;
+                if (weapon != EntityReference.Null
+                    && weapon.Entity.Get<Weapon>().Range > 1)
+                {
+                    targetingOverlay.SetEntityForTargeting(weapon);
+                    world.CurrentState = Constants.GameState.Targeting;
+                }
             }
 
             return retVal;
@@ -119,8 +131,12 @@ namespace Magi.UI.Windows
             );
 
             var stats = world.PlayerReference.Entity.Get<CombatStats>();
+            var equipment = world.PlayerReference.Entity.Get<CombatEquipment>();
+
             Console.Print(2, GameSettings.GAME_HEIGHT - 9, string.Concat("Health: ", stats.CurrentHealth, " / ", stats.MaxHealth));
             Console.Print(2, GameSettings.GAME_HEIGHT - 7, string.Concat("Mana: ", stats.CurrentMana, " / ", stats.MaxMana));
+            Console.Print(2, GameSettings.GAME_HEIGHT - 5, string.Concat("Level: ", stats.Level));
+            Console.Print(2, GameSettings.GAME_HEIGHT - 3, string.Concat("Weapon: ", equipment.MainHandReference == EntityReference.Null ? "Fist" : equipment.MainHandReference.Entity.Get<Name>().EntityName));
         }
 
         private void RenderGameLog()
