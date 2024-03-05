@@ -25,15 +25,21 @@ namespace Magi.ECS.Systems.UpdateSystems
         {
             World.World.Query(in itemsToUseQuery, (Entity entity, ref Owner owner) =>
             {
-                if(entity.Has<Consumable>())
+                var reference = entity.Reference();
+
+                if (entity.Has<Consumable>())
                 {
-                    var reference = entity.Reference();
-                    if (ConsumableProcessor.Process(World, reference))
+                    if (ConsumableProcessor.Consume(World, reference))
                     {
                         reference.Entity.Add(new DestroyItem());
-                    }
-                    reference.Entity.Remove<WantToUseItem>();
+                    }                    
                 }
+                else if (entity.Has<Weapon>())
+                {
+                    WeaponProcessor.Equip(World, reference);
+                }
+
+                reference.Entity.Remove<WantToUseItem>();
             });
 
             World.World.Destroy(in itemsToDestroyQuery);

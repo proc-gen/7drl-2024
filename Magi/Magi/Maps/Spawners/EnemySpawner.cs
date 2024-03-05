@@ -51,7 +51,8 @@ namespace Magi.Maps.Spawners
                     CurrentVitality = enemyContainer.Vitality,
                     BaseDexterity = enemyContainer.Dexterity,
                     CurrentDexterity = enemyContainer.Dexterity
-                }
+                },
+                new CombatEquipment()
             ).Reference();
 
             world.PhysicsWorld.AddEntity(reference, point);

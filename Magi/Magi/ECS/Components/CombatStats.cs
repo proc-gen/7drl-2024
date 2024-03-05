@@ -20,5 +20,8 @@ namespace Magi.ECS.Components
         public int CurrentVitality { get; set; }
         public int BaseDexterity { get; set; }
         public int CurrentDexterity { get; set; }
+        public int Level { get; set; }
+        public int Experience { get; set; }
+        public int ExperienceForNextLevel { get; set; }
     }
 }

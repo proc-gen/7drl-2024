@@ -18,7 +18,6 @@ namespace Magi.UI.Windows
         GameWorld World;
         List<EntityReference> InventoryItems;
         int selectedItem = 0;
-        int ownedItems = 0;
         QueryDescription ownedItemsQuery = new QueryDescription().WithAll<Owner>();
         public InventoryWindow(int x, int y, int width, int height, GameWorld world)
             : base(x, y, width, height)
@@ -32,10 +31,6 @@ namespace Magi.UI.Windows
             if(!Visible && World.CurrentState == Constants.GameState.ShowInventory)
             {
                 Visible = true;
-            }
-
-            if (World.World.CountEntities(in ownedItemsQuery) != ownedItems)
-            {
                 UpdateInventoryItems();
             }
         }
@@ -79,7 +74,6 @@ namespace Magi.UI.Windows
 
         private void UpdateInventoryItems()
         {
-            ownedItems = World.World.CountEntities(in ownedItemsQuery);
             InventoryItems.Clear();
             World.World.Query(in ownedItemsQuery, (Entity entity, ref Owner owner) =>
             {
@@ -141,6 +135,8 @@ namespace Magi.UI.Windows
             DrawInventoryItems();
             DrawEquipmentList();
             DrawItemSelector();
+            DrawPlayerStats();
+            DrawItemDescription();
             Console.Render(delta);
         }
 
@@ -152,24 +148,77 @@ namespace Magi.UI.Windows
 
         private void DrawInventoryItems()
         {
-            for (int i = 0; i < InventoryItems.Count; i++)
+            Console.Print(6, 4, "Backpack Items");
+            for (int i = 0; i < 12; i++)
             {
-                Console.Print(6, 5 + i, string.Concat(1 + i, ": ", InventoryItems[i].Entity.Get<Name>().EntityName));
+                Console.Print(6, 6 + i, string.Concat(1 + i, ": ", i < InventoryItems.Count ? InventoryItems[i].Entity.Get<Name>().EntityName : string.Empty));
             }
         }
 
         private void DrawEquipmentList()
         {
-            // var equipment = World.PlayerReference.Entity.Get<CombatEquipment>();
-            // Console.Print(Console.Width / 2 + 5, 5, string.Concat("Weapon: ", equipment.Weapon != EntityReference.Null ? equipment.Weapon.Entity.Get<Name>().EntityName : string.Empty));
-            // Console.Print(Console.Width / 2 + 5, 6, string.Concat("Armor: ", equipment.Armor != EntityReference.Null ? equipment.Armor.Entity.Get<Name>().EntityName : string.Empty));
+            var equipment = World.PlayerReference.Entity.Get<CombatEquipment>();
+            var weapon = equipment.MainHandReference;
+
+            Console.Print(6, 19, "Equipment");
+            Console.Print(6, 21, string.Concat("Main Hand: ", equipment.MainHandReference != EntityReference.Null ? equipment.MainHandReference.Entity.Get<Name>().EntityName : string.Empty));
+            Console.Print(6, 22, string.Concat("Off Hand: ", equipment.OffHandReference != EntityReference.Null && equipment.MainHandReference != equipment.OffHandReference ? equipment.OffHandReference.Entity.Get<Name>().EntityName : string.Empty));
+            Console.Print(6, 23, string.Concat("Armor: ", equipment.ArmorReference != EntityReference.Null ? equipment.ArmorReference.Entity.Get<Name>().EntityName : string.Empty));
+
+            Console.Print(6, 25, string.Concat("Weapon Damage: ", weapon != EntityReference.Null ? string.Concat(weapon.Entity.Get<Weapon>().DamageRoll, " ", weapon.Entity.Get<Weapon>().DamageType) : "1d3 Bludgeoning"));
+            Console.Print(6, 26, string.Concat("Critical Hit Chance: ", weapon != EntityReference.Null ? string.Concat((20 - weapon.Entity.Get<Weapon>().CriticalHitRoll + 1) * 5, "%") : "5%"));
+            Console.Print(6, 27, string.Concat("Range: ", weapon != EntityReference.Null && weapon.Entity.Get<Weapon>().Range > 1 ? weapon.Entity.Get<Weapon>().Range : "Melee"));
+            Console.Print(6, 28, string.Concat("AC: ", 0));
+        }
+
+        private void DrawPlayerStats()
+        {
+            var stats = World.PlayerReference.Entity.Get<CombatStats>();
+
+            Console.Print(6 + Console.Width / 2, 19, "Player Stats");
+
+            Console.Print(6 + Console.Width / 2, 21, string.Concat("Level: ", stats.Level));
+            Console.Print(6 + Console.Width / 2, 22, string.Concat("Experience: ", stats.Experience, "/", stats.ExperienceForNextLevel));
+
+            Console.Print(6 + Console.Width / 2, 24, string.Concat("Strength: ", stats.CurrentStrength));
+            Console.Print(6 + Console.Width / 2, 25, string.Concat("Dexterity: ", stats.CurrentDexterity));
+            Console.Print(6 + Console.Width / 2, 26, string.Concat("Intelligence: ", stats.CurrentIntelligence));
+            Console.Print(6 + Console.Width / 2, 27, string.Concat("Vitality: ", stats.CurrentVitality));
+        }
+
+        private void DrawItemDescription()
+        {
+            Console.Print(6 + Console.Width / 2, 4, "Item Description");
+            if (InventoryItems.Any())
+            {
+                var item = InventoryItems[selectedItem];
+                if (item.Entity.Has<Consumable>())
+                {
+                    var consumable = item.Entity.Get<Consumable>();
+                    switch(consumable.ConsumableType)
+                    {
+                        case Constants.ConsumableTypes.Health:
+                            Console.Print(6 + Console.Width / 2, 6, string.Concat("Restores up to ", consumable.ConsumableAmount, "hp"));
+                            break;
+                        case Constants.ConsumableTypes.Mana:
+                            Console.Print(6 + Console.Width / 2, 6, string.Concat("Restores up to ", consumable.ConsumableAmount, "mp"));
+                            break;
+                    }
+                }
+                else if (item.Entity.Has<Weapon>())
+                {
+                    Console.Print(6 + Console.Width / 2, 6, string.Concat("Weapon Damage: ", string.Concat(item.Entity.Get<Weapon>().DamageRoll, " ", item.Entity.Get<Weapon>().DamageType)));
+                    Console.Print(6 + Console.Width / 2, 7, string.Concat("Critical Hit Chance: ", string.Concat((20 - item.Entity.Get<Weapon>().CriticalHitRoll + 1) * 5, "%")));
+                    Console.Print(6 + Console.Width / 2, 8, string.Concat("Range: ", item.Entity.Get<Weapon>().Range > 1 ? item.Entity.Get<Weapon>().Range : "Melee"));
+                }
+            }
         }
 
         private void DrawItemSelector()
         {
             if (InventoryItems.Any())
             {
-                Console.Print(3, selectedItem + 5, "->");
+                Console.Print(3, selectedItem + 6, "->");
             }
         }
     }

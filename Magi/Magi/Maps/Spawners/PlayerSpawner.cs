@@ -31,7 +31,8 @@ namespace Magi.Maps.Spawners
                     CurrentVitality = 10,
                     BaseDexterity = 10,
                     CurrentDexterity = 10,
-                }
+                },
+                new CombatEquipment()
             ).Reference();
 
             world.PhysicsWorld.AddEntity(world.PlayerReference, startingPosition);

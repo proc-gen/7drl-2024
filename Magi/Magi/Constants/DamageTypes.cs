@@ -6,10 +6,10 @@ using System.Threading.Tasks;
 
 namespace Magi.Constants
 {
-    public enum ItemTypes
+    public enum DamageTypes
     {
-        Quest = 1,
-        Consumable = 2,
-        Weapon = 3,
+        Piercing = 1,
+        Slashing = 2,
+        Bludgeoning = 3
     }
 }

@@ -1,0 +1,202 @@
+{
+  "data": [
+    {
+      "Name": "Dagger",
+      "DamageType": 1,
+      "WeaponType": 1,
+      "DamageRoll": "1d4",
+      "Range": 1,
+      "CriticalHitRoll": 20,
+      "CriticalHitMultiplier": 3
+    },
+    {
+      "Name": "Light Mace",
+      "DamageType": 3,
+      "WeaponType": 1,
+      "DamageRoll": "1d6",
+      "Range": 1,
+      "CriticalHitRoll": 20,
+      "CriticalHitMultiplier": 2
+    },
+    {
+      "Name": "Heavy Mace",
+      "DamageType": 3,
+      "WeaponType": 1,
+      "DamageRoll": "1d8",
+      "Range": 1,
+      "CriticalHitRoll": 20,
+      "CriticalHitMultiplier": 2
+    },
+    {
+      "Name": "Quarterstaff",
+      "DamageType": 3,
+      "WeaponType": 2,
+      "DamageRoll": "1d4",
+      "Range": 1,
+      "CriticalHitRoll": 20,
+      "CriticalHitMultiplier": 2
+    },
+    {
+      "Name": "Light Hammer",
+      "DamageType": 3,
+      "WeaponType": 1,
+      "DamageRoll": "1d4",
+      "Range": 1,
+      "CriticalHitRoll": 20,
+      "CriticalHitMultiplier": 2
+    },
+    {
+      "Name": "Warhammer",
+      "DamageType": 3,
+      "WeaponType": 1,
+      "DamageRoll": "1d8",
+      "Range": 1,
+      "CriticalHitRoll": 20,
+      "CriticalHitMultiplier": 3
+    },
+    {
+      "Name": "Club",
+      "DamageType": 3,
+      "WeaponType": 1,
+      "DamageRoll": "1d6",
+      "Range": 1,
+      "CriticalHitRoll": 20,
+      "CriticalHitMultiplier": 2
+    },
+    {
+      "Name": "Greatclub",
+      "DamageType": 3,
+      "WeaponType": 2,
+      "DamageRoll": "1d10",
+      "Range": 1,
+      "CriticalHitRoll": 20,
+      "CriticalHitMultiplier": 2
+    },
+    {
+      "Name": "Handaxe",
+      "DamageType": 2,
+      "WeaponType": 1,
+      "DamageRoll": "1d6",
+      "Range": 1,
+      "CriticalHitRoll": 20,
+      "CriticalHitMultiplier": 3
+    },
+    {
+      "Name": "Battleaxe",
+      "DamageType": 2,
+      "WeaponType": 1,
+      "DamageRoll": "1d8",
+      "Range": 1,
+      "CriticalHitRoll": 20,
+      "CriticalHitMultiplier": 3
+    },
+    {
+      "Name": "Greataxe",
+      "DamageType": 2,
+      "WeaponType": 2,
+      "DamageRoll": "1d12",
+      "Range": 1,
+      "CriticalHitRoll": 20,
+      "CriticalHitMultiplier": 3
+    },
+    {
+      "Name": "Short Sword",
+      "DamageType": 2,
+      "WeaponType": 1,
+      "DamageRoll": "1d6",
+      "Range": 1,
+      "CriticalHitRoll": 19,
+      "CriticalHitMultiplier": 2
+    },
+    {
+      "Name": "Long Sword",
+      "DamageType": 2,
+      "WeaponType": 1,
+      "DamageRoll": "1d8",
+      "Range": 1,
+      "CriticalHitRoll": 19,
+      "CriticalHitMultiplier": 2
+    },
+    {
+      "Name": "Rapier",
+      "DamageType": 1,
+      "WeaponType": 1,
+      "DamageRoll": "1d6",
+      "Range": 1,
+      "CriticalHitRoll": 18,
+      "CriticalHitMultiplier": 2
+    },
+    {
+      "Name": "Scimitar",
+      "DamageType": 2,
+      "WeaponType": 1,
+      "DamageRoll": "1d6",
+      "Range": 1,
+      "CriticalHitRoll": 18,
+      "CriticalHitMultiplier": 2
+    },
+    {
+      "Name": "Falchion",
+      "DamageType": 2,
+      "WeaponType": 2,
+      "DamageRoll": "2d4",
+      "Range": 1,
+      "CriticalHitRoll": 18,
+      "CriticalHitMultiplier": 2
+    },
+    {
+      "Name": "Greatsword",
+      "DamageType": 2,
+      "WeaponType": 2,
+      "DamageRoll": "2d6",
+      "Range": 1,
+      "CriticalHitRoll": 19,
+      "CriticalHitMultiplier": 2
+    },
+    {
+      "Name": "Scythe",
+      "DamageType": 2,
+      "WeaponType": 2,
+      "DamageRoll": "2d4",
+      "Range": 1,
+      "CriticalHitRoll": 20,
+      "CriticalHitMultiplier": 4
+    },
+    {
+      "Name": "Short Bow",
+      "DamageType": 1,
+      "WeaponType": 4,
+      "DamageRoll": "1d6",
+      "Range": 6,
+      "CriticalHitRoll": 20,
+      "CriticalHitMultiplier": 3
+    },
+    {
+      "Name": "Long Bow",
+      "DamageType": 1,
+      "WeaponType": 4,
+      "DamageRoll": "1d8",
+      "Range": 10,
+      "CriticalHitRoll": 20,
+      "CriticalHitMultiplier": 3
+    },
+    {
+      "Name": "Light Crossbow",
+      "DamageType": 1,
+      "WeaponType": 4,
+      "DamageRoll": "1d8",
+      "Range": 8,
+      "CriticalHitRoll": 19,
+      "CriticalHitMultiplier": 2
+    },
+    {
+      "Name": "Heavy Crossbow",
+      "DamageType": 1,
+      "WeaponType": 4,
+      "DamageRoll": "1d10",
+      "Range": 10,
+      "CriticalHitRoll": 19,
+      "CriticalHitMultiplier": 2
+    }
+  ]
+}
