@@ -136,6 +136,7 @@ namespace Magi.UI.Windows
             DrawEquipmentList();
             DrawItemSelector();
             DrawPlayerStats();
+            DrawItemDescription();
             Console.Render(delta);
         }
 
@@ -183,6 +184,34 @@ namespace Magi.UI.Windows
             Console.Print(6 + Console.Width / 2, 25, string.Concat("Dexterity: ", stats.CurrentDexterity));
             Console.Print(6 + Console.Width / 2, 26, string.Concat("Intelligence: ", stats.CurrentIntelligence));
             Console.Print(6 + Console.Width / 2, 27, string.Concat("Vitality: ", stats.CurrentVitality));
+        }
+
+        private void DrawItemDescription()
+        {
+            Console.Print(6 + Console.Width / 2, 4, "Item Description");
+            if (InventoryItems.Any())
+            {
+                var item = InventoryItems[selectedItem];
+                if (item.Entity.Has<Consumable>())
+                {
+                    var consumable = item.Entity.Get<Consumable>();
+                    switch(consumable.ConsumableType)
+                    {
+                        case Constants.ConsumableTypes.Health:
+                            Console.Print(6 + Console.Width / 2, 6, string.Concat("Restores up to ", consumable.ConsumableAmount, "hp"));
+                            break;
+                        case Constants.ConsumableTypes.Mana:
+                            Console.Print(6 + Console.Width / 2, 6, string.Concat("Restores up to ", consumable.ConsumableAmount, "mp"));
+                            break;
+                    }
+                }
+                else if (item.Entity.Has<Weapon>())
+                {
+                    Console.Print(6 + Console.Width / 2, 6, string.Concat("Weapon Damage: ", string.Concat(item.Entity.Get<Weapon>().DamageRoll, " ", item.Entity.Get<Weapon>().DamageType)));
+                    Console.Print(6 + Console.Width / 2, 7, string.Concat("Critical Hit Chance: ", string.Concat((20 - item.Entity.Get<Weapon>().CriticalHitRoll + 1) * 5, "%")));
+                    Console.Print(6 + Console.Width / 2, 8, string.Concat("Range: ", item.Entity.Get<Weapon>().Range > 1 ? item.Entity.Get<Weapon>().Range : "Melee"));
+                }
+            }
         }
 
         private void DrawItemSelector()
