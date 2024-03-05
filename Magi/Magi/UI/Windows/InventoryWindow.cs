@@ -18,7 +18,6 @@ namespace Magi.UI.Windows
         GameWorld World;
         List<EntityReference> InventoryItems;
         int selectedItem = 0;
-        int ownedItems = 0;
         QueryDescription ownedItemsQuery = new QueryDescription().WithAll<Owner>();
         public InventoryWindow(int x, int y, int width, int height, GameWorld world)
             : base(x, y, width, height)
@@ -75,7 +74,6 @@ namespace Magi.UI.Windows
 
         private void UpdateInventoryItems()
         {
-            ownedItems = World.World.CountEntities(in ownedItemsQuery);
             InventoryItems.Clear();
             World.World.Query(in ownedItemsQuery, (Entity entity, ref Owner owner) =>
             {
@@ -148,24 +146,27 @@ namespace Magi.UI.Windows
 
         private void DrawInventoryItems()
         {
+            Console.Print(6, 4, "Backpack Items");
             for (int i = 0; i < InventoryItems.Count; i++)
             {
-                Console.Print(6, 5 + i, string.Concat(1 + i, ": ", InventoryItems[i].Entity.Get<Name>().EntityName));
+                Console.Print(6, 6 + i, string.Concat(1 + i, ": ", InventoryItems[i].Entity.Get<Name>().EntityName));
             }
         }
 
         private void DrawEquipmentList()
         {
-            // var equipment = World.PlayerReference.Entity.Get<CombatEquipment>();
-            // Console.Print(Console.Width / 2 + 5, 5, string.Concat("Weapon: ", equipment.Weapon != EntityReference.Null ? equipment.Weapon.Entity.Get<Name>().EntityName : string.Empty));
-            // Console.Print(Console.Width / 2 + 5, 6, string.Concat("Armor: ", equipment.Armor != EntityReference.Null ? equipment.Armor.Entity.Get<Name>().EntityName : string.Empty));
+            var equipment = World.PlayerReference.Entity.Get<CombatEquipment>();
+            Console.Print(6, 20, "Equipment");
+            Console.Print(6, 22, string.Concat("Main Hand: ", equipment.MainHandReference != EntityReference.Null ? equipment.MainHandReference.Entity.Get<Name>().EntityName : string.Empty));
+            Console.Print(6, 23, string.Concat("Off Hand: ", equipment.OffHandReference != EntityReference.Null && equipment.MainHandReference != equipment.OffHandReference ? equipment.OffHandReference.Entity.Get<Name>().EntityName : string.Empty));
+            Console.Print(6, 24, string.Concat("Armor: ", equipment.ArmorReference != EntityReference.Null ? equipment.ArmorReference.Entity.Get<Name>().EntityName : string.Empty));
         }
 
         private void DrawItemSelector()
         {
             if (InventoryItems.Any())
             {
-                Console.Print(3, selectedItem + 5, "->");
+                Console.Print(3, selectedItem + 6, "->");
             }
         }
     }
