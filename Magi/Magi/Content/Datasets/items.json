@@ -15,6 +15,190 @@
       "GlyphColorGreen": 0,
       "GlyphColorBlue": 255,
       "ItemType": 2
+    },
+    {
+      "Name": "Dagger",
+      "Glyph": 92,
+      "GlyphColorRed": 0,
+      "GlyphColorGreen": 0,
+      "GlyphColorBlue": 255,
+      "ItemType": 3
+    },
+    {
+      "Name": "Light Mace",
+      "Glyph": 216,
+      "GlyphColorRed": 0,
+      "GlyphColorGreen": 0,
+      "GlyphColorBlue": 255,
+      "ItemType": 3
+    },
+    {
+      "Name": "Heavy Mace",
+      "Glyph": 216,
+      "GlyphColorRed": 0,
+      "GlyphColorGreen": 0,
+      "GlyphColorBlue": 255,
+      "ItemType": 3
+    },
+    {
+      "Name": "Quarterstaff",
+      "Glyph": 244,
+      "GlyphColorRed": 0,
+      "GlyphColorGreen": 0,
+      "GlyphColorBlue": 255,
+      "ItemType": 3
+    },
+    {
+      "Name": "Light Hammer",
+      "Glyph": 209,
+      "GlyphColorRed": 0,
+      "GlyphColorGreen": 0,
+      "GlyphColorBlue": 255,
+      "ItemType": 3
+    },
+    {
+      "Name": "Heavy Hammer",
+      "Glyph": 209,
+      "GlyphColorRed": 0,
+      "GlyphColorGreen": 0,
+      "GlyphColorBlue": 255,
+      "ItemType": 3
+    },
+    {
+      "Name": "Warhammer",
+      "Glyph": 209,
+      "GlyphColorRed": 0,
+      "GlyphColorGreen": 0,
+      "GlyphColorBlue": 255,
+      "ItemType": 3
+    },
+    {
+      "Name": "Club",
+      "Glyph": 33,
+      "GlyphColorRed": 0,
+      "GlyphColorGreen": 0,
+      "GlyphColorBlue": 255,
+      "ItemType": 3
+    },
+    {
+      "Name": "Greatclub",
+      "Glyph": 33,
+      "GlyphColorRed": 0,
+      "GlyphColorGreen": 0,
+      "GlyphColorBlue": 255,
+      "ItemType": 3
+    },
+    {
+      "Name": "Handaxe",
+      "Glyph": 213,
+      "GlyphColorRed": 0,
+      "GlyphColorGreen": 0,
+      "GlyphColorBlue": 255,
+      "ItemType": 3
+    },
+    {
+      "Name": "Battleaxe",
+      "Glyph": 213,
+      "GlyphColorRed": 0,
+      "GlyphColorGreen": 0,
+      "GlyphColorBlue": 255,
+      "ItemType": 3
+    },
+    {
+      "Name": "Greataxe",
+      "Glyph": 213,
+      "GlyphColorRed": 0,
+      "GlyphColorGreen": 0,
+      "GlyphColorBlue": 255,
+      "ItemType": 3
+    },
+    {
+      "Name": "Short Sword",
+      "Glyph": 47,
+      "GlyphColorRed": 0,
+      "GlyphColorGreen": 0,
+      "GlyphColorBlue": 255,
+      "ItemType": 3
+    },
+    {
+      "Name": "Long Sword",
+      "Glyph": 92,
+      "GlyphColorRed": 0,
+      "GlyphColorGreen": 0,
+      "GlyphColorBlue": 255,
+      "ItemType": 3
+    },
+    {
+      "Name": "Rapier",
+      "Glyph": 47,
+      "GlyphColorRed": 0,
+      "GlyphColorGreen": 0,
+      "GlyphColorBlue": 255,
+      "ItemType": 3
+    },
+    {
+      "Name": "Scimitar",
+      "Glyph": 92,
+      "GlyphColorRed": 0,
+      "GlyphColorGreen": 0,
+      "GlyphColorBlue": 255,
+      "ItemType": 3
+    },
+    {
+      "Name": "Falchion",
+      "Glyph": 47,
+      "GlyphColorRed": 0,
+      "GlyphColorGreen": 0,
+      "GlyphColorBlue": 255,
+      "ItemType": 3
+    },
+    {
+      "Name": "Greatsword",
+      "Glyph": 47,
+      "GlyphColorRed": 0,
+      "GlyphColorGreen": 0,
+      "GlyphColorBlue": 255,
+      "ItemType": 3
+    },
+    {
+      "Name": "Scythe",
+      "Glyph": 47,
+      "GlyphColorRed": 0,
+      "GlyphColorGreen": 0,
+      "GlyphColorBlue": 255,
+      "ItemType": 3
+    },
+    {
+      "Name": "Short Bow",
+      "Glyph": 41,
+      "GlyphColorRed": 0,
+      "GlyphColorGreen": 0,
+      "GlyphColorBlue": 255,
+      "ItemType": 3
+    },
+    {
+      "Name": "Long Bow",
+      "Glyph": 41,
+      "GlyphColorRed": 0,
+      "GlyphColorGreen": 0,
+      "GlyphColorBlue": 255,
+      "ItemType": 3
+    },
+    {
+      "Name": "Light Crossbow",
+      "Glyph": 125,
+      "GlyphColorRed": 0,
+      "GlyphColorGreen": 0,
+      "GlyphColorBlue": 255,
+      "ItemType": 3
+    },
+    {
+      "Name": "Heavy Crossbow",
+      "Glyph": 125,
+      "GlyphColorRed": 0,
+      "GlyphColorGreen": 0,
+      "GlyphColorBlue": 255,
+      "ItemType": 3
     }
   ]
 }

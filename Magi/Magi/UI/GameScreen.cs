@@ -59,12 +59,16 @@ namespace Magi.UI
             new PlayerSpawner().SpawnPlayer(world, generator.GetPlayerStartingPosition());
             FieldOfView.CalculatePlayerFOV(world);
 
-            var enemyTable = new RandomTable<string>()
-                .Add("Goblin", 1)
-                .Add("Ogre", 1);
-            var itemTable = new RandomTable<string>()
-                .Add("Small Health Potion", 1)
-                .Add("Small Mana Potion", 1);
+            var enemyTable = new RandomTable<string>();
+            foreach (var enemy in EnemySpawner.EnemyContainers)
+            {
+                enemyTable = enemyTable.Add(enemy.Key, 1);
+            }
+            var itemTable = new RandomTable<string>();
+            foreach(var item in ItemSpawner.ItemContainers)
+            {
+                itemTable = itemTable.Add(item.Key, 1);
+            }
 
             generator.SpawnEntitiesForMap(world, enemyTable, itemTable);
         }
