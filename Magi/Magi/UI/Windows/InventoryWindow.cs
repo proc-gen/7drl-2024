@@ -32,10 +32,6 @@ namespace Magi.UI.Windows
             if(!Visible && World.CurrentState == Constants.GameState.ShowInventory)
             {
                 Visible = true;
-            }
-
-            if (World.World.CountEntities(in ownedItemsQuery) != ownedItems)
-            {
                 UpdateInventoryItems();
             }
         }
