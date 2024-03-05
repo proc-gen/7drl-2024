@@ -10,6 +10,8 @@ namespace Magi.ECS.Components
     {
         public int MaxHealth { get; set; }
         public int CurrentHealth { get; set; }
+        public int MaxMana { get; set; }
+        public int CurrentMana { get; set; }
         public int BaseStrength { get; set; }
         public int CurrentStrength { get; set; }
         public int BaseIntelligence { get; set; }

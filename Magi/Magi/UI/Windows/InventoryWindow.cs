@@ -92,35 +92,8 @@ namespace Magi.UI.Windows
 
         private void UseItem(EntityReference item)
         {
-            /*if (item.Entity.Has<Consumable>())
-            {
-                item.Entity.Add(new WantToUseItem());
-            }
-            else
-            {
-                var combatEquipment = World.PlayerRef.Entity.Get<CombatEquipment>();
-                var old = item.Entity.Has<Armor>() ? combatEquipment.Armor : combatEquipment.Weapon;
-                if (old != EntityReference.Null)
-                {
-                    old.Entity.Remove<Equipped>();
-                }
-                item.Entity.Add(new Equipped());
-                if (item.Entity.Has<Armor>())
-                {
-                    combatEquipment.Armor = item;
-                }
-                else
-                {
-                    combatEquipment.Weapon = item;
-                }
+            item.Entity.Add(new WantToUseItem());
 
-                World.PlayerRef.Entity.Set(combatEquipment);
-                var ownerName = item.Entity.Get<Owner>().OwnerReference.Entity.Get<Name>();
-                var itemName = item.Entity.Get<Name>();
-                World.GameLog.Add(string.Concat(ownerName.EntityName, " equipped ", itemName.EntityName));
-            }*/
-
-            UpdateInventoryItems();
             World.StartPlayerTurn(Point.None);
             Visible = false;
         }

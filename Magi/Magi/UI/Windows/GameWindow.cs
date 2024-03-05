@@ -117,6 +117,10 @@ namespace Magi.UI.Windows
                 Color.White,
                 Color.Black
             );
+
+            var stats = world.PlayerReference.Entity.Get<CombatStats>();
+            Console.Print(2, GameSettings.GAME_HEIGHT - 9, string.Concat("Health: ", stats.CurrentHealth, " / ", stats.MaxHealth));
+            Console.Print(2, GameSettings.GAME_HEIGHT - 7, string.Concat("Mana: ", stats.CurrentMana, " / ", stats.MaxMana));
         }
 
         private void RenderGameLog()

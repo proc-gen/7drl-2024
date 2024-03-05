@@ -41,6 +41,8 @@ namespace Magi.Maps.Spawners
                 { 
                     MaxHealth = enemyContainer.Health, 
                     CurrentHealth = enemyContainer.Health,
+                    MaxMana = enemyContainer.Mana,
+                    CurrentMana = enemyContainer.Mana,
                     BaseStrength = enemyContainer.Strength,
                     CurrentStrength = enemyContainer.Strength,
                     BaseIntelligence = enemyContainer.Intelligence,

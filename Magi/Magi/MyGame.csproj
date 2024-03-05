@@ -22,6 +22,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Update="Content\Datasets\consumables.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Update="Content\Datasets\enemies.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
