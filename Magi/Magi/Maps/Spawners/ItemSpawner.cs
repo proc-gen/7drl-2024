@@ -15,6 +15,7 @@ namespace Magi.Maps.Spawners
     {
         public static Dictionary<string, ItemContainer> ItemContainers;
         public static Dictionary<string, ConsumableContainer> ConsumableContainers;
+        public static Dictionary<string, WeaponContainer> WeaponContainers;
         static ItemSpawner()
         {
             string path = Path.Combine(Directory.GetCurrentDirectory(), "Content", "Datasets", "items.json");
@@ -22,6 +23,9 @@ namespace Magi.Maps.Spawners
 
             path = Path.Combine(Directory.GetCurrentDirectory(), "Content", "Datasets", "consumables.json");
             ConsumableContainers = JsonFileManager.LoadDataset<ConsumableContainer>(path);
+            
+            path = Path.Combine(Directory.GetCurrentDirectory(), "Content", "Datasets", "weapons.json");
+            WeaponContainers = JsonFileManager.LoadDataset<WeaponContainer>(path);
         }
 
         public ItemSpawner(RandomTable<string> spawnTable, Random random)
@@ -49,6 +53,9 @@ namespace Magi.Maps.Spawners
                 case Constants.ItemTypes.Consumable:
                     components.AddRange(GetConsumableComponents(key));
                     break;
+                case Constants.ItemTypes.Weapon:
+                    components.AddRange(GetWeaponComponents(key));
+                    break;
             }
 
             var reference = world.World.CreateFromArray(components.ToArray()).Reference();
@@ -65,6 +72,23 @@ namespace Magi.Maps.Spawners
                 ConsumableType = consumableContainer.ConsumableType,
                 ConsumableAmount = consumableContainer.ConsumableAmount
             });
+            return components;
+        }
+
+        private List<object> GetWeaponComponents(string key)
+        {
+            var components = new List<object>();
+            var weaponContainer = WeaponContainers[key];
+            components.Add(new Weapon()
+            {
+                DamageType = weaponContainer.DamageType,
+                WeaponType = weaponContainer.WeaponType,
+                DamageRoll = weaponContainer.DamageRoll,
+                Range = weaponContainer.Range,
+                CriticalHitRoll = weaponContainer.CriticalHitRoll,
+                CriticalHitMultiplier = weaponContainer.CriticalHitMultiplier
+            });
+
             return components;
         }
     }
