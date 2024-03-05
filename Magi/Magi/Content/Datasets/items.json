@@ -191,6 +191,134 @@
       "GlyphColorGreen": 0,
       "GlyphColorBlue": 255,
       "ItemType": 3
+    },
+    {
+      "Name": "Padded Armor",
+      "Glyph": 234,
+      "GlyphColorRed": 0,
+      "GlyphColorGreen": 0,
+      "GlyphColorBlue": 255,
+      "ItemType": 4
+    },
+    {
+      "Name": "Leather Armor",
+      "Glyph": 234,
+      "GlyphColorRed": 0,
+      "GlyphColorGreen": 0,
+      "GlyphColorBlue": 255,
+      "ItemType": 4
+    },
+    {
+      "Name": "Studded Leather Armor",
+      "Glyph": 234,
+      "GlyphColorRed": 0,
+      "GlyphColorGreen": 0,
+      "GlyphColorBlue": 255,
+      "ItemType": 4
+    },
+    {
+      "Name": "Chain Shirt",
+      "Glyph": 234,
+      "GlyphColorRed": 0,
+      "GlyphColorGreen": 0,
+      "GlyphColorBlue": 255,
+      "ItemType": 4
+    },
+    {
+      "Name": "Hide Armor",
+      "Glyph": 234,
+      "GlyphColorRed": 0,
+      "GlyphColorGreen": 0,
+      "GlyphColorBlue": 255,
+      "ItemType": 4
+    },
+    {
+      "Name": "Scail Mail",
+      "Glyph": 234,
+      "GlyphColorRed": 0,
+      "GlyphColorGreen": 0,
+      "GlyphColorBlue": 255,
+      "ItemType": 4
+    },
+    {
+      "Name": "Chainmail",
+      "Glyph": 234,
+      "GlyphColorRed": 0,
+      "GlyphColorGreen": 0,
+      "GlyphColorBlue": 255,
+      "ItemType": 4
+    },
+    {
+      "Name": "Breastplate",
+      "Glyph": 234,
+      "GlyphColorRed": 0,
+      "GlyphColorGreen": 0,
+      "GlyphColorBlue": 255,
+      "ItemType": 4
+    },
+    {
+      "Name": "Splint Mail",
+      "Glyph": 234,
+      "GlyphColorRed": 0,
+      "GlyphColorGreen": 0,
+      "GlyphColorBlue": 255,
+      "ItemType": 4
+    },
+    {
+      "Name": "Banded Mail",
+      "Glyph": 234,
+      "GlyphColorRed": 0,
+      "GlyphColorGreen": 0,
+      "GlyphColorBlue": 255,
+      "ItemType": 4
+    },
+    {
+      "Name": "Half-Plate",
+      "Glyph": 234,
+      "GlyphColorRed": 0,
+      "GlyphColorGreen": 0,
+      "GlyphColorBlue": 255,
+      "ItemType": 4
+    },
+    {
+      "Name": "Full Plate",
+      "Glyph": 234,
+      "GlyphColorRed": 0,
+      "GlyphColorGreen": 0,
+      "GlyphColorBlue": 255,
+      "ItemType": 4
+    },
+    {
+      "Name": "Buckler",
+      "Glyph": 9,
+      "GlyphColorRed": 0,
+      "GlyphColorGreen": 0,
+      "GlyphColorBlue": 255,
+      "ItemType": 4
+    },
+    {
+      "Name": "Small Shield",
+      "Glyph": 233,
+      "GlyphColorRed": 0,
+      "GlyphColorGreen": 0,
+      "GlyphColorBlue": 255,
+      "ItemType": 4
+    },
+    {
+      "Name": "Large Shield",
+      "Glyph": 233,
+      "GlyphColorRed": 0,
+      "GlyphColorGreen": 0,
+      "GlyphColorBlue": 255,
+      "ItemType": 4
+    },
+    {
+      "Name": "Tower Shield",
+      "Glyph": 10,
+      "GlyphColorRed": 0,
+      "GlyphColorGreen": 0,
+      "GlyphColorBlue": 255,
+      "ItemType": 4
     }
   ]
 }

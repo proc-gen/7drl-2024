@@ -1,0 +1,116 @@
+{
+  "data": [
+    {
+      "Name": "Padded Armor",
+      "Armor": 1,
+      "ArmorClass": 1,
+      "ArmorType": 1,
+      "BlockChance": 0
+    },
+    {
+      "Name": "Leather Armor",
+      "Armor": 2,
+      "ArmorClass": 1,
+      "ArmorType": 1,
+      "BlockChance": 0
+    },
+    {
+      "Name": "Studded Leather Armor",
+      "Armor": 3,
+      "ArmorClass": 1,
+      "ArmorType": 1,
+      "BlockChance": 0
+    },
+    {
+      "Name": "Chain Shirt",
+      "Armor": 4,
+      "ArmorClass": 1,
+      "ArmorType": 1,
+      "BlockChance": 0
+    },
+    {
+      "Name": "Hide Armor",
+      "Armor": 3,
+      "ArmorClass": 2,
+      "ArmorType": 1,
+      "BlockChance": 0
+    },
+    {
+      "Name": "Scail Mail",
+      "Armor": 4,
+      "ArmorClass": 2,
+      "ArmorType": 1,
+      "BlockChance": 0
+    },
+    {
+      "Name": "Chainmail",
+      "Armor": 5,
+      "ArmorClass": 2,
+      "ArmorType": 1,
+      "BlockChance": 0
+    },
+    {
+      "Name": "Breastplate",
+      "Armor": 5,
+      "ArmorClass": 2,
+      "ArmorType": 1,
+      "BlockChance": 0
+    },
+    {
+      "Name": "Splint Mail",
+      "Armor": 6,
+      "ArmorClass": 3,
+      "ArmorType": 1,
+      "BlockChance": 0
+    },
+    {
+      "Name": "Banded Mail",
+      "Armor": 6,
+      "ArmorClass": 3,
+      "ArmorType": 1,
+      "BlockChance": 0
+    },
+    {
+      "Name": "Half-Plate",
+      "Armor": 7,
+      "ArmorClass": 3,
+      "ArmorType": 1,
+      "BlockChance": 0
+    },
+    {
+      "Name": "Full Plate",
+      "Armor": 8,
+      "ArmorClass": 3,
+      "ArmorType": 1,
+      "BlockChance": 0
+    },
+    {
+      "Name": "Buckler",
+      "Armor": 1,
+      "ArmorClass": 0,
+      "ArmorType": 2,
+      "BlockChance": 10
+    },
+    {
+      "Name": "Small Shield",
+      "Armor": 2,
+      "ArmorClass": 1,
+      "ArmorType": 2,
+      "BlockChance": 15
+    },
+    {
+      "Name": "Large Shield",
+      "Armor": 3,
+      "ArmorClass": 2,
+      "ArmorType": 2,
+      "BlockChance": 20
+    },
+    {
+      "Name": "Tower Shield",
+      "Armor": 5,
+      "ArmorClass": 3,
+      "ArmorType": 2,
+      "BlockChance": 30
+    }
+  ]
+}

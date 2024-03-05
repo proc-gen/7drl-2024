@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Magi.Containers
+namespace Magi.Containers.DatasetContainers
 {
     public struct WeaponContainer : IContainer
     {
