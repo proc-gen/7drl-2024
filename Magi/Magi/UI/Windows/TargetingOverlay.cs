@@ -17,6 +17,7 @@ namespace Magi.UI.Windows
 
         GameWorld World;
         EntityReference Source;
+        int SourceRange;
         EntityReference Target;
         Point Start;
         Point End;
@@ -25,14 +26,14 @@ namespace Magi.UI.Windows
             : base()
         {
             World = world;
-            Source = Target = EntityReference.Null;
-            Start = End = Point.None;
+            ClearTargetingData();
             Console.Surface.DefaultBackground = new Color(0, 0, 0, 0);
         }
 
         public void SetEntityForTargeting(EntityReference source)
         {
             Source = source;
+            SourceRange = source.Entity.Get<Weapon>().Range;
             Start = World.PlayerReference.Entity.Get<Position>().Point;
             End = Start + new Point(1, 0);
         }
@@ -41,6 +42,7 @@ namespace Magi.UI.Windows
         {
             Source = Target = EntityReference.Null;
             Start = End = Point.None;
+            SourceRange = 0;
         }
 
         public override bool HandleKeyboard(Keyboard keyboard)
@@ -75,7 +77,7 @@ namespace Magi.UI.Windows
             }
             else if (keyboard.IsKeyPressed(Keys.Enter))
             {
-                if (Target != EntityReference.Null)
+                if (!IsPathBlocked() && Target != EntityReference.Null)
                 {
                     World.World.Create(new RangedAttack() { Source = World.PlayerReference, Target = Target });
                     World.StartPlayerTurn(Point.None);
@@ -135,17 +137,49 @@ namespace Magi.UI.Windows
             var lineColor = new Color(TrajectoryColor(), AlphaFactor);
             int minX = Start.X - GameSettings.GAME_WIDTH / 2;
             int minY = Start.Y - GameSettings.GAME_HEIGHT / 2;
-            Console.DrawLine(Start - new Point(minX, minY), End - new Point(minX, minY), (char)219, lineColor);
+            var pointsInLine = FieldOfView.GetPointsInLine(Start, End);
+            foreach ( var point in pointsInLine )
+            {
+                Console.SetGlyph(point.X - minX, point.Y - minY, (char)219, lineColor);
+            }
         }
 
         private Color TrajectoryColor()
         {
-            if (Start == End)
+            if (IsPathBlocked())
             {
                 return Color.Red;
             }
 
             return Target == EntityReference.Null ? Color.Yellow : Color.Green;
+        }
+
+        private bool IsPathBlocked()
+        {
+            bool retVal = false;
+            if(Start == End)
+            {
+                retVal = true;
+            }
+            else if(Point.EuclideanDistanceMagnitude(Start, End) > (SourceRange * SourceRange))
+            {
+                retVal = true;
+            }
+            else
+            {
+                var pointsInLine = FieldOfView.GetPointsInLine(Start, End);
+                foreach(var point in pointsInLine) 
+                {
+                    var tile = World.Map.GetTile(point);
+                    if(tile.BaseTileType == Constants.TileTypes.Wall) 
+                    {
+                        retVal = true;
+                        break;
+                    }
+                }
+            }
+
+            return retVal;
         }
     }
 }

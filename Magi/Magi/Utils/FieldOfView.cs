@@ -93,7 +93,7 @@ namespace Magi.Utils
             return borderCells;
         }
 
-        private static HashSet<Point> GetPointsInLine(Point origin, Point destination)
+        public static HashSet<Point> GetPointsInLine(Point origin, Point destination)
         {
             HashSet<Point> linePoints = new HashSet<Point>() { origin };
 
