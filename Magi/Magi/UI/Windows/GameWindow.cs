@@ -16,10 +16,12 @@ namespace Magi.UI.Windows
     public class GameWindow : Window
     {
         GameWorld world;
-        public GameWindow(GameWorld world) 
+        TargetingOverlay targetingOverlay;
+        public GameWindow(GameWorld world, TargetingOverlay targetingOverlay) 
             : base()
         {
             this.world = world;
+            this.targetingOverlay = targetingOverlay;
             Visible = true;
         }
 
@@ -58,6 +60,16 @@ namespace Magi.UI.Windows
             else if (keyboard.IsKeyPressed(Keys.G))
             {
                 TryPickUpItem();
+            }
+            else if (keyboard.IsKeyPressed(Keys.A))
+            {
+                var weapon = world.PlayerReference.Entity.Get<CombatEquipment>().MainHandReference;
+                if (weapon != EntityReference.Null
+                    && weapon.Entity.Get<Weapon>().Range > 1)
+                {
+                    targetingOverlay.SetEntityForTargeting(weapon);
+                    world.CurrentState = Constants.GameState.Targeting;
+                }
             }
 
             return retVal;

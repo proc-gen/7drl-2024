@@ -67,7 +67,7 @@ namespace Magi.UI
             var itemTable = new RandomTable<string>();
             foreach(var item in ItemSpawner.ItemContainers)
             {
-                itemTable = itemTable.Add(item.Key, 1);
+                itemTable = itemTable.Add(item.Key, item.Key.Contains("Bow") ? 99 : 1);
             }
 
             generator.SpawnEntitiesForMap(world, enemyTable, itemTable);
@@ -92,21 +92,25 @@ namespace Magi.UI
                 new UseItemSystem(world),
                 new EntityActSystem(world),
                 new MeleeAttackSystem(world),
+                new RangedAttackSystem(world),
                 new DeathSystem(world),
             };
         }
 
         private void InitWindows()
         {
+            var targetingOverlay = new TargetingOverlay(world);
+
             windows = new List<Window>()
             {
-                new GameWindow(world),
+                new GameWindow(world, targetingOverlay),
                 new InventoryWindow(
                     GameSettings.GAME_WIDTH / 4,
                     GameSettings.GAME_HEIGHT / 4 - 5,
                     GameSettings.GAME_WIDTH / 2,
                     GameSettings.GAME_HEIGHT / 2,
                     world),
+                targetingOverlay
             };
 
             foreach(var window in windows)
