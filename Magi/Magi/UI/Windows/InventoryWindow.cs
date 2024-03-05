@@ -135,6 +135,7 @@ namespace Magi.UI.Windows
             DrawInventoryItems();
             DrawEquipmentList();
             DrawItemSelector();
+            DrawPlayerStats();
             Console.Render(delta);
         }
 
@@ -147,19 +148,41 @@ namespace Magi.UI.Windows
         private void DrawInventoryItems()
         {
             Console.Print(6, 4, "Backpack Items");
-            for (int i = 0; i < InventoryItems.Count; i++)
+            for (int i = 0; i < 12; i++)
             {
-                Console.Print(6, 6 + i, string.Concat(1 + i, ": ", InventoryItems[i].Entity.Get<Name>().EntityName));
+                    Console.Print(6, 6 + i, string.Concat(1 + i, ": ", i < InventoryItems.Count ? InventoryItems[i].Entity.Get<Name>().EntityName : string.Empty));
+                
             }
         }
 
         private void DrawEquipmentList()
         {
             var equipment = World.PlayerReference.Entity.Get<CombatEquipment>();
-            Console.Print(6, 20, "Equipment");
-            Console.Print(6, 22, string.Concat("Main Hand: ", equipment.MainHandReference != EntityReference.Null ? equipment.MainHandReference.Entity.Get<Name>().EntityName : string.Empty));
-            Console.Print(6, 23, string.Concat("Off Hand: ", equipment.OffHandReference != EntityReference.Null && equipment.MainHandReference != equipment.OffHandReference ? equipment.OffHandReference.Entity.Get<Name>().EntityName : string.Empty));
-            Console.Print(6, 24, string.Concat("Armor: ", equipment.ArmorReference != EntityReference.Null ? equipment.ArmorReference.Entity.Get<Name>().EntityName : string.Empty));
+            var weapon = equipment.MainHandReference;
+
+            Console.Print(6, 19, "Equipment");
+            Console.Print(6, 21, string.Concat("Main Hand: ", equipment.MainHandReference != EntityReference.Null ? equipment.MainHandReference.Entity.Get<Name>().EntityName : string.Empty));
+            Console.Print(6, 22, string.Concat("Off Hand: ", equipment.OffHandReference != EntityReference.Null && equipment.MainHandReference != equipment.OffHandReference ? equipment.OffHandReference.Entity.Get<Name>().EntityName : string.Empty));
+            Console.Print(6, 23, string.Concat("Armor: ", equipment.ArmorReference != EntityReference.Null ? equipment.ArmorReference.Entity.Get<Name>().EntityName : string.Empty));
+
+            Console.Print(6, 25, string.Concat("Weapon Damage: ", weapon != EntityReference.Null ? weapon.Entity.Get<Weapon>().DamageRoll : "1d3"));
+            Console.Print(6, 26, string.Concat("Critical Hit Chance: ", weapon != EntityReference.Null ? string.Concat((20 - weapon.Entity.Get<Weapon>().CriticalHitRoll) * 5, "%") : "5%"));
+            Console.Print(6, 27, string.Concat("AC: ", 0));
+        }
+
+        private void DrawPlayerStats()
+        {
+            var stats = World.PlayerReference.Entity.Get<CombatStats>();
+
+            Console.Print(6 + Console.Width / 2, 19, "Player Stats");
+
+            Console.Print(6 + Console.Width / 2, 21, string.Concat("Level: ", stats.Level));
+            Console.Print(6 + Console.Width / 2, 22, string.Concat("Experience: ", stats.Experience, "/", stats.ExperienceForNextLevel));
+
+            Console.Print(6 + Console.Width / 2, 24, string.Concat("Strength: ", stats.CurrentStrength));
+            Console.Print(6 + Console.Width / 2, 25, string.Concat("Dexterity: ", stats.CurrentDexterity));
+            Console.Print(6 + Console.Width / 2, 26, string.Concat("Intelligence: ", stats.CurrentIntelligence));
+            Console.Print(6 + Console.Width / 2, 27, string.Concat("Vitality: ", stats.CurrentVitality));
         }
 
         private void DrawItemSelector()
