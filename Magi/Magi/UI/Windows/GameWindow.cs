@@ -1,5 +1,6 @@
 ﻿using Arch.Core;
 using Arch.Core.Extensions;
+using Magi.Containers;
 using Magi.ECS.Components;
 using Magi.UI.Helpers;
 using Magi.Utils;
@@ -54,6 +55,10 @@ namespace Magi.UI.Windows
             {
                 world.CurrentState = Constants.GameState.ShowInventory;
             }
+            else if (keyboard.IsKeyPressed(Keys.G))
+            {
+                TryPickUpItem();
+            }
 
             return retVal;
         }
@@ -63,6 +68,29 @@ namespace Magi.UI.Windows
             world.StartPlayerTurn(direction == Direction.None
                                     ? Point.None
                                     : new Point(direction.DeltaX, direction.DeltaY));
+        }
+
+        private void TryPickUpItem()
+        {
+            var name = world.PlayerReference.Entity.Get<Name>();
+            var position = world.PlayerReference.Entity.Get<Position>();
+            var entitiesAtLocation = world.PhysicsWorld.GetEntitiesAtLocation(position.Point);
+            if (entitiesAtLocation != null && entitiesAtLocation.Any(a => a.Entity.Has<Item>()))
+            {
+                var item = entitiesAtLocation.Where(a => a.Entity.Has<Item>()).FirstOrDefault();
+                string itemName = item.Entity.Get<Name>().EntityName;
+                item.Entity.Add(new Owner() { OwnerReference = world.PlayerReference });
+                item.Entity.Remove<Position>();
+                world.PhysicsWorld.RemoveEntity(item, position.Point);
+
+                world.LogItems.Add(new LogItem(string.Concat(name.EntityName, " picked up ", itemName)));
+            }
+            else
+            {
+                world.LogItems.Add(new LogItem("There's nothing here"));
+            }
+
+            world.StartPlayerTurn(Point.None);
         }
 
         public override void Update(TimeSpan delta)
