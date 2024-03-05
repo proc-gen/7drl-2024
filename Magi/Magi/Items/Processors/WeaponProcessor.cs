@@ -1,5 +1,6 @@
 ﻿using Arch.Core;
 using Arch.Core.Extensions;
+using Magi.Constants;
 using Magi.Containers;
 using Magi.ECS.Components;
 using Magi.Utils;
@@ -55,6 +56,46 @@ namespace Magi.Items.Processors
         {
             return weaponType == Constants.WeaponTypes.TwoHandedMelee
                     || weaponType == Constants.WeaponTypes.TwoHandedRanged;
+        }
+
+        public static DamageCalculation CalculateDamage(Random random, EntityReference weaponReference, bool melee)
+        {
+            int damage = 0;
+            DamageTypes damageType = DamageTypes.Bludgeoning;
+            bool criticalHit = false;
+
+            if(weaponReference != EntityReference.Null)
+            {
+                var weapon = weaponReference.Entity.Get<Weapon>();
+                if((melee && weapon.Range == 1) || (!melee && weapon.Range > 1))
+                {
+                    damageType = weapon.DamageType;
+                    
+                    var damageEntries = weapon.DamageRoll.Split('d');
+                    int numDice = int.Parse(damageEntries[0]);
+                    int numSides = int.Parse(damageEntries[1]);
+
+                    for(int i = 0; i < numDice; i++)
+                    {
+                        damage += random.Next(0, numSides) + 1;
+                    }
+
+                    criticalHit = random.Next(100) < ((20 - weapon.CriticalHitRoll + 1) * 5);
+                    damage *= criticalHit ? weapon.CriticalHitMultiplier : 1;
+                }
+            }
+            else
+            {
+                criticalHit = random.Next(100) < 5;
+                damage = (random.Next(0, 3) + 1) * (criticalHit ? 2 : 1);
+            }
+
+            return new DamageCalculation()
+            {
+                Damage = damage,
+                DamageType = damageType,
+                CriticalHit = criticalHit,
+            };
         }
     }
 }

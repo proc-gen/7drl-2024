@@ -2,6 +2,7 @@
 using Arch.Core.Extensions;
 using Magi.Containers;
 using Magi.ECS.Components;
+using Magi.Items.Processors;
 using Magi.Utils;
 using System;
 using System.Collections.Generic;
@@ -14,7 +15,7 @@ namespace Magi.ECS.Systems.UpdateSystems
     public class MeleeAttackSystem : ArchSystem, IUpdateSystem
     {
         QueryDescription meleeAttacksQuery = new QueryDescription().WithAll<MeleeAttack>();
-
+        Random random = new Random();
         public MeleeAttackSystem(GameWorld world)
             : base(world)
         {
@@ -26,10 +27,12 @@ namespace Magi.ECS.Systems.UpdateSystems
             {
                 var sourceName = meleeAttack.Source.Entity.Get<Name>();
                 var sourceStats = meleeAttack.Source.Entity.Get<CombatStats>();
+                var sourceEquipment = meleeAttack.Source.Entity.Get<CombatEquipment>();
                 var targetName = meleeAttack.Target.Entity.Get<Name>();
                 var targetStats = meleeAttack.Target.Entity.Get<CombatStats>();
+                var targetEquipment = meleeAttack.Target.Entity.Get<CombatEquipment>();
 
-                var damage = CalculateDamage(sourceStats, targetStats);
+                var damage = CalculateDamage(sourceStats, sourceEquipment, targetStats, targetEquipment);
                 if (damage > 0)
                 {
                     targetStats.CurrentHealth = Math.Max(0, targetStats.CurrentHealth - damage);
@@ -57,10 +60,13 @@ namespace Magi.ECS.Systems.UpdateSystems
             World.World.Destroy(in meleeAttacksQuery);
         }
 
-        private int CalculateDamage(CombatStats sourceStats, CombatStats targetStats)
+        private int CalculateDamage(CombatStats sourceStats, CombatEquipment sourceEquipment, CombatStats targetStats, CombatEquipment targetEquipment)
         {
-            int damage = (int)((sourceStats.CurrentStrength - 10f) / 2f + 1f);
+            int damage = Math.Max(0, (int)((sourceStats.CurrentStrength - 10f) / 2f + 1f));
             int damageReduction = 0; //targetStats.CurrentArmor;
+
+            var weaponDamage = WeaponProcessor.CalculateDamage(random, sourceEquipment.MainHandReference, true);
+            damage += weaponDamage.Damage;
 
             return damage - damageReduction;
         }
