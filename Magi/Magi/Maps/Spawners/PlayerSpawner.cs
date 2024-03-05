@@ -21,6 +21,8 @@ namespace Magi.Maps.Spawners
                 { 
                     MaxHealth = 10, 
                     CurrentHealth = 10,
+                    MaxMana = 30,
+                    CurrentMana = 30,
                     BaseStrength = 10,
                     CurrentStrength = 10,
                     BaseIntelligence = 10,

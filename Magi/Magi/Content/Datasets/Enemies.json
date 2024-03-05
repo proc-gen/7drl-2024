@@ -7,7 +7,12 @@
       "GlyphColorRed": 192,
       "GlyphColorGreen": 0,
       "GlyphColorBlue": 0,
-      "Health": 1
+      "Health": 1,
+      "Mana": 0,
+      "Strength": 5,
+      "Intelligence": 5,
+      "Vitality": 5,
+      "Dexterity": 5
     },
     {
       "Name": "Ogre",
@@ -16,7 +21,12 @@
       "GlyphColorRed": 192,
       "GlyphColorGreen": 0,
       "GlyphColorBlue": 0,
-      "Health": 1
+      "Health": 1,
+      "Mana": 0,
+      "Strength": 10,
+      "Intelligence": 5,
+      "Vitality": 10,
+      "Dexterity": 5
     }
   ]
 }

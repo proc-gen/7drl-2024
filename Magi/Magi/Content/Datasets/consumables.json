@@ -1,0 +1,14 @@
+{
+  "data": [
+    {
+      "Name": "Small Health Potion",
+      "ConsumableType": 1,
+      "ConsumableAmount": 10
+    },
+    {
+      "Name": "Small Mana Potion",
+      "ConsumableType": 2,
+      "ConsumableAmount": 10
+    }
+  ]
+}

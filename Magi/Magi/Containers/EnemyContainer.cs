@@ -15,6 +15,7 @@ namespace Magi.Containers
         public int GlyphColorGreen { get; set; }
         public int GlyphColorBlue { get; set; }
         public int Health { get; set; }
+        public int Mana { get; set; }
         public int Strength { get; set; }
         public int Intelligence { get; set; }
         public int Vitality { get; set; }
