@@ -13,7 +13,7 @@ namespace Magi.Items.Processors
 {
     public static class ConsumableProcessor
     {
-        public static bool Process(GameWorld world, EntityReference entityToProcess)
+        public static bool Consume(GameWorld world, EntityReference entityToProcess)
         {
             bool consumed = false;
 
