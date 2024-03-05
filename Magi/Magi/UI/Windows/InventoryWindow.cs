@@ -150,8 +150,7 @@ namespace Magi.UI.Windows
             Console.Print(6, 4, "Backpack Items");
             for (int i = 0; i < 12; i++)
             {
-                    Console.Print(6, 6 + i, string.Concat(1 + i, ": ", i < InventoryItems.Count ? InventoryItems[i].Entity.Get<Name>().EntityName : string.Empty));
-                
+                Console.Print(6, 6 + i, string.Concat(1 + i, ": ", i < InventoryItems.Count ? InventoryItems[i].Entity.Get<Name>().EntityName : string.Empty));
             }
         }
 
@@ -165,9 +164,10 @@ namespace Magi.UI.Windows
             Console.Print(6, 22, string.Concat("Off Hand: ", equipment.OffHandReference != EntityReference.Null && equipment.MainHandReference != equipment.OffHandReference ? equipment.OffHandReference.Entity.Get<Name>().EntityName : string.Empty));
             Console.Print(6, 23, string.Concat("Armor: ", equipment.ArmorReference != EntityReference.Null ? equipment.ArmorReference.Entity.Get<Name>().EntityName : string.Empty));
 
-            Console.Print(6, 25, string.Concat("Weapon Damage: ", weapon != EntityReference.Null ? weapon.Entity.Get<Weapon>().DamageRoll : "1d3"));
-            Console.Print(6, 26, string.Concat("Critical Hit Chance: ", weapon != EntityReference.Null ? string.Concat((20 - weapon.Entity.Get<Weapon>().CriticalHitRoll) * 5, "%") : "5%"));
-            Console.Print(6, 27, string.Concat("AC: ", 0));
+            Console.Print(6, 25, string.Concat("Weapon Damage: ", weapon != EntityReference.Null ? string.Concat(weapon.Entity.Get<Weapon>().DamageRoll, " ", weapon.Entity.Get<Weapon>().DamageType) : "1d3 Bludgeoning"));
+            Console.Print(6, 26, string.Concat("Critical Hit Chance: ", weapon != EntityReference.Null ? string.Concat((20 - weapon.Entity.Get<Weapon>().CriticalHitRoll + 1) * 5, "%") : "5%"));
+            Console.Print(6, 27, string.Concat("Range: ", weapon != EntityReference.Null && weapon.Entity.Get<Weapon>().Range > 1 ? weapon.Entity.Get<Weapon>().Range : "Melee"));
+            Console.Print(6, 28, string.Concat("AC: ", 0));
         }
 
         private void DrawPlayerStats()
