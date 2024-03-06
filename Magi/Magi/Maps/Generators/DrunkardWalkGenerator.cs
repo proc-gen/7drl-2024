@@ -9,125 +9,88 @@ using System.Threading.Tasks;
 
 namespace Magi.Maps.Generators
 {
-    public class CellularAutomataGenerator : Generator
+    public class DrunkardWalkGenerator : Generator
     {
-        Map MapA, MapB;
-        public CellularAutomataGenerator(int width, int height) 
+        public DrunkardWalkGenerator(int width, int height) 
             : base(width, height)
         {
-            MapA = new Map(width, height);
-            MapB = new Map(width, height);
         }
 
         public override void Generate()
         {
-            SetInitialState();
-
-            for (int i = 0; i < 15; i++)
-            {
-                RunIteration(i);
-            }
-
-            Map = MapA;
-
             for (int i = 0; i < Map.Width; i++)
             {
                 for (int j = 0; j < Map.Height; j++)
                 {
-                    if (i == 0 || j == 0 || i == (MapA.Width - 1) || j == (MapA.Height - 1))
-                    {
-                        Map.SetTile(i, j, Wall);
-                    }
+                    Map.SetTile(i, j, Wall);
                 }
             }
-        }
 
-        private void SetInitialState()
-        {
-            for (int i = 0; i < MapA.Width; i++)
+            Point start = new Point(Map.Width / 2, Map.Height / 2);
+            SetFloor(start.X, start.Y);
+
+            int totalTiles = Map.Width * Map.Height,
+                desiredTiles = Map.Width * Map.Height / 2,
+                floorTiles = 1;
+
+            while (floorTiles < desiredTiles)
             {
-                for (int j = 0; j < MapA.Height; j++)
+                int drunkX = start.X,
+                    drunkY = start.Y,
+                    drunkLife = 400;
+
+                while(drunkLife > 0)
                 {
-                    if (i == 0 || j == 0 || i == (MapA.Width - 1) || j == (MapA.Height - 1))
+                    var tile = Map.GetTile(drunkX, drunkY);
+                    if(tile.BaseTileType == Constants.TileTypes.Wall)
                     {
-                        MapA.SetTile(i, j, Wall);
+                        floorTiles++;
                     }
-                    else
+                    SetFloor(drunkX, drunkY);
+
+                    int direction = Random.Next(4);
+                    switch (direction)
                     {
-                        if (Random.Next(100) > 55)
-                        {
-                            SetFloor(MapA, i, j);
-                        }
-                        else
-                        {
-                            MapA.SetTile(i, j, Wall);
-                        }
+                        case 0:
+                            if(drunkX > 2)
+                            {
+                                drunkX--;
+                            }
+                            break;
+                        case 1:
+                            if(drunkX < Map.Width - 2)
+                            {
+                                drunkX++;
+                            }
+                            break;
+                        case 2:
+                            if (drunkY > 2)
+                            {
+                                drunkY--;
+                            }
+                            break;
+                        case 3:
+                            if (drunkY < Map.Height - 2)
+                            {
+                                drunkY++;
+                            }
+                            break;
                     }
+
+                    drunkLife--;
                 }
             }
         }
 
-        private void RunIteration(int iterationNumber)
+        private void SetFloor(int i, int j)
         {
-            var currentMap = iterationNumber % 2 == 0 ? MapA : MapB;
-            var nextMap = iterationNumber % 2 == 0 ? MapB : MapA;
-
-            for (int i = 0; i < currentMap.Width; i++)
-            {
-                for (int j = 0; j < currentMap.Height; j++)
-                {
-                    int numNeighbors = GetNumNeighbors(currentMap, i, j);
-                    if(numNeighbors > 4 || numNeighbors == 0)
-                    {
-                        nextMap.SetTile(i, j, Wall);
-                    }
-                    else
-                    {
-                        SetFloor(nextMap, i, j);
-                    }
-                }
-            }
-        }
-
-        private int GetNumNeighbors(Map map, int i, int j)
-        {
-            int neighbors = 0;
-
-            for (int x = -1; x <= 1; x++)
-            {
-                for (int y = -1; y <= 1; y++)
-                {
-                    if (x == 0 && y == 0)
-                    {
-                    }
-                    else if (i + x >= 0
-                        && i + x < map.Width
-                        && j + y >= 0
-                        && j + y < map.Height
-                    )
-                    {
-                        neighbors += (map.GetTile(i + x, j + y).BaseTileType == Constants.TileTypes.Wall) ? 1 : 0;
-                    }
-                    else
-                    {
-                        neighbors++;
-                    }
-                }
-            }
-
-            
-            return neighbors;
-        }
-
-        private void SetFloor(Map map, int i, int j)
-        {
-            map.SetTile(i, j, i % 2 == j % 2 ? FloorA : FloorB);
+            Map.SetTile(i, j, i % 2 == j % 2 ? FloorA : FloorB);
         }
 
         public override Point GetPlayerStartingPosition()
         {
             var startingPoint = new Point(Map.Width / 2, Map.Height / 2);
-            while(Map.GetTile(startingPoint).BaseTileType == Constants.TileTypes.Wall)
+            while (Map.GetTile(startingPoint).BaseTileType == Constants.TileTypes.Wall)
             {
                 startingPoint = startingPoint.Translate(-1, 0);
             }
@@ -145,9 +108,9 @@ namespace Magi.Maps.Generators
             int width = Map.Width / 10;
             int height = Map.Height / 10;
 
-            for(int i = 0; i < Map.Width - width; i += width)
+            for (int i = 0; i < Map.Width - width; i += width)
             {
-                for(int j = 0; j < Map.Height - height; j += height)
+                for (int j = 0; j < Map.Height - height; j += height)
                 {
                     rooms.Add(new Rectangle(i, j, width, height));
                 }
@@ -212,7 +175,7 @@ namespace Magi.Maps.Generators
                             distance = newDistance;
                             exit = end;
                         }
-                        else if(newDistance == -1 && start.Point == end)
+                        else if (newDistance == -1 && start.Point == end)
                         {
                             Map.SetTile(i, j, Wall);
                         }

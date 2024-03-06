@@ -44,7 +44,8 @@ namespace Magi.UI
                 .Add("RoomsAndCorridors", 1)
                 .Add("BspRoom", 1)
                 .Add("BspInterior", 1)
-                .Add("CellularAutomata", 1);
+                .Add("CellularAutomata", 1)
+                .Add("DrunkardWalk", 1);
             Random = new Random();
 
             if(loadGame)
@@ -127,6 +128,8 @@ namespace Magi.UI
                     return new BspInteriorGenerator(GameSettings.GAME_WIDTH, GameSettings .GAME_HEIGHT);
                 case "CellularAutomata":
                     return new CellularAutomataGenerator(GameSettings.GAME_WIDTH, GameSettings.GAME_HEIGHT);
+                case "DrunkardWalk":
+                    return new DrunkardWalkGenerator(GameSettings.GAME_WIDTH, GameSettings.GAME_HEIGHT);
                 case "Random":
                 default:
                     return new RandomGenerator(GameSettings.GAME_WIDTH, GameSettings.GAME_HEIGHT);
