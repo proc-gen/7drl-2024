@@ -30,12 +30,21 @@ namespace Magi.UI
         List<IUpdateSystem> updateSystems;
         List<Window> windows;
 
+        RandomTable<string> GeneratorTable;
+        Random Random;
         public GameScreen(RootScreen rootScreen, bool loadGame)
         {
             RootScreen = rootScreen;
             screen = new ScreenSurface(GameSettings.GAME_WIDTH, GameSettings.GAME_HEIGHT);
 
             Children.Add(screen);
+
+            GeneratorTable = new RandomTable<string>()
+                .Add("Random", 1)
+                .Add("RoomsAndCorridors", 1)
+                .Add("BspRoom", 1)
+                .Add("BspInterior", 1);
+            Random = new Random();
 
             if(loadGame)
             {
@@ -66,7 +75,7 @@ namespace Magi.UI
                 world.RemoveAllNonPlayerOwnedEntities();
             }
 
-            var generator = new BspInteriorGenerator(GameSettings.GAME_WIDTH, GameSettings.GAME_HEIGHT);
+            var generator = GetGenerator();
             generator.Generate();
 
             world.Map = generator.Map;
@@ -102,6 +111,23 @@ namespace Magi.UI
             generator.SpawnExitForMap(world);
 
             world.CurrentState = GameState.AwaitingPlayerInput;
+        }
+
+        private Generator GetGenerator()
+        {
+            var key = GeneratorTable.Roll(Random);
+            switch(key)
+            {
+                case "RoomsAndCorridors":
+                    return new RoomsAndCorridorsGenerator(GameSettings.GAME_WIDTH, GameSettings.GAME_HEIGHT);
+                case "BspRoom":
+                    return new BspRoomGenerator(GameSettings.GAME_WIDTH, GameSettings.GAME_HEIGHT);
+                case "BspInterior":
+                    return new BspInteriorGenerator(GameSettings.GAME_WIDTH, GameSettings .GAME_HEIGHT);
+                case "Random":
+                default:
+                    return new RandomGenerator(GameSettings.GAME_WIDTH, GameSettings.GAME_HEIGHT);
+            }
         }
 
         private void LoadGame()
