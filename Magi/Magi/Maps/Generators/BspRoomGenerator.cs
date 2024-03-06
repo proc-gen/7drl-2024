@@ -1,5 +1,4 @@
-﻿using CommunityToolkit.HighPerformance.Buffers;
-using Magi.Maps.Spawners;
+﻿using Magi.Maps.Spawners;
 using Magi.Utils;
 using System;
 using System.Collections.Generic;
@@ -9,11 +8,10 @@ using System.Threading.Tasks;
 
 namespace Magi.Maps.Generators
 {
-    public class RandomGenerator : Generator
+    public class BspRoomGenerator : Generator
     {
         List<Rectangle> Rooms { get; set; }
-
-        public RandomGenerator(int width, int height)
+        public BspRoomGenerator(int width, int height) 
             : base(width, height)
         {
             Rooms = new List<Rectangle>();
@@ -21,51 +19,26 @@ namespace Magi.Maps.Generators
 
         public override void Generate()
         {
-            for (int i = 0; i < Map.Width; i++)
-            {
-                for (int j = 0; j < Map.Height; j++)
-                {
-                    if (i == 0 || j == 0 || i == (Map.Width - 1) || j == (Map.Height - 1))
-                    {
-                        Map.SetTile(i, j, Wall);
-                    }
-                    else
-                    {
-                        Map.SetTile(i, j, i % 2 == j % 2 ? FloorA : FloorB);
-                    }
-                }
-            }
-
-            Rooms.Add(new Rectangle(0, 0, Map.Width, Map.Height));
-
-            for (int i = 0; i < 400; i++)
-            {
-                int x = Random.Next(1, Map.Width - 1);
-                int y = Random.Next(1, Map.Height - 1);
-                if (x != Map.Width / 2 && y != Map.Height / 2)
-                {
-                    Map.SetTile(x, y, Wall);
-                }
-            }
 
         }
-
         public override Point GetPlayerStartingPosition()
         {
             return Rooms.First().Center;
-        }
-
-        public override void SpawnExitForMap(GameWorld world)
-        {
-            SpawnExit(world, Rooms.Last().Center);
         }
 
         public override void SpawnEntitiesForMap(GameWorld world, RandomTable<string> enemySpawnTable, RandomTable<string> itemSpawnTable)
         {
             EnemySpawner enemySpawner = new EnemySpawner(enemySpawnTable, Random);
             ItemSpawner itemSpawner = new ItemSpawner(itemSpawnTable, Random);
-            var room = Rooms.First();
 
+            foreach (var room in Rooms)
+            {
+                SpawnEntitiesForRoom(world, enemySpawner, itemSpawner, room);
+            }
+        }
+
+        private void SpawnEntitiesForRoom(GameWorld world, EnemySpawner enemySpawner, ItemSpawner itemSpawner, Rectangle room)
+        {
             int numSpawns = Random.Next(0, 4);
             HashSet<Point> enemyLocations = new HashSet<Point>();
             HashSet<Point> itemLocations = new HashSet<Point>();
@@ -88,6 +61,11 @@ namespace Magi.Maps.Generators
 
             enemySpawner.SpawnEntitiesForPoints(world, enemyLocations);
             itemSpawner.SpawnEntitiesForPoints(world, itemLocations);
+        }
+
+        public override void SpawnExitForMap(GameWorld world)
+        {
+            SpawnExit(world, Rooms.Last().Center);
         }
     }
 }

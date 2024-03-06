@@ -11,6 +11,22 @@ namespace Magi.Maps.Generators
 {
     public abstract class Generator
     {
+        public static Tile Wall = new Tile()
+        {
+            BaseTileType = Constants.TileTypes.Wall,
+            BackgroundColor = new Color(0f, 0f, .5f)
+        };
+        public static Tile FloorA = new Tile()
+        {
+            BaseTileType = Constants.TileTypes.Floor,
+            BackgroundColor = Color.LightGray
+        };
+        public static Tile FloorB = new Tile()
+        {
+            BaseTileType = Constants.TileTypes.Floor,
+            BackgroundColor = Color.WhiteSmoke
+        };
+
         public Map Map { get; protected set; }
         protected Random Random;
         public Generator(int width, int height)
