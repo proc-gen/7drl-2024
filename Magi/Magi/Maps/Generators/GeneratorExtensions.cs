@@ -34,5 +34,19 @@ namespace Magi.Maps.Generators
                 generator.Map.SetTile(x, j, x % 2 == j % 2 ? Generator.FloorA : Generator.FloorB);
             }
         }
+
+        public static void ApplyCorridor(this Generator generator, int x1, int y1, int x2, int y2)
+        {
+            if(Math.Abs(x1 - x2) > Math.Abs(y1 - y2))
+            {
+                ApplyHorizontalTunnel(generator, x1, x2, y1);
+                ApplyVerticalTunnel(generator, y1, y2, x2);
+            }
+            else
+            {
+                ApplyVerticalTunnel(generator, y1, y2, x1);
+                ApplyHorizontalTunnel(generator, x1, x2, y2);
+            }
+        }
     }
 }
