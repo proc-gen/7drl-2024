@@ -66,7 +66,7 @@ namespace Magi.Maps.Generators
             ItemSpawner itemSpawner = new ItemSpawner(itemSpawnTable, Random);
             var room = Rooms.First();
 
-            int numSpawns = Random.Next(0, 4);
+            int numSpawns = Random.Next(0, Map.Width * Map.Height / 20);
             HashSet<Point> enemyLocations = new HashSet<Point>();
             HashSet<Point> itemLocations = new HashSet<Point>();
 
