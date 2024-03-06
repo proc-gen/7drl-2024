@@ -50,7 +50,8 @@ namespace Magi.Maps.Spawners
                     BaseVitality = enemyContainer.Vitality,
                     CurrentVitality = enemyContainer.Vitality,
                     BaseDexterity = enemyContainer.Dexterity,
-                    CurrentDexterity = enemyContainer.Dexterity
+                    CurrentDexterity = enemyContainer.Dexterity,
+                    Experience = enemyContainer.Experience,
                 },
                 new CombatEquipment()
             ).Reference();

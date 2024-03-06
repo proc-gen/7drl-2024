@@ -20,5 +20,9 @@ namespace Magi.Containers.DatasetContainers
         public int Intelligence { get; set; }
         public int Vitality { get; set; }
         public int Dexterity { get; set; }
+        public string Mainhand { get; set; }
+        public string Offhand { get; set; }
+        public string Armor { get; set; }
+        public int Experience { get; set; }
     }
 }

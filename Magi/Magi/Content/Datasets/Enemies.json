@@ -12,7 +12,11 @@
       "Strength": 5,
       "Intelligence": 5,
       "Vitality": 5,
-      "Dexterity": 5
+      "Dexterity": 5,
+      "Mainhand": "",
+      "Offhand": "",
+      "Armor": "",
+      "Experience": 1
     },
     {
       "Name": "Ogre",
@@ -26,7 +30,11 @@
       "Strength": 10,
       "Intelligence": 5,
       "Vitality": 10,
-      "Dexterity": 5
+      "Dexterity": 5,
+      "Mainhand": "",
+      "Offhand": "",
+      "Armor": "",
+      "Experience": 5
     }
   ]
 }
