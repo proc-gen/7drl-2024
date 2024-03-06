@@ -1,5 +1,5 @@
 ﻿using Arch.Core.Extensions;
-using Magi.Containers;
+using Magi.Containers.DatasetContainers;
 using Magi.ECS.Components;
 using Magi.ECS.Helpers;
 using Magi.Utils;
@@ -16,6 +16,8 @@ namespace Magi.Maps.Spawners
         public static Dictionary<string, ItemContainer> ItemContainers;
         public static Dictionary<string, ConsumableContainer> ConsumableContainers;
         public static Dictionary<string, WeaponContainer> WeaponContainers;
+        public static Dictionary<string, ArmorContainer> ArmorContainers;
+
         static ItemSpawner()
         {
             string path = Path.Combine(Directory.GetCurrentDirectory(), "Content", "Datasets", "items.json");
@@ -26,6 +28,9 @@ namespace Magi.Maps.Spawners
             
             path = Path.Combine(Directory.GetCurrentDirectory(), "Content", "Datasets", "weapons.json");
             WeaponContainers = JsonFileManager.LoadDataset<WeaponContainer>(path);
+
+            path = Path.Combine(Directory.GetCurrentDirectory(), "Content", "Datasets", "armor.json");
+            ArmorContainers = JsonFileManager.LoadDataset<ArmorContainer>(path);
         }
 
         public ItemSpawner(RandomTable<string> spawnTable, Random random)
@@ -55,6 +60,9 @@ namespace Magi.Maps.Spawners
                     break;
                 case Constants.ItemTypes.Weapon:
                     components.AddRange(GetWeaponComponents(key));
+                    break;
+                case Constants.ItemTypes.Armor:
+                    components.AddRange(GetArmorComponents(key));
                     break;
             }
 
@@ -89,6 +97,20 @@ namespace Magi.Maps.Spawners
                 CriticalHitMultiplier = weaponContainer.CriticalHitMultiplier
             });
 
+            return components;
+        }
+
+        private List<object> GetArmorComponents(string key) 
+        {
+            var components = new List<object>();
+            var armorContainer = ArmorContainers[key];
+            components.Add(new Armor()
+            {
+                ArmorBonus = armorContainer.Armor,
+                ArmorType = armorContainer.ArmorType,
+                ArmorClass = armorContainer.ArmorClass,
+                BlockChance = armorContainer.BlockChance,
+            });
             return components;
         }
     }

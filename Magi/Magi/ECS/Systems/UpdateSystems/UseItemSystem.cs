@@ -38,6 +38,10 @@ namespace Magi.ECS.Systems.UpdateSystems
                 {
                     WeaponProcessor.Equip(World, reference);
                 }
+                else if(entity.Has<Armor>())
+                {
+                    ArmorProcessor.Equip(World, reference);
+                }
 
                 reference.Entity.Remove<WantToUseItem>();
             });

@@ -31,6 +31,7 @@ namespace Magi.UI.Windows
             if(!Visible && World.CurrentState == Constants.GameState.ShowInventory)
             {
                 Visible = true;
+                selectedItem = 0;
                 UpdateInventoryItems();
             }
         }
@@ -159,16 +160,29 @@ namespace Magi.UI.Windows
         {
             var equipment = World.PlayerReference.Entity.Get<CombatEquipment>();
             var weapon = equipment.MainHandReference;
+            var offHand = equipment.OffHandReference;
+            var armor = equipment.ArmorReference;
 
             Console.Print(6, 19, "Equipment");
-            Console.Print(6, 21, string.Concat("Main Hand: ", equipment.MainHandReference != EntityReference.Null ? equipment.MainHandReference.Entity.Get<Name>().EntityName : string.Empty));
-            Console.Print(6, 22, string.Concat("Off Hand: ", equipment.OffHandReference != EntityReference.Null && equipment.MainHandReference != equipment.OffHandReference ? equipment.OffHandReference.Entity.Get<Name>().EntityName : string.Empty));
-            Console.Print(6, 23, string.Concat("Armor: ", equipment.ArmorReference != EntityReference.Null ? equipment.ArmorReference.Entity.Get<Name>().EntityName : string.Empty));
+            Console.Print(6, 21, string.Concat("Main Hand: ", weapon != EntityReference.Null ? weapon.Entity.Get<Name>().EntityName : "Fist"));
+            Console.Print(6, 22, string.Concat("Off Hand: ", offHand != EntityReference.Null && weapon != offHand ? offHand.Entity.Get<Name>().EntityName : string.Empty));
+            Console.Print(6, 23, string.Concat("Armor: ", armor != EntityReference.Null ? armor.Entity.Get<Name>().EntityName : string.Empty));
 
             Console.Print(6, 25, string.Concat("Weapon Damage: ", weapon != EntityReference.Null ? string.Concat(weapon.Entity.Get<Weapon>().DamageRoll, " ", weapon.Entity.Get<Weapon>().DamageType) : "1d3 Bludgeoning"));
             Console.Print(6, 26, string.Concat("Critical Hit Chance: ", weapon != EntityReference.Null ? string.Concat((20 - weapon.Entity.Get<Weapon>().CriticalHitRoll + 1) * 5, "%") : "5%"));
             Console.Print(6, 27, string.Concat("Range: ", weapon != EntityReference.Null && weapon.Entity.Get<Weapon>().Range > 1 ? weapon.Entity.Get<Weapon>().Range : "Melee"));
-            Console.Print(6, 28, string.Concat("AC: ", 0));
+
+            int armorBonus = 0;
+            if(offHand != EntityReference.Null && offHand.Entity.Has<Armor>())
+            {
+                armorBonus += offHand.Entity.Get<Armor>().ArmorBonus;
+            }
+            if (armor != EntityReference.Null && armor.Entity.Has<Armor>())
+            {
+                armorBonus += armor.Entity.Get<Armor>().ArmorBonus;
+            }
+
+            Console.Print(6, 28, string.Concat("Armor Bonus: ", armorBonus));
         }
 
         private void DrawPlayerStats()

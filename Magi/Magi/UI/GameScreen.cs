@@ -67,7 +67,7 @@ namespace Magi.UI
             var itemTable = new RandomTable<string>();
             foreach(var item in ItemSpawner.ItemContainers)
             {
-                itemTable = itemTable.Add(item.Key, item.Key.Contains("Bow") ? 99 : 1);
+                itemTable = itemTable.Add(item.Key, 1);
             }
 
             generator.SpawnEntitiesForMap(world, enemyTable, itemTable);

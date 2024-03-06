@@ -4,10 +4,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Magi.Containers
+namespace Magi.Constants
 {
-    public interface IContainer
+    public enum ArmorClass
     {
-        string Name { get; set; }
+        None = 0,
+        Light = 1,
+        Medium = 2,
+        Heavy = 3
     }
 }

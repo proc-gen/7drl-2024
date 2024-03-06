@@ -58,9 +58,9 @@ namespace Magi.Items.Processors
                     || weaponType == Constants.WeaponTypes.TwoHandedRanged;
         }
 
-        public static DamageCalculation CalculateDamage(Random random, EntityReference weaponReference, bool melee)
+        public static DamageCalculation CalculateDamage(Random random, EntityReference weaponReference, bool melee, int bonusDamage)
         {
-            int damage = 0;
+            int damage = bonusDamage;
             DamageTypes damageType = DamageTypes.Bludgeoning;
             bool criticalHit = false;
 

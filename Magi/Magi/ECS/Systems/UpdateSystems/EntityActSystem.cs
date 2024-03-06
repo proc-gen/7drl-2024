@@ -72,8 +72,12 @@ namespace Magi.ECS.Systems.UpdateSystems
                     }
                     else
                     {
-                        World.World.Create(new MeleeAttack() { Source = entity, Target = entitiesAtPosition.Where(a => a.Entity.Has<Blocker>()).First() });
-                        action = ActionTypes.MeleeAttack;
+                        var target = entitiesAtPosition.Where(a => a.Entity.Has<Blocker>()).First();
+                        if (entity.Entity.Has<Player>() || target.Entity.Has<Player>())
+                        {
+                            World.World.Create(new MeleeAttack() { Source = entity, Target = target });
+                            action = ActionTypes.MeleeAttack;
+                        }
                     }
                 }
             }

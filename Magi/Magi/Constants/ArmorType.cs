@@ -6,11 +6,9 @@ using System.Threading.Tasks;
 
 namespace Magi.Constants
 {
-    public enum ItemTypes
+    public enum ArmorType
     {
-        Quest = 1,
-        Consumable = 2,
-        Weapon = 3,
-        Armor = 4,
+        Wearable = 1,
+        Shield = 2,
     }
 }

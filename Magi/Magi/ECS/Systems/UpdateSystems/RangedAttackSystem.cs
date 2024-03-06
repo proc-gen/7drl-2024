@@ -44,7 +44,7 @@ namespace Magi.ECS.Systems.UpdateSystems
                         {
                             rangedAttack.Target.Entity.Add(new Dead());
                         }
-                        else
+                        else if (rangedAttack.Target.Entity.Has<Player>())
                         {
                             World.CurrentState = Constants.GameState.PlayerDeath;
                         }
@@ -63,10 +63,11 @@ namespace Magi.ECS.Systems.UpdateSystems
         private int CalculateDamage(CombatStats sourceStats, CombatStats targetStats, CombatEquipment sourceEquipment, CombatEquipment targetEquipment)
         {
             int damage = 0;
-            int damageReduction = 0;// targetStats.CurrentArmor;
 
-            var weaponDamage = WeaponProcessor.CalculateDamage(random, sourceEquipment.MainHandReference, false);
-            damage += weaponDamage.Damage;
+            var weaponDamage = WeaponProcessor.CalculateDamage(random, sourceEquipment.MainHandReference, false, damage);
+            damage = weaponDamage.Damage;
+
+            int damageReduction = ArmorProcessor.CalculateDamageReduction(random, weaponDamage, targetEquipment.ArmorReference, targetEquipment.OffHandReference, false);
 
             return damage - damageReduction;
         }

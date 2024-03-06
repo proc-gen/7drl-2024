@@ -4,13 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Magi.Constants
+namespace Magi.Containers.DatasetContainers
 {
-    public enum ItemTypes
+    public interface IContainer
     {
-        Quest = 1,
-        Consumable = 2,
-        Weapon = 3,
-        Armor = 4,
+        string Name { get; set; }
     }
 }

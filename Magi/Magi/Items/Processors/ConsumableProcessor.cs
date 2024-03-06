@@ -34,6 +34,10 @@ namespace Magi.Items.Processors
 
                         world.LogItems.Add(new LogItem(string.Concat(ownerName.EntityName, " drank a ", itemName.EntityName, " and healed for ", healAmount, "hp")));
                     }
+                    else
+                    {
+                        world.LogItems.Add(new LogItem(string.Concat(ownerName.EntityName, " is already at full health!")));
+                    }
                     break;
                 case Constants.ConsumableTypes.Mana:
                     if (ownerStats.CurrentMana < ownerStats.MaxMana)
@@ -43,6 +47,10 @@ namespace Magi.Items.Processors
                         consumed = true;
 
                         world.LogItems.Add(new LogItem(string.Concat(ownerName.EntityName, " drank a ", itemName.EntityName, " and replenished ", refillAmount, "mp")));
+                    }
+                    else
+                    {
+                        world.LogItems.Add(new LogItem(string.Concat(ownerName.EntityName, " is already at full mana!")));
                     }
                     break;
             }
