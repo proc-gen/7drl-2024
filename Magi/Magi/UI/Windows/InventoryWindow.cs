@@ -19,8 +19,11 @@ namespace Magi.UI.Windows
         List<EntityReference> InventoryItems;
         int selectedItem = 0;
         QueryDescription ownedItemsQuery = new QueryDescription().WithAll<Owner>();
-        public InventoryWindow(int x, int y, int width, int height, GameWorld world)
-            : base(x, y, width, height)
+        public InventoryWindow(GameWorld world)
+            : base(GameSettings.GAME_WIDTH / 4,
+                    GameSettings.GAME_HEIGHT / 4 - 5,
+                    GameSettings.GAME_WIDTH / 2,
+                    GameSettings.GAME_HEIGHT / 2)
         {
             World = world;
             InventoryItems = new List<EntityReference>();
@@ -45,20 +48,19 @@ namespace Magi.UI.Windows
                 World.CurrentState = Constants.GameState.AwaitingPlayerInput;
                 retVal = true;
             }
-
+            else if (keyboard.IsKeyPressed(Keys.Up))
+            {
+                selectedItem = Math.Max(selectedItem - 1, 0);
+                retVal = true;
+            }
+            else if (keyboard.IsKeyPressed(Keys.Down))
+            {
+                selectedItem = Math.Min(selectedItem + 1, 11);
+                retVal = true;
+            }
             else if (InventoryItems.Any())
             {
-                if (keyboard.IsKeyPressed(Keys.Up))
-                {
-                    selectedItem = (selectedItem - 1) % InventoryItems.Count;
-                    retVal = true;
-                }
-                else if (keyboard.IsKeyPressed(Keys.Down))
-                {
-                    selectedItem = (selectedItem + 1) % InventoryItems.Count;
-                    retVal = true;
-                }
-                else if (keyboard.IsKeyPressed(Keys.U))
+                if (keyboard.IsKeyPressed(Keys.U))
                 {
                     UseItem(InventoryItems[selectedItem]);
                     retVal = true;
@@ -203,7 +205,7 @@ namespace Magi.UI.Windows
         private void DrawItemDescription()
         {
             Console.Print(6 + Console.Width / 2, 4, "Item Description");
-            if (InventoryItems.Any())
+            if (InventoryItems.Any() && selectedItem < InventoryItems.Count)
             {
                 var item = InventoryItems[selectedItem];
                 if (item.Entity.Has<Consumable>())
@@ -230,10 +232,7 @@ namespace Magi.UI.Windows
 
         private void DrawItemSelector()
         {
-            if (InventoryItems.Any())
-            {
-                Console.Print(3, selectedItem + 6, "->");
-            }
+            Console.Print(3, selectedItem + 6, "->");
         }
     }
 }

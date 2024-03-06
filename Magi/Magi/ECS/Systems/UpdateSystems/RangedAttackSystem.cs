@@ -42,6 +42,8 @@ namespace Magi.ECS.Systems.UpdateSystems
                         World.LogItems.Add(new LogItem(string.Concat(sourceName.EntityName, " killed ", targetName.EntityName, "!")));
                         if (rangedAttack.Source.Entity.Has<Player>())
                         {
+                            sourceStats.Experience += targetStats.Experience;
+                            rangedAttack.Source.Entity.Set(sourceStats);
                             rangedAttack.Target.Entity.Add(new Dead());
                         }
                         else if (rangedAttack.Target.Entity.Has<Player>())

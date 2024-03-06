@@ -94,6 +94,7 @@ namespace Magi.UI
                 new MeleeAttackSystem(world),
                 new RangedAttackSystem(world),
                 new DeathSystem(world),
+                new LevelUpSystem(world),
             };
         }
 
@@ -104,13 +105,9 @@ namespace Magi.UI
             windows = new List<Window>()
             {
                 new GameWindow(world, targetingOverlay),
-                new InventoryWindow(
-                    GameSettings.GAME_WIDTH / 4,
-                    GameSettings.GAME_HEIGHT / 4 - 5,
-                    GameSettings.GAME_WIDTH / 2,
-                    GameSettings.GAME_HEIGHT / 2,
-                    world),
-                targetingOverlay
+                new InventoryWindow(world),
+                targetingOverlay,
+                new LevelUpWindow(world)
             };
 
             foreach(var window in windows)
@@ -123,7 +120,8 @@ namespace Magi.UI
         {
             if (world.CurrentState == GameState.AwaitingPlayerInput
                 || world.CurrentState == GameState.ShowInventory
-                || world.CurrentState == GameState.Targeting)
+                || world.CurrentState == GameState.Targeting
+                || world.CurrentState == GameState.LevelUp)
             {
                 HandleKeyboard();
             }

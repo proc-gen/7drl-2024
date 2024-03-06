@@ -15,5 +15,6 @@ namespace Magi.Constants
         ShowInventory,
         Targeting,
         PlayerDeath,
+        LevelUp,
     }
 }
