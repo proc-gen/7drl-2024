@@ -47,5 +47,29 @@ namespace Magi.Utils
             PlayerReference.Entity.Set(input);
             CurrentState = GameState.PlayerTurn;
         }
+
+        public void RemoveAllNonPlayerOwnedEntities()
+        {
+            PhysicsWorld.Clear();
+            List<Entity> entities = new List<Entity>();
+            World.GetEntities(new QueryDescription(), entities);
+
+            foreach (var entity in entities)
+            {
+                if (entity.Has<Owner>())
+                {
+                    if (entity.Get<Owner>().OwnerReference != PlayerReference)
+                    {
+                        entity.Add(new Remove());
+                    }
+                }
+                else if (entity.Reference() != PlayerReference)
+                {
+                    entity.Add(new Remove());
+                }
+            }
+
+            World.Destroy(new QueryDescription().WithAll<Remove>());
+        }
     }
 }

@@ -1,4 +1,8 @@
-﻿using Magi.Constants;
+﻿using Arch.Core;
+using Arch.Core.Extensions;
+using Magi.Constants;
+using Magi.Containers;
+using Magi.ECS.Components;
 using Magi.ECS.Systems.RenderSystems;
 using Magi.ECS.Systems.UpdateSystems;
 using Magi.Maps;
@@ -52,11 +56,35 @@ namespace Magi.UI
         {
             world = SaveGameManager.NewGame();
 
+            GoNextLevel();
+        }
+
+        private void GoNextLevel()
+        {
+            if (world.PlayerReference != EntityReference.Null)
+            {
+                world.RemoveAllNonPlayerOwnedEntities();
+            }
+
             var generator = new RoomsAndCorridorsGenerator(GameSettings.GAME_WIDTH, GameSettings.GAME_HEIGHT);
             generator.Generate();
 
             world.Map = generator.Map;
-            new PlayerSpawner().SpawnPlayer(world, generator.GetPlayerStartingPosition());
+
+            var startPosition = generator.GetPlayerStartingPosition();
+            if (world.PlayerReference == EntityReference.Null)
+            {
+                new PlayerSpawner().SpawnPlayer(world, startPosition);
+            }
+            else
+            {
+                var position = world.PlayerReference.Entity.Get<Position>();
+                position.Point = generator.GetPlayerStartingPosition();
+                world.PlayerReference.Entity.Set(position);
+                world.PhysicsWorld.AddEntity(world.PlayerReference, position.Point);
+                world.LogItems.Add(new LogItem("You have descended to the next level"));
+            }
+
             FieldOfView.CalculatePlayerFOV(world);
 
             var enemyTable = new RandomTable<string>();
@@ -65,12 +93,15 @@ namespace Magi.UI
                 enemyTable = enemyTable.Add(enemy.Key, 1);
             }
             var itemTable = new RandomTable<string>();
-            foreach(var item in ItemSpawner.ItemContainers)
+            foreach (var item in ItemSpawner.ItemContainers)
             {
                 itemTable = itemTable.Add(item.Key, 1);
             }
 
             generator.SpawnEntitiesForMap(world, enemyTable, itemTable);
+            generator.SpawnExitForMap(world);
+
+            world.CurrentState = GameState.AwaitingPlayerInput;
         }
 
         private void LoadGame()
@@ -174,6 +205,14 @@ namespace Magi.UI
                 if(keyboard.IsKeyPressed(Keys.Escape))
                 {
                     GoToMainMenu(true);
+                }
+                else if (keyboard.IsKeyPressed(Keys.D))
+                {
+                    var entitiesAtLocation = world.PhysicsWorld.GetEntitiesAtLocation(world.PlayerReference.Entity.Get<Position>().Point);
+                    if (entitiesAtLocation != null && entitiesAtLocation.Where(a => a.Entity.Has<Exit>()).Any())
+                    {
+                        GoNextLevel();
+                    }
                 }
             }
         }
