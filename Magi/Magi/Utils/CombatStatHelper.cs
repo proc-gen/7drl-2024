@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Magi.Utils
 {
-    public static class ExperienceHelper
+    public static class CombatStatHelper
     {
         public static void ProcessLevelUp(ref CombatStats stats)
         {
@@ -19,6 +19,16 @@ namespace Magi.Utils
         private static int ExperienceRequiredForLevel(int level)
         {
             return (int)(15f + 2f * MathF.Pow(level - 1, 2f));
+        }
+
+        public static int CalculateMaxHealth(int level, int vitality)
+        {
+            return 2 * level + 2 * vitality;
+        }
+
+        public static int CalculateMaxMana(int level, int intelligence)
+        {
+            return 2 * level + 4 * intelligence;
         }
     }
 }

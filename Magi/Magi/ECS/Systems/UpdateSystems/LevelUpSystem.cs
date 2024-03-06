@@ -1,4 +1,5 @@
 ﻿using Arch.Core.Extensions;
+using Magi.Containers;
 using Magi.ECS.Components;
 using Magi.Utils;
 using System;
@@ -21,8 +22,10 @@ namespace Magi.ECS.Systems.UpdateSystems
             var stats = World.PlayerReference.Entity.Get<CombatStats>();
             if (stats.Experience >= stats.ExperienceForNextLevel)
             {
-                ExperienceHelper.ProcessLevelUp(ref stats);
+                CombatStatHelper.ProcessLevelUp(ref stats);
                 World.PlayerReference.Entity.Set(stats);
+                World.LogItems.Add(new LogItem(string.Concat(World.PlayerReference.Entity.Get<Name>().EntityName, " leveled up!")));
+                World.CurrentState = Constants.GameState.LevelUp;
             }
         }
     }

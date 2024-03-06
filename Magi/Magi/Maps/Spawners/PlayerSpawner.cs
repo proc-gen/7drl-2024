@@ -9,12 +9,15 @@ namespace Magi.Maps.Spawners
         public PlayerSpawner() { }
         public void SpawnPlayer(GameWorld world, Point startingPosition) 
         {
+            int health = CombatStatHelper.CalculateMaxHealth(1, 10);
+            int mana = CombatStatHelper.CalculateMaxMana(1, 10);
+
             var stats = new CombatStats()
             {
-                MaxHealth = 10,
-                CurrentHealth = 10,
-                MaxMana = 30,
-                CurrentMana = 30,
+                MaxHealth = health,
+                CurrentHealth = health,
+                MaxMana = mana,
+                CurrentMana = mana,
                 BaseStrength = 10,
                 CurrentStrength = 10,
                 BaseIntelligence = 10,
@@ -28,7 +31,7 @@ namespace Magi.Maps.Spawners
                 ExperienceForNextLevel = 0,
             };
 
-            ExperienceHelper.ProcessLevelUp(ref stats);
+            CombatStatHelper.ProcessLevelUp(ref stats);
 
             world.PlayerReference = world.World.Create(
                 new Player(),

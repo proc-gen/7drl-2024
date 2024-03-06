@@ -19,8 +19,11 @@ namespace Magi.UI.Windows
         List<EntityReference> InventoryItems;
         int selectedItem = 0;
         QueryDescription ownedItemsQuery = new QueryDescription().WithAll<Owner>();
-        public InventoryWindow(int x, int y, int width, int height, GameWorld world)
-            : base(x, y, width, height)
+        public InventoryWindow(GameWorld world)
+            : base(GameSettings.GAME_WIDTH / 4,
+                    GameSettings.GAME_HEIGHT / 4 - 5,
+                    GameSettings.GAME_WIDTH / 2,
+                    GameSettings.GAME_HEIGHT / 2)
         {
             World = world;
             InventoryItems = new List<EntityReference>();
