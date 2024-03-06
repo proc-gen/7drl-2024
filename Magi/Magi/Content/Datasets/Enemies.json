@@ -3,6 +3,7 @@
     {
       "Name": "Goblin",
       "Element": 0,
+      "LevelRequirement":  1,
       "ViewDistance": 10,
       "Glyph": "g",
       "GlyphColorRed": 192,
@@ -22,6 +23,7 @@
     {
       "Name": "Goblin Ranger",
       "Element": 0,
+      "LevelRequirement": 3,
       "ViewDistance": 10,
       "Glyph": "r",
       "GlyphColorRed": 192,
@@ -41,6 +43,7 @@
     {
       "Name": "Ogre",
       "Element": 0,
+      "LevelRequirement": 5,
       "ViewDistance": 10,
       "Glyph": "o",
       "GlyphColorRed": 192,
@@ -60,6 +63,7 @@
     {
       "Name": "Ogre Barbarian",
       "Element": 0,
+      "LevelRequirement": 8,
       "ViewDistance": 10,
       "Glyph": "b",
       "GlyphColorRed": 192,
@@ -79,6 +83,7 @@
     {
       "Name": "Small Air Elemental",
       "Element": 1,
+      "LevelRequirement": 1,
       "ViewDistance": 10,
       "Glyph": "A",
       "GlyphColorRed": 192,
@@ -98,6 +103,7 @@
     {
       "Name": "Medium Air Elemental",
       "Element": 1,
+      "LevelRequirement": 5,
       "ViewDistance": 10,
       "Glyph": "A",
       "GlyphColorRed": 192,
@@ -117,6 +123,7 @@
     {
       "Name": "Large Air Elemental",
       "Element": 1,
+      "LevelRequirement": 8,
       "ViewDistance": 10,
       "Glyph": "A",
       "GlyphColorRed": 192,
@@ -136,6 +143,7 @@
     {
       "Name": "Huge Air Elemental",
       "Element": 1,
+      "LevelRequirement": 12,
       "ViewDistance": 10,
       "Glyph": "A",
       "GlyphColorRed": 192,
@@ -155,6 +163,7 @@
     {
       "Name": "Greater Air Elemental",
       "Element": 1,
+      "LevelRequirement": 15,
       "ViewDistance": 10,
       "Glyph": "A",
       "GlyphColorRed": 192,
@@ -174,6 +183,7 @@
     {
       "Name": "Elder Air Elemental",
       "Element": 1,
+      "LevelRequirement": 18,
       "ViewDistance": 10,
       "Glyph": "A",
       "GlyphColorRed": 192,
@@ -193,6 +203,7 @@
     {
       "Name": "Small Fire Elemental",
       "Element": 2,
+      "LevelRequirement": 1,
       "ViewDistance": 10,
       "Glyph": "F",
       "GlyphColorRed": 192,
@@ -212,6 +223,7 @@
     {
       "Name": "Medium Fire Elemental",
       "Element": 2,
+      "LevelRequirement": 5,
       "ViewDistance": 10,
       "Glyph": "F",
       "GlyphColorRed": 192,
@@ -231,6 +243,7 @@
     {
       "Name": "Large Fire Elemental",
       "Element": 2,
+      "LevelRequirement": 8,
       "ViewDistance": 10,
       "Glyph": "F",
       "GlyphColorRed": 192,
@@ -250,6 +263,7 @@
     {
       "Name": "Huge Fire Elemental",
       "Element": 2,
+      "LevelRequirement": 12,
       "ViewDistance": 10,
       "Glyph": "F",
       "GlyphColorRed": 192,
@@ -269,6 +283,7 @@
     {
       "Name": "Greater Fire Elemental",
       "Element": 2,
+      "LevelRequirement": 15,
       "ViewDistance": 10,
       "Glyph": "F",
       "GlyphColorRed": 192,
@@ -288,6 +303,7 @@
     {
       "Name": "Elder Fire Elemental",
       "Element": 2,
+      "LevelRequirement": 18,
       "ViewDistance": 10,
       "Glyph": "F",
       "GlyphColorRed": 192,
@@ -307,6 +323,7 @@
     {
       "Name": "Small Water Elemental",
       "Element": 3,
+      "LevelRequirement": 1,
       "ViewDistance": 10,
       "Glyph": "W",
       "GlyphColorRed": 192,
@@ -326,6 +343,7 @@
     {
       "Name": "Medium Water Elemental",
       "Element": 3,
+      "LevelRequirement": 5,
       "ViewDistance": 10,
       "Glyph": "W",
       "GlyphColorRed": 192,
@@ -345,6 +363,7 @@
     {
       "Name": "Large Water Elemental",
       "Element": 3,
+      "LevelRequirement": 8,
       "ViewDistance": 10,
       "Glyph": "W",
       "GlyphColorRed": 192,
@@ -364,6 +383,7 @@
     {
       "Name": "Huge Water Elemental",
       "Element": 3,
+      "LevelRequirement": 12,
       "ViewDistance": 10,
       "Glyph": "W",
       "GlyphColorRed": 192,
@@ -383,6 +403,7 @@
     {
       "Name": "Greater Water Elemental",
       "Element": 3,
+      "LevelRequirement": 15,
       "ViewDistance": 10,
       "Glyph": "W",
       "GlyphColorRed": 192,
@@ -402,6 +423,7 @@
     {
       "Name": "Elder Water Elemental",
       "Element": 3,
+      "LevelRequirement": 18,
       "ViewDistance": 10,
       "Glyph": "W",
       "GlyphColorRed": 192,
@@ -421,6 +443,7 @@
     {
       "Name": "Small Earth Elemental",
       "Element": 4,
+      "LevelRequirement": 1,
       "ViewDistance": 10,
       "Glyph": "E",
       "GlyphColorRed": 192,
@@ -440,6 +463,7 @@
     {
       "Name": "Medium Earth Elemental",
       "Element": 4,
+      "LevelRequirement": 5,
       "ViewDistance": 10,
       "Glyph": "E",
       "GlyphColorRed": 192,
@@ -459,6 +483,7 @@
     {
       "Name": "Large Earth Elemental",
       "Element": 4,
+      "LevelRequirement": 8,
       "ViewDistance": 10,
       "Glyph": "E",
       "GlyphColorRed": 192,
@@ -478,6 +503,7 @@
     {
       "Name": "Huge Earth Elemental",
       "Element": 4,
+      "LevelRequirement": 12,
       "ViewDistance": 10,
       "Glyph": "E",
       "GlyphColorRed": 192,
@@ -497,6 +523,7 @@
     {
       "Name": "Greater Earth Elemental",
       "Element": 4,
+      "LevelRequirement": 15,
       "ViewDistance": 10,
       "Glyph": "E",
       "GlyphColorRed": 192,
@@ -516,6 +543,7 @@
     {
       "Name": "Elder Earth Elemental",
       "Element": 4,
+      "LevelRequirement": 18,
       "ViewDistance": 10,
       "Glyph": "E",
       "GlyphColorRed": 192,
@@ -535,6 +563,7 @@
     {
       "Name": "Small Lightning Elemental",
       "Element": 5,
+      "LevelRequirement": 1,
       "ViewDistance": 10,
       "Glyph": "L",
       "GlyphColorRed": 192,
@@ -554,6 +583,7 @@
     {
       "Name": "Medium Lightning Elemental",
       "Element": 5,
+      "LevelRequirement": 5,
       "ViewDistance": 10,
       "Glyph": "L",
       "GlyphColorRed": 192,
@@ -573,6 +603,7 @@
     {
       "Name": "Large Lightning Elemental",
       "Element": 5,
+      "LevelRequirement": 8,
       "ViewDistance": 10,
       "Glyph": "L",
       "GlyphColorRed": 192,
@@ -592,6 +623,7 @@
     {
       "Name": "Huge Lightning Elemental",
       "Element": 5,
+      "LevelRequirement": 12,
       "ViewDistance": 10,
       "Glyph": "L",
       "GlyphColorRed": 192,
@@ -611,6 +643,7 @@
     {
       "Name": "Greater Lightning Elemental",
       "Element": 5,
+      "LevelRequirement": 15,
       "ViewDistance": 10,
       "Glyph": "L",
       "GlyphColorRed": 192,
@@ -630,6 +663,7 @@
     {
       "Name": "Elder Lightning Elemental",
       "Element": 5,
+      "LevelRequirement": 18,
       "ViewDistance": 10,
       "Glyph": "L",
       "GlyphColorRed": 192,
@@ -649,6 +683,7 @@
     {
       "Name": "Small Ice Elemental",
       "Element": 6,
+      "LevelRequirement": 1,
       "ViewDistance": 10,
       "Glyph": "I",
       "GlyphColorRed": 192,
@@ -668,6 +703,7 @@
     {
       "Name": "Medium Ice Elemental",
       "Element": 6,
+      "LevelRequirement": 5,
       "ViewDistance": 10,
       "Glyph": "I",
       "GlyphColorRed": 192,
@@ -687,6 +723,7 @@
     {
       "Name": "Large Ice Elemental",
       "Element": 6,
+      "LevelRequirement": 8,
       "ViewDistance": 10,
       "Glyph": "I",
       "GlyphColorRed": 192,
@@ -706,6 +743,7 @@
     {
       "Name": "Huge Ice Elemental",
       "Element": 6,
+      "LevelRequirement": 12,
       "ViewDistance": 10,
       "Glyph": "I",
       "GlyphColorRed": 192,
@@ -725,6 +763,7 @@
     {
       "Name": "Greater Ice Elemental",
       "Element": 6,
+      "LevelRequirement": 15,
       "ViewDistance": 10,
       "Glyph": "I",
       "GlyphColorRed": 192,
@@ -744,6 +783,7 @@
     {
       "Name": "Elder Ice Elemental",
       "Element": 6,
+      "LevelRequirement": 18,
       "ViewDistance": 10,
       "Glyph": "I",
       "GlyphColorRed": 192,

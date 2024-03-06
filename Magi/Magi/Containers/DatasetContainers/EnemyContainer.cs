@@ -11,6 +11,7 @@ namespace Magi.Containers.DatasetContainers
     {
         public string Name { get; set; }
         public Elements Element { get; set; }
+        public int LevelRequirement { get; set; }
         public int ViewDistance { get; set; }
         public char Glyph { get; set; }
         public int GlyphColorRed { get; set; }

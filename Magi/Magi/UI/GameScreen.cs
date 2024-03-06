@@ -83,6 +83,7 @@ namespace Magi.UI
             world.Map = generator.Map;
 
             var startPosition = generator.GetPlayerStartingPosition();
+            int playerLevel = 1;
             if (world.PlayerReference == EntityReference.Null)
             {
                 new PlayerSpawner().SpawnPlayer(world, startPosition);
@@ -94,6 +95,8 @@ namespace Magi.UI
                 world.PlayerReference.Entity.Set(position);
                 world.PhysicsWorld.AddEntity(world.PlayerReference, position.Point);
                 world.LogItems.Add(new LogItem("You have descended to the next level"));
+
+                playerLevel = world.PlayerReference.Entity.Get<CombatStats>().Level;
             }
 
             FieldOfView.CalculatePlayerFOV(world);
@@ -101,7 +104,10 @@ namespace Magi.UI
             var enemyTable = new RandomTable<string>();
             foreach (var enemy in EnemySpawner.EnemyContainers)
             {
-                enemyTable = enemyTable.Add(enemy.Key, 1);
+                if (enemy.Value.LevelRequirement <= playerLevel)
+                {
+                    enemyTable = enemyTable.Add(enemy.Key, 1);
+                }
             }
             var itemTable = new RandomTable<string>();
             foreach (var item in ItemSpawner.ItemContainers)
