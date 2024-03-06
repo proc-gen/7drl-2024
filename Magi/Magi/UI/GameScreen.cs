@@ -94,6 +94,7 @@ namespace Magi.UI
                 new MeleeAttackSystem(world),
                 new RangedAttackSystem(world),
                 new DeathSystem(world),
+                new LevelUpSystem(world),
             };
         }
 
@@ -123,7 +124,8 @@ namespace Magi.UI
         {
             if (world.CurrentState == GameState.AwaitingPlayerInput
                 || world.CurrentState == GameState.ShowInventory
-                || world.CurrentState == GameState.Targeting)
+                || world.CurrentState == GameState.Targeting
+                || world.CurrentState == GameState.LevelUp)
             {
                 HandleKeyboard();
             }
