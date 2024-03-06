@@ -13,6 +13,8 @@ namespace Magi.ECS.Systems.UpdateSystems
     internal class DeathSystem : ArchSystem, IUpdateSystem
     {
         QueryDescription deathQuery = new QueryDescription().WithAll<Dead>();
+        QueryDescription ownerQuery = new QueryDescription().WithAll<Owner>();
+        QueryDescription removeQuery = new QueryDescription().WithAll<Remove>();
         public DeathSystem(GameWorld world)
             : base(world)
         {
@@ -23,9 +25,18 @@ namespace Magi.ECS.Systems.UpdateSystems
             World.World.Query(in deathQuery, (Entity entity, ref Position position) =>
             {
                 World.PhysicsWorld.RemoveEntity(entity.Reference(), position.Point);
+
+                World.World.Query(in ownerQuery, (Entity ownedEntity, ref Owner owner) =>
+                {
+                    if(owner.OwnerReference == entity.Reference())
+                    {
+                        ownedEntity.Add(new Remove());
+                    }
+                });
             });
 
             World.World.Destroy(in deathQuery);
+            World.World.Destroy(in removeQuery);
         }
     }
 }
