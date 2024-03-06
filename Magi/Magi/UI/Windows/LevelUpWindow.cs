@@ -106,7 +106,7 @@ namespace Magi.UI.Windows
 
         private void DrawPlayerStats()
         {
-            Console.Print(6, 4, "You have 2 attribute points to allocate");
+            Console.Print(Console.Width / 2 - 20, 4, "You have 2 attribute points to allocate:");
             Console.Print(6, 6, string.Concat("Strength: ", Stats.CurrentStrength, " --> ", Stats.CurrentStrength + additionalStats[0]));
             Console.Print(6, 8, string.Concat("Dexterity: ", Stats.CurrentDexterity, " --> ", Stats.CurrentDexterity + additionalStats[1]));
             Console.Print(6, 10, string.Concat("Intelligence: ", Stats.CurrentIntelligence, " --> ", Stats.CurrentIntelligence + additionalStats[2]));
