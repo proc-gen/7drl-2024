@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Magi.Constants;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -9,6 +10,8 @@ namespace Magi.Containers.DatasetContainers
     public struct EnemyContainer : IContainer
     {
         public string Name { get; set; }
+        public Elements Element { get; set; }
+        public int LevelRequirement { get; set; }
         public int ViewDistance { get; set; }
         public char Glyph { get; set; }
         public int GlyphColorRed { get; set; }

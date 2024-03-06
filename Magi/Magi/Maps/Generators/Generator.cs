@@ -14,7 +14,9 @@ namespace Magi.Maps.Generators
         public static Tile Wall = new Tile()
         {
             BaseTileType = Constants.TileTypes.Wall,
-            BackgroundColor = new Color(0f, 0f, .5f)
+            BackgroundColor = new Color(0f, 0f, .5f),
+            Glyph = '#',
+            GlyphColor = new Color(.5f, .5f, .5f),
         };
         public static Tile FloorA = new Tile()
         {

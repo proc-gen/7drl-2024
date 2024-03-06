@@ -28,15 +28,27 @@ namespace Magi.ECS.Systems.UpdateSystems
             if (World.CurrentState == Constants.GameState.MonsterTurn)
             {
                 var playerPosition = World.PlayerReference.Entity.Get<Position>();
-                World.World.Query(in nonPlayerQuery, (Entity entity, ref Position position, ref Input input, ref ViewDistance viewDistance) =>
+                World.World.Query(in nonPlayerQuery, (Entity entity, ref Position position, ref Input input, ref ViewDistance viewDistance, ref CombatEquipment combatEquipment) =>
                 {
                     var fov = FieldOfView.CalculateFOV(World, entity.Reference());
 
                     if (fov.Contains(playerPosition.Point))
                     {
-                        var path = AStarSearch.RunSearch(new Location(position.Point), new Location(playerPosition.Point));
-                        input.Direction = path - position.Point;
-                        input.SkipTurn = path == position.Point;
+                        bool melee = combatEquipment.MainHandReference == EntityReference.Null || combatEquipment.MainHandReference.Entity.Get<Weapon>().Range == 1;
+                        bool needToMove = melee ? true : World.Map.IsPathBlocked(position.Point, playerPosition.Point, combatEquipment.MainHandReference.Entity.Get<Weapon>().Range);
+                        
+                        if (needToMove)
+                        {
+                            var path = AStarSearch.RunSearch(new Location(position.Point), new Location(playerPosition.Point));
+                            input.Direction = path - position.Point;
+                            input.SkipTurn = path == position.Point;
+                        }
+                        else
+                        {
+                            World.World.Create(new RangedAttack() { Source = entity.Reference(), Target = World.PlayerReference });
+                            input.SkipTurn = true;
+                            input.Direction = Point.None;
+                        }
                     }
                     else
                     {

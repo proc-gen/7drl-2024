@@ -156,30 +156,7 @@ namespace Magi.UI.Windows
 
         private bool IsPathBlocked()
         {
-            bool retVal = false;
-            if(Start == End)
-            {
-                retVal = true;
-            }
-            else if(Point.EuclideanDistanceMagnitude(Start, End) > (SourceRange * SourceRange))
-            {
-                retVal = true;
-            }
-            else
-            {
-                var pointsInLine = FieldOfView.GetPointsInLine(Start, End);
-                foreach(var point in pointsInLine) 
-                {
-                    var tile = World.Map.GetTile(point);
-                    if(tile.BaseTileType == Constants.TileTypes.Wall) 
-                    {
-                        retVal = true;
-                        break;
-                    }
-                }
-            }
-
-            return retVal;
+            return World.Map.IsPathBlocked(Start, End, SourceRange);
         }
     }
 }

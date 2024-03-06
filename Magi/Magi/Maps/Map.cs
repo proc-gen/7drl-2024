@@ -1,4 +1,6 @@
-﻿using Newtonsoft.Json;
+﻿using Arch.Core;
+using Magi.Utils;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -39,6 +41,34 @@ namespace Magi.Maps
         public void SetTile(Point point, Tile tile)
         {
             SetTile(point.X, point.Y, tile);
+        }
+
+        public bool IsPathBlocked(Point start, Point end, int range)
+        {
+            bool retVal = false;
+            if (start == end)
+            {
+                retVal = true;
+            }
+            else if (Point.EuclideanDistanceMagnitude(start, end) > (range * range))
+            {
+                retVal = true;
+            }
+            else
+            {
+                var pointsInLine = FieldOfView.GetPointsInLine(start, end);
+                foreach (var point in pointsInLine)
+                {
+                    var tile = GetTile(point);
+                    if (tile.BaseTileType == Constants.TileTypes.Wall)
+                    {
+                        retVal = true;
+                        break;
+                    }
+                }
+            }
+
+            return retVal;
         }
     }
 }

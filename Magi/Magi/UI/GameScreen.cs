@@ -31,6 +31,7 @@ namespace Magi.UI
         List<Window> windows;
 
         RandomTable<string> GeneratorTable;
+        RandomTable<Elements> ElementsTable;
         Random Random;
         public GameScreen(RootScreen rootScreen, bool loadGame)
         {
@@ -46,6 +47,15 @@ namespace Magi.UI
                 .Add("BspInterior", 1)
                 .Add("CellularAutomata", 1)
                 .Add("DrunkardWalk", 1);
+            ElementsTable = new RandomTable<Elements>()
+                .Add(Elements.None, 1)
+                .Add(Elements.Air, 1)
+                .Add(Elements.Fire, 1)
+                .Add(Elements.Water, 1)
+                .Add(Elements.Earth, 1)
+                .Add(Elements.Lightning, 1)
+                .Add(Elements.Ice, 1);
+
             Random = new Random();
 
             if(loadGame)
@@ -76,13 +86,14 @@ namespace Magi.UI
             {
                 world.RemoveAllNonPlayerOwnedEntities();
             }
-
+            var element = ElementsTable.Roll(Random);
             var generator = GetGenerator();
             generator.Generate();
 
             world.Map = generator.Map;
 
             var startPosition = generator.GetPlayerStartingPosition();
+            int playerLevel = 1;
             if (world.PlayerReference == EntityReference.Null)
             {
                 new PlayerSpawner().SpawnPlayer(world, startPosition);
@@ -94,6 +105,8 @@ namespace Magi.UI
                 world.PlayerReference.Entity.Set(position);
                 world.PhysicsWorld.AddEntity(world.PlayerReference, position.Point);
                 world.LogItems.Add(new LogItem("You have descended to the next level"));
+
+                playerLevel = world.PlayerReference.Entity.Get<CombatStats>().Level;
             }
 
             FieldOfView.CalculatePlayerFOV(world);
@@ -101,7 +114,11 @@ namespace Magi.UI
             var enemyTable = new RandomTable<string>();
             foreach (var enemy in EnemySpawner.EnemyContainers)
             {
-                enemyTable = enemyTable.Add(enemy.Key, 1);
+                if (enemy.Value.LevelRequirement <= playerLevel
+                    && (enemy.Value.Element == element || enemy.Value.Element == Elements.None))
+                {
+                    enemyTable = enemyTable.Add(enemy.Key, 1);
+                }
             }
             var itemTable = new RandomTable<string>();
             foreach (var item in ItemSpawner.ItemContainers)

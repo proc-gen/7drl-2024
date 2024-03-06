@@ -40,6 +40,17 @@ namespace Magi.Maps.Generators
             }
 
             this.ApplyRoomToMap(Rooms.Last());
+
+            for (int i = 0; i < Map.Width; i++)
+            {
+                for (int j = 0; j < Map.Height; j++)
+                {
+                    if (i == 0 || j == 0 || i == (Map.Width - 1) || j == (Map.Height - 1))
+                    {
+                        Map.SetTile(i, j, Wall);
+                    }
+                }
+            }
         }
 
         private void AddSubrectangles(Rectangle parentRectangle)

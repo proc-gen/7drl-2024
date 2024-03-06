@@ -1,5 +1,6 @@
 ﻿using CommunityToolkit.HighPerformance.Buffers;
 using Magi.Maps.Spawners;
+using Magi.Pathfinding;
 using Magi.Utils;
 using System;
 using System.Collections.Generic;
@@ -57,7 +58,36 @@ namespace Magi.Maps.Generators
 
         public override void SpawnExitForMap(GameWorld world)
         {
-            SpawnExit(world, Rooms.Last().Center);
+            SquareGridMapOnly SquareGrid = new SquareGridMapOnly(Map);
+            AStarSearch<Location> AStarSearch = new AStarSearch<Location>(SquareGrid);
+
+            int distance = 0;
+            var start = new Location(GetPlayerStartingPosition());
+            Point exit = Point.Zero;
+
+            for (int i = 0; i < Map.Width; i++)
+            {
+                for (int j = 0; j < Map.Height; j++)
+                {
+                    var tile = Map.GetTile(i, j);
+                    if (tile.BaseTileType == Constants.TileTypes.Floor)
+                    {
+                        Point end = new Point(i, j);
+                        var newDistance = AStarSearch.DistanceToPoint(start, new Location(end));
+                        if (newDistance > distance)
+                        {
+                            distance = newDistance;
+                            exit = end;
+                        }
+                        else if (newDistance == -1 && start.Point == end)
+                        {
+                            Map.SetTile(i, j, Wall);
+                        }
+                    }
+                }
+            }
+
+            SpawnExit(world, exit);
         }
 
         public override void SpawnEntitiesForMap(GameWorld world, RandomTable<string> enemySpawnTable, RandomTable<string> itemSpawnTable)
@@ -66,7 +96,7 @@ namespace Magi.Maps.Generators
             ItemSpawner itemSpawner = new ItemSpawner(itemSpawnTable, Random);
             var room = Rooms.First();
 
-            int numSpawns = Random.Next(0, Map.Width * Map.Height / 20);
+            int numSpawns = Random.Next(0, 100);
             HashSet<Point> enemyLocations = new HashSet<Point>();
             HashSet<Point> itemLocations = new HashSet<Point>();
 
