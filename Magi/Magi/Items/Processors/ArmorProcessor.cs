@@ -62,9 +62,46 @@ namespace Magi.Items.Processors
             ownerReference.Entity.Set(ownerEquipment);
         }
 
-        public static int CalculateDamageReduction(DamageCalculation damageCalculation, EntityReference armorReference, EntityReference offhandReference, bool melee)
+        public static int CalculateDamageReduction(Random random, DamageCalculation damageCalculation, EntityReference armorReference, EntityReference offhandReference, bool melee)
         {
             int reduction = 0;
+            int blockChance = 0;
+
+            if(armorReference != EntityReference.Null)
+            {
+                reduction += armorReference.Entity.Get<Armor>().ArmorBonus;
+                blockChance += armorReference.Entity.Get<Armor>().BlockChance;
+            }
+
+            if(offhandReference != EntityReference.Null)
+            {
+                if (offhandReference.Entity.Has<Armor>())
+                {
+                    reduction += offhandReference.Entity.Get<Armor>().ArmorBonus;
+                    blockChance += offhandReference.Entity.Get<Armor>().BlockChance;
+                }
+                else
+                {
+                    blockChance += 10;
+                }
+            }
+
+            if (!damageCalculation.CriticalHit)
+            {
+                if (blockChance > 0)
+                {
+                    if (random.Next(100) < blockChance)
+                    {
+                        reduction = damageCalculation.Damage;
+                    }
+                }
+
+                if (!melee && reduction != damageCalculation.Damage)
+                {
+                    reduction /= 2;
+                }
+            }
+
 
             return reduction;
         }

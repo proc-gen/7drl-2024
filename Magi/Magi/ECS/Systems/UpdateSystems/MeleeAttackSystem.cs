@@ -64,10 +64,10 @@ namespace Magi.ECS.Systems.UpdateSystems
         {
             int damage = Math.Max(0, (int)((sourceStats.CurrentStrength - 10f) / 2f + 1f));
 
-            var weaponDamage = WeaponProcessor.CalculateDamage(random, sourceEquipment.MainHandReference, true);
-            damage += weaponDamage.Damage;
+            var weaponDamage = WeaponProcessor.CalculateDamage(random, sourceEquipment.MainHandReference, true, damage);
+            damage = weaponDamage.Damage;
 
-            int damageReduction = ArmorProcessor.CalculateDamageReduction(weaponDamage, targetEquipment.ArmorReference, targetEquipment.OffHandReference, true);
+            int damageReduction = ArmorProcessor.CalculateDamageReduction(random,weaponDamage, targetEquipment.ArmorReference, targetEquipment.OffHandReference, true);
 
             return damage - damageReduction;
         }
