@@ -1,5 +1,5 @@
-﻿using Arch.Core.Extensions;
-using Magi.ECS.Components;
+﻿using Magi.ECS.Components;
+using Magi.Maps;
 using Magi.Utils;
 using System;
 using System.Collections.Generic;
@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Magi.Pathfinding
 {
-    public class SquareGrid : IWeightedGraph<Location>
+    public class SquareGridMapOnly : IWeightedGraph<Location>
     {
         public static readonly Location[] AdjacentLocations = new[]
         {
@@ -19,29 +19,23 @@ namespace Magi.Pathfinding
             new Location(new Point(Direction.Right.DeltaX, Direction.Right.DeltaY))
         };
 
-        public GameWorld World { get; set; }
+        public Map Map { get; set; }
 
-        public SquareGrid(GameWorld world)
+        public SquareGridMapOnly(Map map)
         {
-            World = world;
+            Map = map;
         }
 
         public bool InBounds(Location id)
         {
-            return 0 <= id.Point.X && id.Point.X < World.Map.Width
-                && 0 <= id.Point.Y && id.Point.Y < World.Map.Height;
+            return 0 <= id.Point.X && id.Point.X < Map.Width
+                && 0 <= id.Point.Y && id.Point.Y < Map.Height;
         }
 
         public bool Passable(Location id)
         {
-            var tile = World.Map.GetTile(id.Point);
-            if (tile.BaseTileType == Constants.TileTypes.Wall)
-            {
-                return false;
-            }
-
-            var entitiesAtLocation = World.PhysicsWorld.GetEntitiesAtLocation(id.Point);
-            return entitiesAtLocation == null || !entitiesAtLocation.Any(a => a.Entity.Has<Blocker>());
+            var tile = Map.GetTile(id.Point);
+            return tile.BaseTileType == Constants.TileTypes.Floor;
         }
 
         public float Cost(Location a, Location b)
