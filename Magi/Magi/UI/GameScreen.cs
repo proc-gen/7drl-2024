@@ -66,7 +66,7 @@ namespace Magi.UI
                 world.RemoveAllNonPlayerOwnedEntities();
             }
 
-            var generator = new BspRoomGenerator(GameSettings.GAME_WIDTH, GameSettings.GAME_HEIGHT);
+            var generator = new BspInteriorGenerator(GameSettings.GAME_WIDTH, GameSettings.GAME_HEIGHT);
             generator.Generate();
 
             world.Map = generator.Map;

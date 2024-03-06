@@ -70,7 +70,7 @@ namespace Magi.Maps.Generators
             HashSet<Point> enemyLocations = new HashSet<Point>();
             HashSet<Point> itemLocations = new HashSet<Point>();
 
-            while (enemyLocations.Count < numSpawns)
+            while ((enemyLocations.Count + itemLocations.Count) < numSpawns)
             {
                 var point = new Point(room.X + Random.Next(1, room.Width), room.Y + Random.Next(1, room.Height));
                 if (Map.GetTile(point).BaseTileType != Constants.TileTypes.Wall)
