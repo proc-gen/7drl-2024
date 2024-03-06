@@ -63,10 +63,11 @@ namespace Magi.ECS.Systems.UpdateSystems
         private int CalculateDamage(CombatStats sourceStats, CombatStats targetStats, CombatEquipment sourceEquipment, CombatEquipment targetEquipment)
         {
             int damage = 0;
-            int damageReduction = 0;// targetStats.CurrentArmor;
 
             var weaponDamage = WeaponProcessor.CalculateDamage(random, sourceEquipment.MainHandReference, false);
             damage += weaponDamage.Damage;
+
+            int damageReduction = ArmorProcessor.CalculateDamageReduction(weaponDamage, targetEquipment.ArmorReference, targetEquipment.OffHandReference, false);
 
             return damage - damageReduction;
         }

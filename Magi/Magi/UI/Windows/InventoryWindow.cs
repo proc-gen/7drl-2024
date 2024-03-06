@@ -31,6 +31,7 @@ namespace Magi.UI.Windows
             if(!Visible && World.CurrentState == Constants.GameState.ShowInventory)
             {
                 Visible = true;
+                selectedItem = 0;
                 UpdateInventoryItems();
             }
         }
