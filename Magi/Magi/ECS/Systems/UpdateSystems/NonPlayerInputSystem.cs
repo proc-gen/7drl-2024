@@ -13,13 +13,13 @@ namespace Magi.ECS.Systems.UpdateSystems
 {
     public class NonPlayerInputSystem : ArchSystem, IUpdateSystem
     {
-        SquareGrid SquareGrid { get; set; }
+        SquareGridInGame SquareGrid { get; set; }
         AStarSearch<Location> AStarSearch { get; set; }
         QueryDescription nonPlayerQuery = new QueryDescription().WithAll<Position, Input>().WithNone<Player>();
         public NonPlayerInputSystem(GameWorld world)
             : base(world)
         {
-            SquareGrid = new SquareGrid(world);
+            SquareGrid = new SquareGridInGame(world);
             AStarSearch = new AStarSearch<Location>(SquareGrid);
         }
 

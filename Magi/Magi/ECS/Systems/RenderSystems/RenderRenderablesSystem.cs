@@ -14,7 +14,7 @@ namespace Magi.ECS.Systems.RenderSystems
     public class RenderRenderablesSystem : ArchSystem, IRenderSystem
     {
         QueryDescription renderEntitiesQuery = new QueryDescription().WithAll<Renderable, Position, Blocker>();
-        QueryDescription renderItemsQuery = new QueryDescription().WithAll<Renderable, Position, Item>();
+        QueryDescription renderItemsQuery = new QueryDescription().WithAll<Renderable, Position>().WithNone<Blocker>();
 
         public RenderRenderablesSystem(GameWorld world)
             : base(world)

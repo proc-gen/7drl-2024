@@ -1,5 +1,4 @@
-﻿using CommunityToolkit.HighPerformance.Buffers;
-using Magi.Maps.Spawners;
+﻿using Magi.Maps.Spawners;
 using Magi.Utils;
 using System;
 using System.Collections.Generic;
@@ -9,11 +8,12 @@ using System.Threading.Tasks;
 
 namespace Magi.Maps.Generators
 {
-    public class RoomsAndCorridorsGenerator : Generator
+    public class BspInteriorGenerator : Generator
     {
-        List<Rectangle> Rooms { get; set; }
+        const int MinRoomSize = 8;
 
-        public RoomsAndCorridorsGenerator(int width, int height)
+        List<Rectangle> Rooms { get; set; }
+        public BspInteriorGenerator(int width, int height) 
             : base(width, height)
         {
             Rooms = new List<Rectangle>();
@@ -29,44 +29,66 @@ namespace Magi.Maps.Generators
                 }
             }
 
-            int maxRooms = 30, minSize = 6, maxSize = 10;
+            var first = new Rectangle(1, 1, Map.Width - 1, Map.Height - 1);
+            Rooms.Add(first);
+            AddSubrectangles(first);
 
-            for (int i = 0; i < maxRooms; i++)
+            for (int i = 0; i < Rooms.Count - 1; i++)
             {
-                int roomWidth = Random.Next(minSize, maxSize);
-                int roomHeight = Random.Next(minSize, maxSize);
-                int x = Random.Next(1, Map.Width - roomWidth - 1) - 1;
-                int y = Random.Next(1, Map.Height - roomHeight - 1) - 1;
+                this.ApplyRoomToMap(Rooms[i]);
+                this.ApplyCorridor(Rooms[i].Center.X, Rooms[i].Center.Y, Rooms[i + 1].Center.X, Rooms[i + 1].Center.Y);
+            }
 
-                Rectangle room = new Rectangle(x, y, roomWidth, roomHeight);
-                bool canAdd = true;
-                if (Rooms.Any() && Rooms.Exists(a => a.Intersects(room)))
+            this.ApplyRoomToMap(Rooms.Last());
+        }
+
+        private void AddSubrectangles(Rectangle parentRectangle)
+        {
+            if(Rooms.Any()) 
+            {
+                Rooms.RemoveAt(Rooms.Count - 1);
+            }
+
+            int width = parentRectangle.Width,
+                height = parentRectangle.Height,
+                halfWidth = parentRectangle.Width / 2,
+                halfHeight = parentRectangle.Height / 2,
+                split = Random.Next(4);
+
+            if(split < 2)
+            {
+                var h1 = new Rectangle(parentRectangle.X, parentRectangle.Y, halfWidth - 1, height);
+                Rooms.Add(h1);
+                if(halfWidth > MinRoomSize)
                 {
-                    canAdd = false;
+                    AddSubrectangles(h1);
                 }
-                if (canAdd)
-                {
-                    this.ApplyRoomToMap(room);
-                    if (Rooms.Any())
-                    {
-                        Point newCenter = room.Center;
-                        Point oldCenter = Rooms.Last().Center;
 
-                        if (Random.Next(0, 2) == 1)
-                        {
-                            this.ApplyHorizontalTunnel(oldCenter.X, newCenter.X, oldCenter.Y);
-                            this.ApplyVerticalTunnel(oldCenter.Y, newCenter.Y, newCenter.X);
-                        }
-                        else
-                        {
-                            this.ApplyVerticalTunnel(oldCenter.Y, newCenter.Y, oldCenter.X);
-                            this.ApplyHorizontalTunnel(oldCenter.X, newCenter.X, newCenter.Y);
-                        }
-                    }
-                    Rooms.Add(room);
+                var h2 = new Rectangle(parentRectangle.X + halfWidth, parentRectangle.Y, halfWidth, height);
+                Rooms.Add(h2);
+                if (halfWidth > MinRoomSize)
+                {
+                    AddSubrectangles(h2);
+                }
+            }
+            else
+            {
+                var v1 = new Rectangle(parentRectangle.X, parentRectangle.Y, width, halfHeight - 1);
+                Rooms.Add(v1);
+                if (halfHeight > MinRoomSize)
+                {
+                    AddSubrectangles(v1);
+                }
+
+                var v2 = new Rectangle(parentRectangle.X, parentRectangle.Y + halfHeight, width, halfHeight);
+                Rooms.Add(v2);
+                if (halfHeight > MinRoomSize)
+                {
+                    AddSubrectangles(v2);
                 }
             }
         }
+
         public override Point GetPlayerStartingPosition()
         {
             return Rooms.First().Center;
@@ -113,7 +135,5 @@ namespace Magi.Maps.Generators
         {
             SpawnExit(world, Rooms.Last().Center);
         }
-
-        
     }
 }

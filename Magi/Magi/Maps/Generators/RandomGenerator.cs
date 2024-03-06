@@ -11,22 +11,6 @@ namespace Magi.Maps.Generators
 {
     public class RandomGenerator : Generator
     {
-        static Tile Wall = new Tile()
-        {
-            BaseTileType = Constants.TileTypes.Wall,
-            BackgroundColor = new Color(0f, 0f, .5f)
-        };
-        static Tile FloorA = new Tile()
-        {
-            BaseTileType = Constants.TileTypes.Floor,
-            BackgroundColor = Color.LightGray
-        };
-        static Tile FloorB = new Tile()
-        {
-            BaseTileType = Constants.TileTypes.Floor,
-            BackgroundColor = Color.WhiteSmoke
-        };
-
         List<Rectangle> Rooms { get; set; }
 
         public RandomGenerator(int width, int height)
@@ -73,7 +57,7 @@ namespace Magi.Maps.Generators
 
         public override void SpawnExitForMap(GameWorld world)
         {
-            
+            SpawnExit(world, Rooms.Last().Center);
         }
 
         public override void SpawnEntitiesForMap(GameWorld world, RandomTable<string> enemySpawnTable, RandomTable<string> itemSpawnTable)
@@ -82,11 +66,11 @@ namespace Magi.Maps.Generators
             ItemSpawner itemSpawner = new ItemSpawner(itemSpawnTable, Random);
             var room = Rooms.First();
 
-            int numSpawns = Random.Next(0, 4);
+            int numSpawns = Random.Next(0, Map.Width * Map.Height / 20);
             HashSet<Point> enemyLocations = new HashSet<Point>();
             HashSet<Point> itemLocations = new HashSet<Point>();
 
-            while (enemyLocations.Count < numSpawns)
+            while ((enemyLocations.Count + itemLocations.Count) < numSpawns)
             {
                 var point = new Point(room.X + Random.Next(1, room.Width), room.Y + Random.Next(1, room.Height));
                 if (Map.GetTile(point).BaseTileType != Constants.TileTypes.Wall)
