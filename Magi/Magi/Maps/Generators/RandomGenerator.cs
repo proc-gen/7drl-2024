@@ -73,7 +73,7 @@ namespace Magi.Maps.Generators
 
         public override void SpawnExitForMap(GameWorld world)
         {
-            
+            SpawnExit(world, Rooms.Last().Center);
         }
 
         public override void SpawnEntitiesForMap(GameWorld world, RandomTable<string> enemySpawnTable, RandomTable<string> itemSpawnTable)

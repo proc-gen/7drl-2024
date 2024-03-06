@@ -129,7 +129,7 @@ namespace Magi.Maps.Generators
 
         public override void SpawnExitForMap(GameWorld world)
         {
-            
+            SpawnExit(world, Rooms.Last().Center);
         }
 
         private void ApplyRoomToMap(Rectangle room)
