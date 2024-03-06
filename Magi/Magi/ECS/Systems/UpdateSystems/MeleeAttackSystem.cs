@@ -44,7 +44,7 @@ namespace Magi.ECS.Systems.UpdateSystems
                         {
                             meleeAttack.Target.Entity.Add(new Dead());
                         }
-                        else
+                        else if(meleeAttack.Target.Entity.Has<Player>())
                         {
                             World.CurrentState = Constants.GameState.PlayerDeath;
                         }
