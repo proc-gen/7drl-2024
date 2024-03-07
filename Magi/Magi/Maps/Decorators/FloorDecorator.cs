@@ -28,13 +28,13 @@ namespace Magi.Maps.Decorators
             switch (style)
             {
                 case FloorDecorationStyles.SimpleCheckerboard:
-                    SimpleCheckerboard(generator, colors.Item1.GetDark(), colors.Item2.GetDark()); 
+                    SimpleCheckerboard(generator, colors.Item1, colors.Item2); 
                     break;
                 case FloorDecorationStyles.Diamond:
-                    Diamond(generator, colors.Item1.GetDark(), colors.Item2.GetDark());
+                    Diamond(generator, colors.Item1, colors.Item2);
                     break;
                 case FloorDecorationStyles.Distance:
-                    Distance(generator, colors.Item1.GetDark(), colors.Item2.GetDark());
+                    Distance(generator, colors.Item1, colors.Item2);
                     break;
             }
         }
@@ -44,15 +44,15 @@ namespace Magi.Maps.Decorators
             switch(element)
             {
                 case Elements.Air:
-                    return new Tuple<Color, Color>(ElementColors.AirVeryLightGrey, ElementColors.AirLightGrey);
+                    return new Tuple<Color, Color>(ElementColors.AirLightGrey, ElementColors.AirVeryLightGrey);
                 case Elements.Fire:
                     return new Tuple<Color, Color>(ElementColors.FireOrange, ElementColors.FireYellow);
                 case Elements.Water:
                     return new Tuple<Color, Color>(ElementColors.WaterFadedBlue, ElementColors.WaterIceBlue);
                 case Elements.Earth:
-                    return new Tuple<Color, Color>(ElementColors.EarthDarkBrown, ElementColors.EarthLightBrown);
+                    return new Tuple<Color, Color>(ElementColors.EarthLightBrown, ElementColors.EarthDarkBrown);
                 case Elements.Lightning:
-                    return new Tuple<Color, Color>(ElementColors.LightningLightYellow, ElementColors.LightningVeryLightYellow);
+                    return new Tuple<Color, Color>(ElementColors.LightningVeryLightYellow, ElementColors.LightningLightYellow);
                 case Elements.Ice:
                 default:
                     return new Tuple<Color, Color>(ElementColors.IceCyan, ElementColors.IceBlue);
@@ -68,7 +68,7 @@ namespace Magi.Maps.Decorators
                     var tile = generator.Map.GetTile(i, j);
                     if(tile.BaseTileType == TileTypes.Floor)
                     {
-                        tile.BackgroundColor = i % 2 == j % 2 ? colorA : colorB;
+                        tile.BackgroundColor = i % 2 == j % 2 ? colorA.GetDark() : colorB.GetDark();
                         generator.Map.SetTile(i, j, tile);
                     }
                 }
@@ -85,8 +85,8 @@ namespace Magi.Maps.Decorators
                     if (tile.BaseTileType == TileTypes.Floor)
                     {
                         tile.Glyph = i % 2 == 0 ? (char)16 : (char)17;
-                        tile.BackgroundColor = colorA;
-                        tile.GlyphColor = colorB;
+                        tile.BackgroundColor = colorA.GetDark();
+                        tile.GlyphColor = colorB.GetDark();
                         generator.Map.SetTile(i, j, tile);
                     }
                 }
@@ -104,7 +104,7 @@ namespace Magi.Maps.Decorators
                 distances[i] = -1;
             }
 
-            var exit = new Location(generator.GetPlayerStartingPosition());
+            var exit = new Location(generator.GetExitPosition());
             float maxDistance = 0;
             for (int i = 0; i < generator.Map.Width; i++)
             {
@@ -130,7 +130,7 @@ namespace Magi.Maps.Decorators
                     var tile = generator.Map.GetTile(i, j);
                     if (tile.BaseTileType == TileTypes.Floor && distances[j * generator.Map.Width + i] >= 0)
                     {
-                        tile.BackgroundColor = Color.Lerp(colorA, colorB, distances[j * generator.Map.Width + i] / maxDistance);
+                        tile.BackgroundColor = Color.Lerp(colorA, colorB.GetDarkest(), distances[j * generator.Map.Width + i] / maxDistance);
                         generator.Map.SetTile(i, j, tile);
                     }
                 }

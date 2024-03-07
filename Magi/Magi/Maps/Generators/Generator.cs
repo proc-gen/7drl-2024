@@ -14,7 +14,7 @@ namespace Magi.Maps.Generators
         public static Tile Wall = new Tile()
         {
             BaseTileType = Constants.TileTypes.Wall,
-            BackgroundColor = new Color(0f, 0f, .5f),
+            BackgroundColor = new Color(.5f, .5f, .5f),
         };
         public static Tile Floor = new Tile()
         {
@@ -33,6 +33,7 @@ namespace Magi.Maps.Generators
         public abstract void Generate();
 
         public abstract Point GetPlayerStartingPosition();
+        public abstract Point GetExitPosition();
         public abstract void SpawnEntitiesForMap(GameWorld world, RandomTable<string> enemySpawnTable, RandomTable<string> itemSpawnTable);
         public abstract void SpawnExitForMap(GameWorld world);
         protected void SpawnExit(GameWorld world, Point position)

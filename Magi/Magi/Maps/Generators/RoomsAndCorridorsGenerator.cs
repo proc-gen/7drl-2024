@@ -109,11 +109,14 @@ namespace Magi.Maps.Generators
             itemSpawner.SpawnEntitiesForPoints(world, itemLocations);
         }
 
-        public override void SpawnExitForMap(GameWorld world)
+        public override Point GetExitPosition()
         {
-            SpawnExit(world, Rooms.Last().Center);
+            return Rooms.Last().Center;
         }
 
-        
+        public override void SpawnExitForMap(GameWorld world)
+        {
+            SpawnExit(world, GetExitPosition());
+        }
     }
 }

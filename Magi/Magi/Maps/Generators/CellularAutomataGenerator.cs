@@ -189,7 +189,7 @@ namespace Magi.Maps.Generators
             itemSpawner.SpawnEntitiesForPoints(world, itemLocations);
         }
 
-        public override void SpawnExitForMap(GameWorld world)
+        public override Point GetExitPosition()
         {
             SquareGridMapOnly SquareGrid = new SquareGridMapOnly(Map);
             AStarSearch<Location> AStarSearch = new AStarSearch<Location>(SquareGrid);
@@ -212,7 +212,7 @@ namespace Magi.Maps.Generators
                             distance = newDistance;
                             exit = end;
                         }
-                        else if(newDistance == -1 && start.Point == end)
+                        else if (newDistance == -1 && start.Point == end)
                         {
                             Map.SetTile(i, j, Wall);
                         }
@@ -220,7 +220,12 @@ namespace Magi.Maps.Generators
                 }
             }
 
-            SpawnExit(world, exit);
+            return exit;
+        }
+
+        public override void SpawnExitForMap(GameWorld world)
+        {
+            SpawnExit(world, GetExitPosition());
         }
     }
 }

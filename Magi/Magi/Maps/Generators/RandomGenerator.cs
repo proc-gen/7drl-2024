@@ -56,7 +56,37 @@ namespace Magi.Maps.Generators
             return Rooms.First().Center;
         }
 
-        public override void SpawnExitForMap(GameWorld world)
+        public override void SpawnEntitiesForMap(GameWorld world, RandomTable<string> enemySpawnTable, RandomTable<string> itemSpawnTable)
+        {
+            EnemySpawner enemySpawner = new EnemySpawner(enemySpawnTable, Random);
+            ItemSpawner itemSpawner = new ItemSpawner(itemSpawnTable, Random);
+            var room = Rooms.First();
+
+            int numSpawns = Random.Next(0, 100);
+            HashSet<Point> enemyLocations = new HashSet<Point>();
+            HashSet<Point> itemLocations = new HashSet<Point>();
+
+            while ((enemyLocations.Count + itemLocations.Count) < numSpawns)
+            {
+                var point = new Point(room.X + Random.Next(1, room.Width), room.Y + Random.Next(1, room.Height));
+                if (Map.GetTile(point).BaseTileType != Constants.TileTypes.Wall)
+                {
+                    if (Random.Next(4) == 0)
+                    {
+                        itemLocations.Add(point);
+                    }
+                    else
+                    {
+                        enemyLocations.Add(point);
+                    }
+                }
+            }
+
+            enemySpawner.SpawnEntitiesForPoints(world, enemyLocations);
+            itemSpawner.SpawnEntitiesForPoints(world, itemLocations);
+        }
+
+        public override Point GetExitPosition()
         {
             SquareGridMapOnly SquareGrid = new SquareGridMapOnly(Map);
             AStarSearch<Location> AStarSearch = new AStarSearch<Location>(SquareGrid);
@@ -87,37 +117,12 @@ namespace Magi.Maps.Generators
                 }
             }
 
-            SpawnExit(world, exit);
+            return exit;
         }
 
-        public override void SpawnEntitiesForMap(GameWorld world, RandomTable<string> enemySpawnTable, RandomTable<string> itemSpawnTable)
+        public override void SpawnExitForMap(GameWorld world)
         {
-            EnemySpawner enemySpawner = new EnemySpawner(enemySpawnTable, Random);
-            ItemSpawner itemSpawner = new ItemSpawner(itemSpawnTable, Random);
-            var room = Rooms.First();
-
-            int numSpawns = Random.Next(0, 100);
-            HashSet<Point> enemyLocations = new HashSet<Point>();
-            HashSet<Point> itemLocations = new HashSet<Point>();
-
-            while ((enemyLocations.Count + itemLocations.Count) < numSpawns)
-            {
-                var point = new Point(room.X + Random.Next(1, room.Width), room.Y + Random.Next(1, room.Height));
-                if (Map.GetTile(point).BaseTileType != Constants.TileTypes.Wall)
-                {
-                    if (Random.Next(4) == 0)
-                    {
-                        itemLocations.Add(point);
-                    }
-                    else
-                    {
-                        enemyLocations.Add(point);
-                    }
-                }
-            }
-
-            enemySpawner.SpawnEntitiesForPoints(world, enemyLocations);
-            itemSpawner.SpawnEntitiesForPoints(world, itemLocations);
+            SpawnExit(world, GetExitPosition());
         }
     }
 }

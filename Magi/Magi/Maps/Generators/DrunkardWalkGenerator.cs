@@ -37,7 +37,7 @@ namespace Magi.Maps.Generators
             {
                 int drunkX = start.X,
                     drunkY = start.Y,
-                    drunkLife = 400;
+                    drunkLife = 150;
 
                 while(drunkLife > 0)
                 {
@@ -152,7 +152,7 @@ namespace Magi.Maps.Generators
             itemSpawner.SpawnEntitiesForPoints(world, itemLocations);
         }
 
-        public override void SpawnExitForMap(GameWorld world)
+        public override Point GetExitPosition()
         {
             SquareGridMapOnly SquareGrid = new SquareGridMapOnly(Map);
             AStarSearch<Location> AStarSearch = new AStarSearch<Location>(SquareGrid);
@@ -183,7 +183,12 @@ namespace Magi.Maps.Generators
                 }
             }
 
-            SpawnExit(world, exit);
+            return exit;
+        }
+
+        public override void SpawnExitForMap(GameWorld world)
+        {
+            SpawnExit(world, GetExitPosition());
         }
     }
 }
