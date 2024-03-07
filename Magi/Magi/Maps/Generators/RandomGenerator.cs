@@ -32,7 +32,7 @@ namespace Magi.Maps.Generators
                     }
                     else
                     {
-                        Map.SetTile(i, j, i % 2 == j % 2 ? FloorA : FloorB);
+                        Map.SetTile(i, j, i % 2 == j % 2 ? Floor : Floor);
                     }
                 }
             }

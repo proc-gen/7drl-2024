@@ -4,6 +4,7 @@ using Magi.Constants;
 using Magi.Containers;
 using Magi.ECS.Components;
 using Magi.Maps;
+using Magi.Maps.Decorators;
 using Magi.Maps.Generators;
 using Magi.Maps.Spawners;
 using Magi.Serialization;
@@ -98,6 +99,7 @@ namespace Magi.Utils
             SetNextLevel(playerLevel);
 
             var generator = Tomb.IncrementLevel();
+            FloorDecorator.Decorate(generator, Tomb.Element);
             Map = generator.Map;
 
             SetStartingPosition(generator);

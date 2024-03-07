@@ -121,7 +121,7 @@ namespace Magi.Maps.Generators
 
         private void SetFloor(Map map, int i, int j)
         {
-            map.SetTile(i, j, i % 2 == j % 2 ? FloorA : FloorB);
+            map.SetTile(i, j, i % 2 == j % 2 ? Floor : Floor);
         }
 
         public override Point GetPlayerStartingPosition()

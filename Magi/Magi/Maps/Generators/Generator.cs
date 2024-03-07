@@ -15,18 +15,11 @@ namespace Magi.Maps.Generators
         {
             BaseTileType = Constants.TileTypes.Wall,
             BackgroundColor = new Color(0f, 0f, .5f),
-            Glyph = '#',
-            GlyphColor = new Color(.5f, .5f, .5f),
         };
-        public static Tile FloorA = new Tile()
+        public static Tile Floor = new Tile()
         {
             BaseTileType = Constants.TileTypes.Floor,
             BackgroundColor = Color.LightGray
-        };
-        public static Tile FloorB = new Tile()
-        {
-            BaseTileType = Constants.TileTypes.Floor,
-            BackgroundColor = Color.WhiteSmoke
         };
 
         public Map Map { get; protected set; }
