@@ -49,7 +49,7 @@ namespace Magi.UI
             }
             else if (keyboard.IsKeyDown(Keys.Enter))
             {
-                RootScreen.AddScreen(Screens.Game, new GameScreen(RootScreen, false));
+                RootScreen.AddScreen(Screens.Game, new GameScreen(RootScreen, PlayerSpawner.PlayerContainers.Keys.ElementAt(selectedClass)));
             }
             else if(keyboard.IsKeyDown(Keys.Escape))
             {
@@ -65,14 +65,18 @@ namespace Magi.UI
             for(int i = 0; i < PlayerSpawner.PlayerContainers.Count; i++)
             {
                 int horizontalOffset = screen.Width / 4 + ((screen.Width / 4) * i);
-                screen.DrawRLTKStyleBox(horizontalOffset - 10, 20, 20, 20, selectedClass == i ? Color.Yellow : Color.White, Color.Black);
+                screen.DrawRLTKStyleBox(horizontalOffset - 14, 20, 28, 20, selectedClass == i ? Color.Yellow : Color.White, Color.Black);
                 var container = PlayerSpawner.PlayerContainers.Values.ElementAt(i);
 
                 screen.Print(horizontalOffset - container.Name.Length / 2, 22, container.Name, Color.White, Color.Black);
-                screen.Print(horizontalOffset - 8, 24, string.Concat("Strength: ", container.Strength), Color.White, Color.Black);
-                screen.Print(horizontalOffset - 8, 25, string.Concat("Dexterity: ", container.Dexterity), Color.White, Color.Black);
-                screen.Print(horizontalOffset - 8, 26, string.Concat("Intelligence: ", container.Intelligence), Color.White, Color.Black);
-                screen.Print(horizontalOffset - 8, 27, string.Concat("Vitality: ", container.Vitality), Color.White, Color.Black);
+                screen.Print(horizontalOffset - 12, 24, string.Concat("Strength: ", container.Strength), Color.White, Color.Black);
+                screen.Print(horizontalOffset - 12, 25, string.Concat("Dexterity: ", container.Dexterity), Color.White, Color.Black);
+                screen.Print(horizontalOffset - 12, 26, string.Concat("Intelligence: ", container.Intelligence), Color.White, Color.Black);
+                screen.Print(horizontalOffset - 12, 27, string.Concat("Vitality: ", container.Vitality), Color.White, Color.Black);
+
+                screen.Print(horizontalOffset - 12, 29, string.Concat("Main Hand: ", container.Mainhand), Color.White, Color.Black);
+                screen.Print(horizontalOffset - 12, 30, string.Concat("Off Hand: ", container.Offhand), Color.White, Color.Black);
+                screen.Print(horizontalOffset - 12, 31, string.Concat("Armor: ", container.Armor), Color.White, Color.Black);
             }
 
             screen.Print(screen.Width / 2 - 29, 50, "Press enter to start or escape to go back to the main menu", Color.White, Color.Black);

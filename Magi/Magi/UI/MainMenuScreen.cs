@@ -69,7 +69,7 @@ namespace Magi.UI
                         RootScreen.AddScreen(Screens.ClassSelection, new ClassSelectionScreen(RootScreen));
                         break;
                     case 1:
-                        RootScreen.AddScreen(Screens.Game, new GameScreen(RootScreen, true));
+                        RootScreen.AddScreen(Screens.Game, new GameScreen(RootScreen, string.Empty));
                         break;
                     case 2:
                         Game.Instance.MonoGameInstance.Exit();
