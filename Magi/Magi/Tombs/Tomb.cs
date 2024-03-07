@@ -21,8 +21,8 @@ namespace Magi.Tombs
             MageNameContainers = JsonFileManager.LoadDataset<MageNameContainer>(path);
         }
 
-        public Dictionary<int, Generator> Levels { get; set; }
-        public int CurrentLevel { get; set; }
+        public Dictionary<int, string> Levels { get; set; }
+        public int CurrentLevel { get; protected set; }
         public Elements Element { get; set; }
         public string Mage { get; set; }
 
@@ -41,25 +41,30 @@ namespace Magi.Tombs
                 .Add("DrunkardWalk", 1);
 
             int numLevels = 2 + playerLevel / 8;
-            CurrentLevel = 0;
+            CurrentLevel = -1;
             Mage = MageNameContainers.ToList()[Random.Next(MageNameContainers.Count)].Value.Name;
-            Levels = new Dictionary<int, Generator>();
+            Levels = new Dictionary<int, string>();
             for(int i = 0; i < numLevels; i++)
             {
-                Levels.Add(i, GenerateLevel());
+                Levels.Add(i, GeneratorTable.Roll(Random));
             }
+        }
+
+        public Generator IncrementLevel()
+        {
+            CurrentLevel++;
+            return GenerateLevel();
         }
 
         private Generator GenerateLevel()
         {
-            var generator = GetRandomGenerator();
+            var generator = GetGenerator(Levels[CurrentLevel]);
             generator.Generate();
             return generator;
         }
 
-        private Generator GetRandomGenerator()
+        private Generator GetGenerator(string key)
         {
-            var key = GeneratorTable.Roll(Random);
             switch (key)
             {
                 case "RoomsAndCorridors":

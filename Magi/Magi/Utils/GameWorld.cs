@@ -64,7 +64,7 @@ namespace Magi.Utils
 
             SetNextLevel(playerLevel);
 
-            var generator = Tomb.Levels[Tomb.CurrentLevel];
+            var generator = Tomb.IncrementLevel();
             Map = generator.Map;
 
             SetStartingPosition(generator);
@@ -86,7 +86,6 @@ namespace Magi.Utils
             }
             else
             {
-                Tomb.CurrentLevel++;
                 LogItems.Add(new LogItem("You have descended to the next level"));
             }
         }
