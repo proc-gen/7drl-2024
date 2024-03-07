@@ -36,7 +36,7 @@ namespace Magi.Maps.Spawners
             world.PlayerReference = world.World.Create(
                 new Player(),
                 new Position() { Point = startingPosition },
-                new Renderable() { Color = Color.DarkGreen, Glyph = '@' },
+                new Renderable() { Color = Color.LimeGreen, Glyph = '@' },
                 new Input() { CanAct = true },
                 new Blocker(),
                 new Name() { EntityName = "Player" },

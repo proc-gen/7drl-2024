@@ -32,7 +32,7 @@ namespace Magi.Maps.Generators
                     }
                     else
                     {
-                        Map.SetTile(i, j, i % 2 == j % 2 ? FloorA : FloorB);
+                        Map.SetTile(i, j, i % 2 == j % 2 ? Floor : Floor);
                     }
                 }
             }
@@ -54,40 +54,6 @@ namespace Magi.Maps.Generators
         public override Point GetPlayerStartingPosition()
         {
             return Rooms.First().Center;
-        }
-
-        public override void SpawnExitForMap(GameWorld world)
-        {
-            SquareGridMapOnly SquareGrid = new SquareGridMapOnly(Map);
-            AStarSearch<Location> AStarSearch = new AStarSearch<Location>(SquareGrid);
-
-            int distance = 0;
-            var start = new Location(GetPlayerStartingPosition());
-            Point exit = Point.Zero;
-
-            for (int i = 0; i < Map.Width; i++)
-            {
-                for (int j = 0; j < Map.Height; j++)
-                {
-                    var tile = Map.GetTile(i, j);
-                    if (tile.BaseTileType == Constants.TileTypes.Floor)
-                    {
-                        Point end = new Point(i, j);
-                        var newDistance = AStarSearch.DistanceToPoint(start, new Location(end));
-                        if (newDistance > distance)
-                        {
-                            distance = newDistance;
-                            exit = end;
-                        }
-                        else if (newDistance == -1 && start.Point == end)
-                        {
-                            Map.SetTile(i, j, Wall);
-                        }
-                    }
-                }
-            }
-
-            SpawnExit(world, exit);
         }
 
         public override void SpawnEntitiesForMap(GameWorld world, RandomTable<string> enemySpawnTable, RandomTable<string> itemSpawnTable)
@@ -118,6 +84,45 @@ namespace Magi.Maps.Generators
 
             enemySpawner.SpawnEntitiesForPoints(world, enemyLocations);
             itemSpawner.SpawnEntitiesForPoints(world, itemLocations);
+        }
+
+        public override Point GetExitPosition()
+        {
+            SquareGridMapOnly SquareGrid = new SquareGridMapOnly(Map);
+            AStarSearch<Location> AStarSearch = new AStarSearch<Location>(SquareGrid);
+
+            int distance = 0;
+            var start = new Location(GetPlayerStartingPosition());
+            Point exit = Point.Zero;
+
+            for (int i = 0; i < Map.Width; i++)
+            {
+                for (int j = 0; j < Map.Height; j++)
+                {
+                    var tile = Map.GetTile(i, j);
+                    if (tile.BaseTileType == Constants.TileTypes.Floor)
+                    {
+                        Point end = new Point(i, j);
+                        var newDistance = AStarSearch.DistanceToPoint(start, new Location(end));
+                        if (newDistance > distance)
+                        {
+                            distance = newDistance;
+                            exit = end;
+                        }
+                        else if (newDistance == -1 && start.Point == end)
+                        {
+                            Map.SetTile(i, j, Wall);
+                        }
+                    }
+                }
+            }
+
+            return exit;
+        }
+
+        public override void SpawnExitForMap(GameWorld world)
+        {
+            SpawnExit(world, GetExitPosition());
         }
     }
 }

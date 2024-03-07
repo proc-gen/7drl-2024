@@ -47,7 +47,7 @@ namespace Magi.Items.Processors
                 ownerEquipment.OffHandReference = IsTwoHanded(weaponInfo.WeaponType) ? weaponReference : ownerEquipment.OffHandReference;
             }
 
-            world.LogItems.Add(new LogItem(string.Concat(ownerName.EntityName, " equipped ", itemName.EntityName)));
+            world.AddLogEntry(string.Concat(ownerName.EntityName, " equipped ", itemName.EntityName));
             ownerReference.Entity.Set(ownerEquipment);
             weaponReference.Entity.Add(new Equipped());
         }

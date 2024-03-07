@@ -95,11 +95,11 @@ namespace Magi.UI.Windows
                 item.Entity.Remove<Position>();
                 world.PhysicsWorld.RemoveEntity(item, position.Point);
 
-                world.LogItems.Add(new LogItem(string.Concat(name.EntityName, " picked up ", itemName)));
+                world.AddLogEntry(string.Concat(name.EntityName, " picked up ", itemName));
             }
             else
             {
-                world.LogItems.Add(new LogItem("There's nothing here"));
+                world.AddLogEntry("There's nothing here");
             }
 
             world.StartPlayerTurn(Point.None);
@@ -151,9 +151,10 @@ namespace Magi.UI.Windows
             );
 
             int y = GameSettings.GAME_HEIGHT - 2;
-            for (int i = 1; i <= Math.Min(9, world.LogItems.Count); i++)
+            var LogItems = world.GetLogItems();
+            for (int i = 1; i <= Math.Min(9, LogItems.Count); i++)
             {
-                Console.Print(GameSettings.GAME_WIDTH / 4 + 2, y, world.LogItems[world.LogItems.Count - i].ToString());
+                Console.Print(GameSettings.GAME_WIDTH / 4 + 2, y, LogItems[LogItems.Count - i].ToString());
                 y--;
             }
         }
@@ -178,8 +179,12 @@ namespace Magi.UI.Windows
                 itemName = item.Entity.Get<Name>().EntityName;
             }
 
-            Console.Print(GameSettings.GAME_WIDTH * 3 / 4 + 2, GameSettings.GAME_HEIGHT - 9, string.Concat("Position: ", position));
-            Console.Print(GameSettings.GAME_WIDTH * 3 / 4 + 2, GameSettings.GAME_HEIGHT - 7, string.Concat("Ground: ", itemName));
+
+            Console.Print(GameSettings.GAME_WIDTH * 3 / 4 + 2, GameSettings.GAME_HEIGHT - 9, string.Concat("Tomb: ", world.Tomb.Mage, " (", world.Tomb.Element.ToString(), ")"));
+            Console.Print(GameSettings.GAME_WIDTH * 3 / 4 + 2, GameSettings.GAME_HEIGHT - 7, string.Concat("Depth: ", world.Tomb.CurrentLevel + 1, "/", world.Tomb.Levels.Count() + 1));;
+
+            Console.Print(GameSettings.GAME_WIDTH * 3 / 4 + 2, GameSettings.GAME_HEIGHT - 5, string.Concat("Position: ", position));
+            Console.Print(GameSettings.GAME_WIDTH * 3 / 4 + 2, GameSettings.GAME_HEIGHT - 3, string.Concat("Ground: ", itemName));
         }
     }
 }

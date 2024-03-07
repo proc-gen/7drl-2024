@@ -14,19 +14,12 @@ namespace Magi.Maps.Generators
         public static Tile Wall = new Tile()
         {
             BaseTileType = Constants.TileTypes.Wall,
-            BackgroundColor = new Color(0f, 0f, .5f),
-            Glyph = '#',
-            GlyphColor = new Color(.5f, .5f, .5f),
+            BackgroundColor = new Color(.5f, .5f, .5f),
         };
-        public static Tile FloorA = new Tile()
+        public static Tile Floor = new Tile()
         {
             BaseTileType = Constants.TileTypes.Floor,
             BackgroundColor = Color.LightGray
-        };
-        public static Tile FloorB = new Tile()
-        {
-            BaseTileType = Constants.TileTypes.Floor,
-            BackgroundColor = Color.WhiteSmoke
         };
 
         public Map Map { get; protected set; }
@@ -40,15 +33,19 @@ namespace Magi.Maps.Generators
         public abstract void Generate();
 
         public abstract Point GetPlayerStartingPosition();
+        public abstract Point GetExitPosition();
         public abstract void SpawnEntitiesForMap(GameWorld world, RandomTable<string> enemySpawnTable, RandomTable<string> itemSpawnTable);
         public abstract void SpawnExitForMap(GameWorld world);
         protected void SpawnExit(GameWorld world, Point position)
         {
+            var endOfTomb = world.Tomb.CurrentLevel == world.Tomb.Levels.Count();
+            var exitGlyph = endOfTomb ? (char)21 : (char)31;
+
             world.PhysicsWorld.AddEntity(world.World.Create(
                 new Exit(),
-                new Name() { EntityName = "Exit" },
+                new Name() { EntityName = string.Concat("Exit ", endOfTomb ? "to next tomb" : "to next level") },
                 new Position() { Point = position },
-                new Renderable() { Color = Color.Black, Glyph = (char)31, ShowOutsidePlayerFov = true }
+                new Renderable() { Color = Color.Black, Glyph = exitGlyph, ShowOutsidePlayerFov = true }
             ).Reference(), position);
         }
     }

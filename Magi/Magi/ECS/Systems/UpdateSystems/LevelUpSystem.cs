@@ -24,7 +24,7 @@ namespace Magi.ECS.Systems.UpdateSystems
             {
                 CombatStatHelper.ProcessLevelUp(ref stats);
                 World.PlayerReference.Entity.Set(stats);
-                World.LogItems.Add(new LogItem(string.Concat(World.PlayerReference.Entity.Get<Name>().EntityName, " leveled up!")));
+                World.AddLogEntry(string.Concat(World.PlayerReference.Entity.Get<Name>().EntityName, " leveled up!"));
                 World.CurrentState = Constants.GameState.LevelUp;
             }
         }

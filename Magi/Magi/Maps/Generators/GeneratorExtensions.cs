@@ -14,7 +14,7 @@ namespace Magi.Maps.Generators
             {
                 for (int j = room.Y + 1; j <= room.MaxExtentY; j++)
                 {
-                    generator.Map.SetTile(i, j, i % 2 == j % 2 ? Generator.FloorA : Generator.FloorB);
+                    generator.Map.SetTile(i, j, i % 2 == j % 2 ? Generator.Floor : Generator.Floor);
                 }
             }
         }
@@ -23,7 +23,7 @@ namespace Magi.Maps.Generators
         {
             for (int i = Math.Min(x1, x2); i <= Math.Max(x1, x2); i++)
             {
-                generator.Map.SetTile(i, y, i % 2 == y % 2 ? Generator.FloorA : Generator.FloorB);
+                generator.Map.SetTile(i, y, i % 2 == y % 2 ? Generator.Floor : Generator.Floor);
             }
         }
 
@@ -31,7 +31,7 @@ namespace Magi.Maps.Generators
         {
             for (int j = Math.Min(y1, y2); j <= Math.Max(y1, y2); j++)
             {
-                generator.Map.SetTile(x, j, x % 2 == j % 2 ? Generator.FloorA : Generator.FloorB);
+                generator.Map.SetTile(x, j, x % 2 == j % 2 ? Generator.Floor : Generator.Floor);
             }
         }
 
