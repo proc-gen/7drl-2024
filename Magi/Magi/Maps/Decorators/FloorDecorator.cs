@@ -1,6 +1,9 @@
 ﻿using Magi.Constants;
 using Magi.Maps.Generators;
+using Magi.Pathfinding;
 using Magi.Utils;
+using Microsoft.Xna.Framework.Media;
+using SadRogue.Primitives;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -92,7 +95,46 @@ namespace Magi.Maps.Decorators
 
         private static void Distance(Generator generator, Color colorA, Color colorB)
         {
+            SquareGridMapOnly SquareGrid = new SquareGridMapOnly(generator.Map);
+            AStarSearch<Location> AStarSearch = new AStarSearch<Location>(SquareGrid);
 
-        }
+            var distances = new int[generator.Map.Width * generator.Map.Height];
+            for(int i = 0; i < distances.Length; i++)
+            {
+                distances[i] = -1;
+            }
+
+            var exit = new Location(generator.GetPlayerStartingPosition());
+            float maxDistance = 0;
+            for (int i = 0; i < generator.Map.Width; i++)
+            {
+                for (int j = 0; j < generator.Map.Height; j++)
+                {
+                    var tile = generator.Map.GetTile(i, j);
+                    if (tile.BaseTileType == TileTypes.Floor)
+                    {
+                        Point end = new Point(i, j);
+                        distances[j * generator.Map.Width + i] = AStarSearch.DistanceToPoint(exit, new Location(end));
+                        if(distances[j * generator.Map.Width + i] > maxDistance)
+                        {
+                            maxDistance = distances[j * generator.Map.Width + i];
+                        }
+                    }
+                }
+            }
+
+            for (int i = 0; i < generator.Map.Width; i++)
+            {
+                for (int j = 0; j < generator.Map.Height; j++)
+                {
+                    var tile = generator.Map.GetTile(i, j);
+                    if (tile.BaseTileType == TileTypes.Floor && distances[j * generator.Map.Width + i] >= 0)
+                    {
+                        tile.BackgroundColor = Color.Lerp(colorA, colorB, distances[j * generator.Map.Width + i] / maxDistance);
+                        generator.Map.SetTile(i, j, tile);
+                    }
+                }
+            }
+                    }
     }
 }
