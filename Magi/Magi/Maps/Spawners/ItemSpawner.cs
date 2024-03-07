@@ -1,4 +1,5 @@
-﻿using Arch.Core.Extensions;
+﻿using Arch.Core;
+using Arch.Core.Extensions;
 using Magi.Containers.DatasetContainers;
 using Magi.ECS.Components;
 using Magi.ECS.Helpers;
@@ -71,7 +72,37 @@ namespace Magi.Maps.Spawners
             world.PhysicsWorld.AddEntity(reference, point);
         }
 
-        private List<object> GetConsumableComponents(string key)
+        public static EntityReference SpawnEntityForOwner(GameWorld world, string key, EntityReference owner) 
+        {
+            var itemContainer = ItemContainers[key];
+
+            List<object> components = new List<object>()
+            {
+                new Item(),
+                new Owner() { OwnerReference =  owner },
+                new Name() { EntityName = itemContainer.Name },
+                new Renderable() { Glyph = (char)itemContainer.Glyph, Color = new Color(itemContainer.GlyphColorRed, itemContainer.GlyphColorGreen, itemContainer.GlyphColorBlue)}
+            };
+
+            switch (itemContainer.ItemType)
+            {
+                case Constants.ItemTypes.Quest:
+                    break;
+                case Constants.ItemTypes.Consumable:
+                    components.AddRange(GetConsumableComponents(key));
+                    break;
+                case Constants.ItemTypes.Weapon:
+                    components.AddRange(GetWeaponComponents(key));
+                    break;
+                case Constants.ItemTypes.Armor:
+                    components.AddRange(GetArmorComponents(key));
+                    break;
+            }
+
+            return world.World.CreateFromArray(components.ToArray()).Reference();
+        }
+
+        private static List<object> GetConsumableComponents(string key)
         {
             var components = new List<object>();
             var consumableContainer = ConsumableContainers[key];
@@ -83,7 +114,7 @@ namespace Magi.Maps.Spawners
             return components;
         }
 
-        private List<object> GetWeaponComponents(string key)
+        private static List<object> GetWeaponComponents(string key)
         {
             var components = new List<object>();
             var weaponContainer = WeaponContainers[key];
@@ -100,7 +131,7 @@ namespace Magi.Maps.Spawners
             return components;
         }
 
-        private List<object> GetArmorComponents(string key) 
+        private static List<object> GetArmorComponents(string key) 
         {
             var components = new List<object>();
             var armorContainer = ArmorContainers[key];
