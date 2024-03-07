@@ -38,11 +38,14 @@ namespace Magi.Maps.Generators
         public abstract void SpawnExitForMap(GameWorld world);
         protected void SpawnExit(GameWorld world, Point position)
         {
+            var endOfTomb = world.Tomb.CurrentLevel == world.Tomb.Levels.Count();
+            var exitGlyph = endOfTomb ? (char)21 : (char)31;
+
             world.PhysicsWorld.AddEntity(world.World.Create(
                 new Exit(),
-                new Name() { EntityName = "Exit" },
+                new Name() { EntityName = string.Concat("Exit ", endOfTomb ? "to next tomb" : "to next level") },
                 new Position() { Point = position },
-                new Renderable() { Color = Color.Black, Glyph = (char)31, ShowOutsidePlayerFov = true }
+                new Renderable() { Color = Color.Black, Glyph = exitGlyph, ShowOutsidePlayerFov = true }
             ).Reference(), position);
         }
     }
