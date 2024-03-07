@@ -19,8 +19,7 @@ namespace Magi.Containers
 
         public override string ToString()
         {
-            // return string.Concat("[", LogTime.ToString("MM/dd/yy H:mm:ss"), "] ", LogText);
-            return LogText;
+            return string.Concat("[", LogTime.ToString("MM/dd/yy H:mm:ss"), "] ", LogText);
         }
     }
 }

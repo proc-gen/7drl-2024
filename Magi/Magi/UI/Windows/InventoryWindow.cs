@@ -125,7 +125,7 @@ namespace Magi.UI.Windows
             item.Entity.Add(new Position() { Point = targetPosition });
             World.PhysicsWorld.AddEntity(item, targetPosition);
 
-            World.LogItems.Add(new LogItem(string.Concat(ownerName.EntityName, " dropped ", itemName.EntityName)));
+            World.AddLogEntry(string.Concat(ownerName.EntityName, " dropped ", itemName.EntityName));
 
             World.StartPlayerTurn(Point.None);
             Visible = false;

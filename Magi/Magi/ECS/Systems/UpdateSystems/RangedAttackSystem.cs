@@ -36,10 +36,10 @@ namespace Magi.ECS.Systems.UpdateSystems
                 if (damage > 0)
                 {
                     targetStats.CurrentHealth = Math.Max(0, targetStats.CurrentHealth - damage);
-                    World.LogItems.Add(new LogItem(string.Concat(sourceName.EntityName, " shoots ", targetName.EntityName, " for ", damage, "hp.")));
+                    World.AddLogEntry(string.Concat(sourceName.EntityName, " shoots ", targetName.EntityName, " for ", damage, "hp."));
                     if (targetStats.CurrentHealth == 0)
                     {
-                        World.LogItems.Add(new LogItem(string.Concat(sourceName.EntityName, " killed ", targetName.EntityName, "!")));
+                        World.AddLogEntry(string.Concat(sourceName.EntityName, " killed ", targetName.EntityName, "!"));
                         if (rangedAttack.Source.Entity.Has<Player>())
                         {
                             sourceStats.Experience += targetStats.Experience;
@@ -55,7 +55,7 @@ namespace Magi.ECS.Systems.UpdateSystems
                 }
                 else
                 {
-                    World.LogItems.Add(new LogItem(string.Concat(sourceName.EntityName, " is unable to hurt ", targetName.EntityName, ".")));
+                    World.AddLogEntry(string.Concat(sourceName.EntityName, " is unable to hurt ", targetName.EntityName, "."));
                 }
             });
 

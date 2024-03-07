@@ -18,7 +18,7 @@ namespace Magi.Utils
         {
             DeleteSaveData();
             var world = new GameWorld();
-            world.LogItems.Add(new LogItem("Welcome justicar"));
+            world.AddLogEntry("Welcome justicar");
             return world;
         }
 
@@ -61,7 +61,7 @@ namespace Magi.Utils
                 }
             });
 
-            world.LogItems.Add(new LogItem("Welcome back justicar"));
+            world.AddLogEntry("Welcome back justicar");
 
             return world;
         }

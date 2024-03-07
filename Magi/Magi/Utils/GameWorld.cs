@@ -32,7 +32,8 @@ namespace Magi.Utils
         public Tomb Tomb { get; set; }
         public Map Map { get; set; }
         public HashSet<Point> PlayerFov { get; set; }
-        public List<LogItem> LogItems { get; set; }
+        [JsonProperty]
+        protected List<LogItem> LogItems { get; set; }
          
         public GameWorld() 
         {
@@ -41,6 +42,38 @@ namespace Magi.Utils
             PlayerReference = EntityReference.Null;
             PlayerFov = new HashSet<Point>();
             LogItems = new List<LogItem>();
+        }
+
+        public void AddLogEntry(string entry)
+        {
+            List<string> splitEntries = new List<string>();
+            int character = 0;
+            int lineLength = 50;
+            do
+            {
+                string nextEntry = entry.Substring(character);
+                if(nextEntry.Length < lineLength)
+                {
+                    splitEntries.Add(nextEntry);
+                    character = entry.Length;
+                }
+                else
+                {
+                    int lastSpace = nextEntry.LastIndexOf(' ');
+                    splitEntries.Add(nextEntry.Substring(0, lastSpace));
+                    character = lastSpace + 1;
+                }
+            } while (character < entry.Length);
+
+            foreach(var newEntry in splitEntries)
+            {
+                LogItems.Add(new LogItem(newEntry));
+            }
+        }
+
+        public List<LogItem> GetLogItems() 
+        {
+            return LogItems;
         }
 
         public void StartPlayerTurn(Point direction)
@@ -75,18 +108,18 @@ namespace Magi.Utils
 
         private void SetNextLevel(int playerLevel)
         {
-            if (Tomb == null || Tomb.CurrentLevel == Tomb.Levels.Keys.Max())
+            if (Tomb == null || Tomb.CurrentLevel == Tomb.Levels.Count())
             {
                 if(Tomb != null)
                 {
-                    LogItems.Add(new LogItem(string.Concat("You have vanquished ", Tomb.Mage, " the ", Tomb.Element.ToString(), " mage!")));
+                    AddLogEntry(string.Concat("You have vanquished ", Tomb.Mage, " the ", Tomb.Element.ToString(), " mage!"));
                 }
                 GenerateTomb(playerLevel);
-                LogItems.Add(new LogItem(string.Concat("You have ventured into the tomb of ", Tomb.Mage, " the ", Tomb.Element.ToString(), " mage")));
+                AddLogEntry(string.Concat("You have ventured into the tomb of ", Tomb.Mage, " the ", Tomb.Element.ToString(), " mage"));
             }
             else
             {
-                LogItems.Add(new LogItem("You have descended to the next level"));
+                AddLogEntry("You have descended to the next level");
             }
         }
 
@@ -145,7 +178,7 @@ namespace Magi.Utils
             generator.SpawnExitForMap(this);
         }
 
-        public void RemoveAllNonPlayerOwnedEntities()
+        private void RemoveAllNonPlayerOwnedEntities()
         {
             PhysicsWorld.Clear();
             List<Entity> entities = new List<Entity>();

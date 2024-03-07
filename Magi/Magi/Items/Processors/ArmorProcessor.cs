@@ -30,7 +30,7 @@ namespace Magi.Items.Processors
                 EquipWearable(world, armorReference, ownerReference, ownerName, ownerEquipment, itemName, armorInfo);
             }
 
-            world.LogItems.Add(new LogItem(string.Concat(ownerName.EntityName, " equipped ", itemName.EntityName)));
+            world.AddLogEntry(string.Concat(ownerName.EntityName, " equipped ", itemName.EntityName));
             armorReference.Entity.Add(new Equipped());
         }
 
