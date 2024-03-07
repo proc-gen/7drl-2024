@@ -77,11 +77,12 @@ namespace Magi.Utils
         {
             if (Tomb == null || Tomb.CurrentLevel == Tomb.Levels.Keys.Max())
             {
-                if (Tomb != null && Tomb.CurrentLevel == Tomb.Levels.Keys.Max())
+                if(Tomb != null)
                 {
-                    LogItems.Add(new LogItem("You have ventured into another tomb"));
+                    LogItems.Add(new LogItem(string.Concat("You have vanquished ", Tomb.Mage, " the ", Tomb.Element.ToString(), " mage!")));
                 }
                 GenerateTomb(playerLevel);
+                LogItems.Add(new LogItem(string.Concat("You have ventured into the tomb of ", Tomb.Mage, " the ", Tomb.Element.ToString(), " mage")));
             }
             else
             {
@@ -93,7 +94,6 @@ namespace Magi.Utils
         private void GenerateTomb(int playerLevel)
         {
             var ElementsTable = new RandomTable<Elements>()
-                .Add(Elements.None, 1)
                 .Add(Elements.Air, 1)
                 .Add(Elements.Fire, 1)
                 .Add(Elements.Water, 1)

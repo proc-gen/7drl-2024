@@ -1,4 +1,5 @@
 ﻿using Magi.Constants;
+using Magi.Containers.DatasetContainers;
 using Magi.Maps;
 using Magi.Maps.Generators;
 using Magi.Utils;
@@ -12,9 +13,18 @@ namespace Magi.Tombs
 {
     public class Tomb
     {
+        static Dictionary<string, MageNameContainer> MageNameContainers;
+
+        static Tomb()
+        {
+            string path = Path.Combine(Directory.GetCurrentDirectory(), "Content", "Datasets", "mage-names.json");
+            MageNameContainers = JsonFileManager.LoadDataset<MageNameContainer>(path);
+        }
+
         public Dictionary<int, Generator> Levels { get; set; }
         public int CurrentLevel { get; set; }
         public Elements Element { get; set; }
+        public string Mage { get; set; }
 
         Random Random;
         RandomTable<string> GeneratorTable;
@@ -32,7 +42,7 @@ namespace Magi.Tombs
 
             int numLevels = 2 + playerLevel / 8;
             CurrentLevel = 0;
-
+            Mage = MageNameContainers.ToList()[Random.Next(MageNameContainers.Count)].Value.Name;
             Levels = new Dictionary<int, Generator>();
             for(int i = 0; i < numLevels; i++)
             {
