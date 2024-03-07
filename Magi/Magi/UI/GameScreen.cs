@@ -100,6 +100,7 @@ namespace Magi.UI
                 new MeleeAttackSystem(world),
                 new RangedAttackSystem(world),
                 new SkillAttackSystem(world),
+                new CountdownSystem(world),
                 new DeathSystem(world),
                 new LevelUpSystem(world),
             };
