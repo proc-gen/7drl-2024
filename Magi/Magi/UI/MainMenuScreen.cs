@@ -17,16 +17,21 @@ namespace Magi.UI
         ScreenSurface screen;
 
         int selectedButtonIndex = 0;
-
+        InputDelayHelper InputDelayHelper;
         public MainMenuScreen(RootScreen rootScreen)
         {
             RootScreen = rootScreen;
+            InputDelayHelper = new InputDelayHelper();
             screen = new ScreenSurface(GameSettings.GAME_WIDTH, GameSettings.GAME_HEIGHT);
         }
 
         public override void Update(TimeSpan delta)
         {
-            HandleKeyboard();
+            InputDelayHelper.Update(delta);
+            if (InputDelayHelper.ReadyForInput)
+            {
+                HandleKeyboard();
+            }
             base.Update(delta);
         }
 
@@ -61,7 +66,7 @@ namespace Magi.UI
                 switch (selectedButtonIndex)
                 {
                     case 0:
-                        RootScreen.AddScreen(Screens.Game, new GameScreen(RootScreen, false));
+                        RootScreen.AddScreen(Screens.ClassSelection, new ClassSelectionScreen(RootScreen));
                         break;
                     case 1:
                         RootScreen.AddScreen(Screens.Game, new GameScreen(RootScreen, true));

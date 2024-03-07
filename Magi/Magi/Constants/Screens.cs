@@ -11,6 +11,7 @@ namespace Magi.Constants
         Splash,
         MainMenu,
         Game,
-        GameOver
+        GameOver,
+        ClassSelection,
     }
 }
