@@ -61,14 +61,17 @@ namespace Magi.Maps.Spawners
             if(!string.IsNullOrEmpty(enemyContainer.Mainhand))
             {
                 combatEquipment.MainHandReference = ItemSpawner.SpawnEntityForOwner(world, enemyContainer.Mainhand, reference);
+                combatEquipment.MainHandReference.Entity.Add(new Equipped());
             }
             if (!string.IsNullOrEmpty(enemyContainer.Offhand))
             {
                 combatEquipment.OffHandReference = ItemSpawner.SpawnEntityForOwner(world, enemyContainer.Offhand, reference);
+                combatEquipment.OffHandReference.Entity.Add(new Equipped());
             }
             if (!string.IsNullOrEmpty(enemyContainer.Armor))
             {
                 combatEquipment.ArmorReference = ItemSpawner.SpawnEntityForOwner(world, enemyContainer.Armor, reference);
+                combatEquipment.ArmorReference.Entity.Add(new Equipped());
             }
 
             reference.Entity.Set(combatEquipment);

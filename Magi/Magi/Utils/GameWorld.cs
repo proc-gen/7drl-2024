@@ -35,6 +35,7 @@ namespace Magi.Utils
         public HashSet<Point> PlayerFov { get; set; }
         [JsonProperty]
         protected List<LogItem> LogItems { get; set; }
+        public string PlayerClass { get; set; }
          
         public GameWorld() 
         {
@@ -43,6 +44,7 @@ namespace Magi.Utils
             PlayerReference = EntityReference.Null;
             PlayerFov = new HashSet<Point>();
             LogItems = new List<LogItem>();
+            PlayerClass = "Warrior";
         }
 
         public void AddLogEntry(string entry)

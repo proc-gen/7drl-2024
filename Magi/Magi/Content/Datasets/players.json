@@ -1,0 +1,34 @@
+{
+  "data": [
+    {
+      "Name": "Warrior",
+      "Strength": 15,
+      "Vitality": 15,
+      "Intelligence": 5,
+      "Dexterity": 10,
+      "Mainhand": "Dagger",
+      "Offhand": "Buckler",
+      "Armor": ""
+    },
+    {
+      "Name": "Ranger",
+      "Strength": 10,
+      "Vitality": 10,
+      "Intelligence": 10,
+      "Dexterity": 15,
+      "Mainhand": "Short Bow",
+      "Offhand": "",
+      "Armor": ""
+    },
+    {
+      "Name": "Mage",
+      "Strength": 5,
+      "Vitality": 5,
+      "Intelligence": 15,
+      "Dexterity": 10,
+      "Mainhand": "Quarterstaff",
+      "Offhand": "",
+      "Armor": ""
+    }
+  ]
+}
