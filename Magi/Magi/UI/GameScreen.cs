@@ -33,7 +33,7 @@ namespace Magi.UI
         RandomTable<string> GeneratorTable;
         RandomTable<Elements> ElementsTable;
         Random Random;
-        public GameScreen(RootScreen rootScreen, bool loadGame)
+        public GameScreen(RootScreen rootScreen, string playerClass)
         {
             RootScreen = rootScreen;
             screen = new ScreenSurface(GameSettings.GAME_WIDTH, GameSettings.GAME_HEIGHT);
@@ -58,22 +58,23 @@ namespace Magi.UI
 
             Random = new Random();
 
-            if(loadGame)
+            if(string.IsNullOrEmpty(playerClass))
             {
                 LoadGame();
             }
             else
             {
-                NewGame();
+                NewGame(playerClass);
             }            
 
             InitWindows();
             InitSystems();
         }
 
-        private void NewGame()
+        private void NewGame(string playerClass)
         {
             world = SaveGameManager.NewGame();
+            world.PlayerClass = playerClass;
             world.GoNextLevel();
         }
 

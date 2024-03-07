@@ -30,6 +30,8 @@ namespace Magi.Maps.Spawners
             string key = SpawnTable.Roll(Random);
             var enemyContainer = EnemyContainers[key];
 
+            var combatEquipment = new CombatEquipment();
+
             var reference = world.World.Create(
                 new Position() { Point = point },
                 new Name() { EntityName = enemyContainer.Name },
@@ -53,8 +55,26 @@ namespace Magi.Maps.Spawners
                     CurrentDexterity = enemyContainer.Dexterity,
                     Experience = enemyContainer.Experience,
                 },
-                new CombatEquipment()
+                combatEquipment
             ).Reference();
+
+            if(!string.IsNullOrEmpty(enemyContainer.Mainhand))
+            {
+                combatEquipment.MainHandReference = ItemSpawner.SpawnEntityForOwner(world, enemyContainer.Mainhand, reference);
+                combatEquipment.MainHandReference.Entity.Add(new Equipped());
+            }
+            if (!string.IsNullOrEmpty(enemyContainer.Offhand))
+            {
+                combatEquipment.OffHandReference = ItemSpawner.SpawnEntityForOwner(world, enemyContainer.Offhand, reference);
+                combatEquipment.OffHandReference.Entity.Add(new Equipped());
+            }
+            if (!string.IsNullOrEmpty(enemyContainer.Armor))
+            {
+                combatEquipment.ArmorReference = ItemSpawner.SpawnEntityForOwner(world, enemyContainer.Armor, reference);
+                combatEquipment.ArmorReference.Entity.Add(new Equipped());
+            }
+
+            reference.Entity.Set(combatEquipment);
 
             world.PhysicsWorld.AddEntity(reference, point);
         }

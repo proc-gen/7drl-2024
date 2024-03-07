@@ -37,6 +37,9 @@
     <None Update="Content\Datasets\mage-names.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Update="Content\Datasets\players.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Update="Content\Datasets\weapons.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
