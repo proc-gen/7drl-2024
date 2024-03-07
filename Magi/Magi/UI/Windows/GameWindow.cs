@@ -132,11 +132,17 @@ namespace Magi.UI.Windows
 
             var stats = world.PlayerReference.Entity.Get<CombatStats>();
             var equipment = world.PlayerReference.Entity.Get<CombatEquipment>();
+            var skills = world.PlayerReference.Entity.Get<CombatSkills>();
 
-            Console.Print(2, GameSettings.GAME_HEIGHT - 9, string.Concat("Health: ", stats.CurrentHealth, " / ", stats.MaxHealth));
-            Console.Print(2, GameSettings.GAME_HEIGHT - 7, string.Concat("Mana: ", stats.CurrentMana, " / ", stats.MaxMana));
-            Console.Print(2, GameSettings.GAME_HEIGHT - 5, string.Concat("Level: ", stats.Level));
-            Console.Print(2, GameSettings.GAME_HEIGHT - 3, string.Concat("Weapon: ", equipment.MainHandReference == EntityReference.Null ? "Fist" : equipment.MainHandReference.Entity.Get<Name>().EntityName));
+            Console.Print(2, GameSettings.GAME_HEIGHT - 10, string.Concat("Health: ", stats.CurrentHealth, " / ", stats.MaxHealth));
+            Console.Print(2, GameSettings.GAME_HEIGHT - 9, string.Concat("Mana: ", stats.CurrentMana, " / ", stats.MaxMana));
+            Console.Print(2, GameSettings.GAME_HEIGHT - 8, string.Concat("Level: ", stats.Level));
+
+            Console.Print(2, GameSettings.GAME_HEIGHT - 6, string.Concat("Weapon: ", equipment.MainHandReference == EntityReference.Null ? "Fist" : equipment.MainHandReference.Entity.Get<Name>().EntityName));
+            Console.Print(2, GameSettings.GAME_HEIGHT - 5, string.Concat("Skill 1: ", skills.Skill1 == EntityReference.Null ? string.Empty : string.Concat(skills.Skill1.Entity.Get<Name>().EntityName, " (", skills.Skill1.Entity.Get<Skill>().ManaCost, "mp)")));
+            Console.Print(2, GameSettings.GAME_HEIGHT - 4, string.Concat("Skill 2: ", skills.Skill2 == EntityReference.Null ? string.Empty : string.Concat(skills.Skill2.Entity.Get<Name>().EntityName, " (", skills.Skill2.Entity.Get<Skill>().ManaCost, "mp)")));
+            Console.Print(2, GameSettings.GAME_HEIGHT - 3, string.Concat("Skill 3: ", skills.Skill3 == EntityReference.Null ? string.Empty : string.Concat(skills.Skill3.Entity.Get<Name>().EntityName, " (", skills.Skill3.Entity.Get<Skill>().ManaCost, "mp)")));
+            Console.Print(2, GameSettings.GAME_HEIGHT - 2, string.Concat("Skill 4: ", skills.Skill4 == EntityReference.Null ? string.Empty : string.Concat(skills.Skill4.Entity.Get<Name>().EntityName, " (", skills.Skill4.Entity.Get<Skill>().ManaCost, "mp)")));
         }
 
         private void RenderGameLog()
