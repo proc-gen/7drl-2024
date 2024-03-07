@@ -1,7 +1,7 @@
 ﻿using Arch.Core;
 using Arch.Core.Extensions;
 using Magi.ECS.Components;
-using Magi.Items.Processors;
+using Magi.Processors;
 using Magi.Utils;
 using System;
 using System.Collections.Generic;

@@ -2,7 +2,6 @@
 using Arch.Core.Extensions;
 using Magi.Containers;
 using Magi.ECS.Components;
-using Magi.Items.Processors;
 using Magi.Utils;
 using System;
 using System.Collections.Generic;
@@ -32,7 +31,7 @@ namespace Magi.ECS.Systems.UpdateSystems
                 var targetStats = rangedAttack.Target.Entity.Get<CombatStats>();
                 var targetEquipment = rangedAttack.Target.Entity.Get<CombatEquipment>();
 
-                var damage = CombatStatHelper.CalculateDamage(random, Constants.AttackType.Ranged, sourceStats, sourceEquipment, targetStats, targetEquipment);
+                var damage = CombatStatHelper.CalculatePhysicalDamage(random, Constants.AttackType.Ranged, sourceStats, sourceEquipment, targetStats, targetEquipment);
                 if (damage > 0)
                 {
                     targetStats.CurrentHealth = Math.Max(0, targetStats.CurrentHealth - damage);

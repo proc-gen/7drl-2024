@@ -40,7 +40,7 @@ namespace Magi.ECS.Systems.UpdateSystems
                     var targetStats = skillAttack.Target.Entity.Get<CombatStats>();
                     var targetEquipment = skillAttack.Target.Entity.Get<CombatEquipment>();
 
-                    var damage = CombatStatHelper.CalculateDamage(random, Constants.AttackType.Magic, sourceStats, sourceEquipment, targetStats, targetEquipment);
+                    var damage = CombatStatHelper.CalculateMagicDamage(random, skillInfo, sourceStats, sourceEquipment, targetStats, targetEquipment);
 
                     if (damage > 0)
                     {

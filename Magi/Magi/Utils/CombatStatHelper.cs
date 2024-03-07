@@ -1,6 +1,6 @@
 ﻿using Magi.Constants;
 using Magi.ECS.Components;
-using Magi.Items.Processors;
+using Magi.Processors;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -33,26 +33,28 @@ namespace Magi.Utils
             return 2 * level + 4 * intelligence;
         }
 
-        public static int CalculateDamage(Random random, AttackType attackType, CombatStats sourceStats, CombatEquipment sourceEquipment, CombatStats targetStats, CombatEquipment targetEquipment)
+        public static int CalculatePhysicalDamage(Random random, AttackType attackType, CombatStats sourceStats, CombatEquipment sourceEquipment, CombatStats targetStats, CombatEquipment targetEquipment)
         {
             int damage = GetInitialDamage(attackType, sourceStats); 
             bool melee = attackType == AttackType.Melee;
-            int damageReduction = 0;
 
-            if (attackType == AttackType.Magic)
-            {
+            var weaponDamage = WeaponProcessor.CalculateDamage(random, sourceEquipment.MainHandReference, melee, damage);
+            damage = weaponDamage.Damage;
 
-            }
-            else
-            {
-                var weaponDamage = WeaponProcessor.CalculateDamage(random, sourceEquipment.MainHandReference, melee, damage);
-                damage = weaponDamage.Damage;
-
-                damageReduction = ArmorProcessor.CalculateDamageReduction(random, weaponDamage, targetEquipment.ArmorReference, targetEquipment.OffHandReference, melee);
-                damage += (int)(weaponDamage.ImbuementDamage * (1f + sourceStats.CurrentIntelligence / 100f));
-            }
+            int damageReduction = ArmorProcessor.CalculateDamageReduction(random, weaponDamage, targetEquipment.ArmorReference, targetEquipment.OffHandReference, melee);
+            damage += (int)(weaponDamage.ImbuementDamage * (1f + sourceStats.CurrentIntelligence / 100f));
                 
             return damage - damageReduction;
+        }
+
+        public static int CalculateMagicDamage(Random random, Skill skill, CombatStats sourceStats, CombatEquipment sourceEquipment, CombatStats targetStats, CombatEquipment targetEquipment)
+        {
+            int damage = GetInitialDamage(AttackType.Magic, sourceStats);
+
+            var skillDamage = SkillDamageProcessor.CalculateDamage(random, skill, damage);
+            damage += skillDamage.Damage;
+
+            return damage;
         }
 
         private static int GetInitialDamage(AttackType attackType, CombatStats sourceStats)

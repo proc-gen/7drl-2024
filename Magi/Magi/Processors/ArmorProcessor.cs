@@ -9,7 +9,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Magi.Items.Processors
+namespace Magi.Processors
 {
     public static class ArmorProcessor
     {
@@ -21,11 +21,11 @@ namespace Magi.Items.Processors
             var itemName = armorReference.Entity.Get<Name>();
             var armorInfo = armorReference.Entity.Get<Armor>();
 
-            if(armorInfo.ArmorType == Constants.ArmorType.Shield)
+            if (armorInfo.ArmorType == Constants.ArmorType.Shield)
             {
                 EquipShield(world, armorReference, ownerReference, ownerName, ownerEquipment, itemName, armorInfo);
             }
-            else if(armorInfo.ArmorType == Constants.ArmorType.Wearable)
+            else if (armorInfo.ArmorType == Constants.ArmorType.Wearable)
             {
                 EquipWearable(world, armorReference, ownerReference, ownerName, ownerEquipment, itemName, armorInfo);
             }
@@ -36,7 +36,7 @@ namespace Magi.Items.Processors
 
         private static void EquipWearable(GameWorld world, EntityReference armorReference, EntityReference ownerReference, Name ownerName, CombatEquipment ownerEquipment, Name itemName, Armor armorInfo)
         {
-            if(ownerEquipment.ArmorReference != EntityReference.Null) 
+            if (ownerEquipment.ArmorReference != EntityReference.Null)
             {
                 ownerEquipment.ArmorReference.Entity.Remove<Equipped>();
             }
@@ -47,13 +47,13 @@ namespace Magi.Items.Processors
 
         private static void EquipShield(GameWorld world, EntityReference armorReference, EntityReference ownerReference, Name ownerName, CombatEquipment ownerEquipment, Name itemName, Armor armorInfo)
         {
-            if(ownerEquipment.MainHandReference != EntityReference.Null
-                && WeaponProcessor.IsTwoHanded(ownerEquipment.MainHandReference.Entity.Get<Weapon>().WeaponType)) 
+            if (ownerEquipment.MainHandReference != EntityReference.Null
+                && WeaponProcessor.IsTwoHanded(ownerEquipment.MainHandReference.Entity.Get<Weapon>().WeaponType))
             {
                 ownerEquipment.MainHandReference.Entity.Remove<Equipped>();
                 ownerEquipment.MainHandReference = EntityReference.Null;
             }
-            else if(ownerEquipment.OffHandReference != EntityReference.Null) 
+            else if (ownerEquipment.OffHandReference != EntityReference.Null)
             {
                 ownerEquipment.OffHandReference.Entity.Remove<Equipped>();
             }
@@ -67,13 +67,13 @@ namespace Magi.Items.Processors
             int reduction = 0;
             int blockChance = 0;
 
-            if(armorReference != EntityReference.Null)
+            if (armorReference != EntityReference.Null)
             {
                 reduction += armorReference.Entity.Get<Armor>().ArmorBonus;
                 blockChance += armorReference.Entity.Get<Armor>().BlockChance;
             }
 
-            if(offhandReference != EntityReference.Null)
+            if (offhandReference != EntityReference.Null)
             {
                 if (offhandReference.Entity.Has<Armor>())
                 {

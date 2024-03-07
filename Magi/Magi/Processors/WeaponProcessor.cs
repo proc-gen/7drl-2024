@@ -10,7 +10,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Magi.Items.Processors
+namespace Magi.Processors
 {
     public static class WeaponProcessor
     {
@@ -22,21 +22,21 @@ namespace Magi.Items.Processors
             var itemName = weaponReference.Entity.Get<Name>();
             var weaponInfo = weaponReference.Entity.Get<Weapon>();
 
-            if(ownerEquipment.MainHandReference == EntityReference.Null
+            if (ownerEquipment.MainHandReference == EntityReference.Null
                 && ownerEquipment.OffHandReference == EntityReference.Null)
             {
                 ownerEquipment.MainHandReference = weaponReference;
                 ownerEquipment.OffHandReference = IsTwoHanded(weaponInfo.WeaponType) ? weaponReference : ownerEquipment.OffHandReference;
             }
-            else if(ownerEquipment.MainHandReference == EntityReference.Null
+            else if (ownerEquipment.MainHandReference == EntityReference.Null
                 && !IsTwoHanded(weaponInfo.WeaponType))
             {
                 ownerEquipment.MainHandReference = weaponReference;
             }
-            else if(ownerEquipment.MainHandReference != EntityReference.Null)
+            else if (ownerEquipment.MainHandReference != EntityReference.Null)
             {
                 ownerEquipment.MainHandReference.Entity.Remove<Equipped>();
-                if (IsTwoHanded(weaponInfo.WeaponType) 
+                if (IsTwoHanded(weaponInfo.WeaponType)
                     && ownerEquipment.MainHandReference != ownerEquipment.OffHandReference
                     && ownerEquipment.OffHandReference != EntityReference.Null)
                 {
@@ -52,10 +52,10 @@ namespace Magi.Items.Processors
             weaponReference.Entity.Add(new Equipped());
         }
 
-        public static bool IsTwoHanded(Constants.WeaponTypes weaponType)
+        public static bool IsTwoHanded(WeaponTypes weaponType)
         {
-            return weaponType == Constants.WeaponTypes.TwoHandedMelee
-                    || weaponType == Constants.WeaponTypes.TwoHandedRanged;
+            return weaponType == WeaponTypes.TwoHandedMelee
+                    || weaponType == WeaponTypes.TwoHandedRanged;
         }
 
         public static DamageCalculation CalculateDamage(Random random, EntityReference weaponReference, bool melee, int bonusDamage)
@@ -66,23 +66,23 @@ namespace Magi.Items.Processors
             int imbuementDamage = 0;
             Elements imbuementElement = Elements.None;
 
-            if(weaponReference != EntityReference.Null)
+            if (weaponReference != EntityReference.Null)
             {
                 var weapon = weaponReference.Entity.Get<Weapon>();
-                if((melee && weapon.Range == 1) || (!melee && weapon.Range > 1))
+                if (melee && weapon.Range == 1 || !melee && weapon.Range > 1)
                 {
                     damageType = weapon.DamageType;
-                    
+
                     var damageEntries = weapon.DamageRoll.Split('d');
                     int numDice = int.Parse(damageEntries[0]);
                     int numSides = int.Parse(damageEntries[1]);
 
-                    for(int i = 0; i < numDice; i++)
+                    for (int i = 0; i < numDice; i++)
                     {
                         damage += random.Next(0, numSides) + 1;
                     }
 
-                    criticalHit = random.Next(100) < ((20 - weapon.CriticalHitRoll + 1) * 5);
+                    criticalHit = random.Next(100) < (20 - weapon.CriticalHitRoll + 1) * 5;
                     damage *= criticalHit ? weapon.CriticalHitMultiplier : 1;
 
                     if (weaponReference.Entity.Has<Imbuement>())

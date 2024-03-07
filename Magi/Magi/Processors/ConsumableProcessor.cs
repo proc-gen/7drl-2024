@@ -9,7 +9,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Magi.Items.Processors
+namespace Magi.Processors
 {
     public static class ConsumableProcessor
     {
@@ -23,10 +23,10 @@ namespace Magi.Items.Processors
             var itemName = entityToProcess.Entity.Get<Name>();
             var consumable = entityToProcess.Entity.Get<Consumable>();
 
-            switch(consumable.ConsumableType)
+            switch (consumable.ConsumableType)
             {
                 case Constants.ConsumableTypes.Health:
-                    if(ownerStats.CurrentHealth < ownerStats.MaxHealth)
+                    if (ownerStats.CurrentHealth < ownerStats.MaxHealth)
                     {
                         int healAmount = Math.Min(consumable.ConsumableAmount, ownerStats.MaxHealth - ownerStats.CurrentHealth);
                         ownerStats.CurrentHealth += healAmount;
