@@ -12,5 +12,7 @@ namespace Magi.Containers
         public int Damage { get; set; }
         public DamageTypes DamageType { get; set; }
         public bool CriticalHit { get; set; }
+        public int ImbuementDamage { get; set; }
+        public Elements ImbuementElement { get; set; }
     }
 }

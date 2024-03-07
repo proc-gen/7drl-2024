@@ -63,6 +63,8 @@ namespace Magi.Items.Processors
             int damage = bonusDamage;
             DamageTypes damageType = DamageTypes.Bludgeoning;
             bool criticalHit = false;
+            int imbuementDamage = 0;
+            Elements imbuementElement = Elements.None;
 
             if(weaponReference != EntityReference.Null)
             {
@@ -82,6 +84,12 @@ namespace Magi.Items.Processors
 
                     criticalHit = random.Next(100) < ((20 - weapon.CriticalHitRoll + 1) * 5);
                     damage *= criticalHit ? weapon.CriticalHitMultiplier : 1;
+
+                    if (weaponReference.Entity.Has<Imbuement>())
+                    {
+                        imbuementDamage = random.Next(3) + 1;
+                        imbuementElement = weaponReference.Entity.Get<Imbuement>().Element;
+                    }
                 }
             }
             else
@@ -95,6 +103,8 @@ namespace Magi.Items.Processors
                 Damage = damage,
                 DamageType = damageType,
                 CriticalHit = criticalHit,
+                ImbuementDamage = imbuementDamage,
+                ImbuementElement = imbuementElement,
             };
         }
     }

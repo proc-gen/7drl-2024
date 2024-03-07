@@ -99,6 +99,7 @@ namespace Magi.UI
                 new EntityActSystem(world),
                 new MeleeAttackSystem(world),
                 new RangedAttackSystem(world),
+                new SkillAttackSystem(world),
                 new DeathSystem(world),
                 new LevelUpSystem(world),
             };
