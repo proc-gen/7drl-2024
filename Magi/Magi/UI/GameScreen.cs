@@ -94,13 +94,14 @@ namespace Magi.UI
 
             updateSystems = new List<IUpdateSystem>()
             {
+                new CountdownSystem(world),
+                new ReplenishmentSystem(world),
                 new NonPlayerInputSystem(world),
                 new UseItemSystem(world),
                 new EntityActSystem(world),
                 new MeleeAttackSystem(world),
                 new RangedAttackSystem(world),
                 new SkillAttackSystem(world),
-                new CountdownSystem(world),
                 new DeathSystem(world),
                 new LevelUpSystem(world),
             };
