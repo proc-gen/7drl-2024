@@ -5,11 +5,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Magi.Containers.DatasetContainers
+namespace Magi.ECS.Components
 {
-    public struct MagicContainer : IContainer
+    public struct Skill
     {
-        public string Name { get; set; }
         public Elements Element { get; set; }
         public TargetingType TargetingType { get; set; }
         public TargetSpace TargetSpace { get; set; }
