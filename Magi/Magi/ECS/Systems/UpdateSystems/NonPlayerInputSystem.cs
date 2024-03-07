@@ -35,7 +35,7 @@ namespace Magi.ECS.Systems.UpdateSystems
                     if (fov.Contains(playerPosition.Point))
                     {
                         bool melee = combatEquipment.MainHandReference == EntityReference.Null || combatEquipment.MainHandReference.Entity.Get<Weapon>().Range == 1;
-                        bool needToMove = melee ? true : World.Map.IsPathBlocked(position.Point, playerPosition.Point, combatEquipment.MainHandReference.Entity.Get<Weapon>().Range);
+                        bool needToMove = melee ? true : World.Map.IsPathBlocked(position.Point, playerPosition.Point, combatEquipment.MainHandReference.Entity.Get<Weapon>().Range, Constants.TargetSpace.Enemy);
                         
                         if (needToMove)
                         {

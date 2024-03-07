@@ -1,4 +1,5 @@
 ﻿using Arch.Core;
+using Magi.Constants;
 using Magi.Utils;
 using Newtonsoft.Json;
 using System;
@@ -43,7 +44,7 @@ namespace Magi.Maps
             SetTile(point.X, point.Y, tile);
         }
 
-        public bool IsPathBlocked(Point start, Point end, int range)
+        public bool IsPathBlocked(Point start, Point end, int range, TargetSpace targetSpace)
         {
             bool retVal = false;
             if (start == end)
@@ -62,7 +63,7 @@ namespace Magi.Maps
                     var tile = GetTile(point);
                     if (tile.BaseTileType == Constants.TileTypes.Wall)
                     {
-                        retVal = true;
+                        retVal = point != end ? true : (targetSpace != TargetSpace.Wall && targetSpace != TargetSpace.Any);
                         break;
                     }
                 }
