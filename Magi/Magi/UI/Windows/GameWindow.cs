@@ -71,8 +71,55 @@ namespace Magi.UI.Windows
                     world.CurrentState = Constants.GameState.Targeting;
                 }
             }
+            else if (keyboard.IsKeyPressed(Keys.D1))
+            {
+                var skill = world.PlayerReference.Entity.Get<CombatSkills>().Skill1;
+                TryUseSkill(skill);
+            }
+            else if (keyboard.IsKeyPressed(Keys.D2))
+            {
+                var skill = world.PlayerReference.Entity.Get<CombatSkills>().Skill2;
+                TryUseSkill(skill);
+            }
+            else if (keyboard.IsKeyPressed(Keys.D3))
+            {
+                var skill = world.PlayerReference.Entity.Get<CombatSkills>().Skill3;
+                TryUseSkill(skill);
+            }
+            else if (keyboard.IsKeyPressed(Keys.D4))
+            {
+                var skill = world.PlayerReference.Entity.Get<CombatSkills>().Skill4;
+                TryUseSkill(skill);
+            }
 
             return retVal;
+        }
+
+        private void TryUseSkill(EntityReference skill)
+        {
+            if (skill != EntityReference.Null)
+            {
+                var stats = world.PlayerReference.Entity.Get<CombatStats>();
+                var skillInfo = skill.Entity.Get<Skill>();
+
+                if (stats.CurrentMana >= skillInfo.ManaCost)
+                {
+                    if (skillInfo.TargetingType != Constants.TargetingType.Self && skillInfo.TargetingType != Constants.TargetingType.Imbuement)
+                    {
+                        targetingOverlay.SetEntityForTargeting(skill);
+                        world.CurrentState = Constants.GameState.Targeting;
+                    }
+                    else
+                    {
+                        world.World.Create(new SkillAttack() { Source = world.PlayerReference, Target = EntityReference.Null, SourceSkill = skill });
+                        world.StartPlayerTurn(Point.None);
+                    }
+                }
+                else
+                {
+                    world.AddLogEntry(string.Concat("Not enough mana for ", skill.Entity.Get<Name>().EntityName, "!"));
+                }
+            }
         }
 
         private void RequestMoveDirection(Direction direction)
@@ -138,7 +185,18 @@ namespace Magi.UI.Windows
             Console.Print(2, GameSettings.GAME_HEIGHT - 9, string.Concat("Mana: ", stats.CurrentMana, " / ", stats.MaxMana));
             Console.Print(2, GameSettings.GAME_HEIGHT - 8, string.Concat("Level: ", stats.Level));
 
-            Console.Print(2, GameSettings.GAME_HEIGHT - 6, string.Concat("Weapon: ", equipment.MainHandReference == EntityReference.Null ? "Fist" : equipment.MainHandReference.Entity.Get<Name>().EntityName));
+            string weaponText = "Fist";
+            if(equipment.MainHandReference != EntityReference.Null)
+            {
+                weaponText = equipment.MainHandReference.Entity.Get<Name>().EntityName;
+                if (equipment.MainHandReference.Entity.Has<Imbuement>())
+                {
+                    var imbuement = equipment.MainHandReference.Entity.Get<Imbuement>();
+                    weaponText += string.Concat(" (", imbuement.Element.ToString().Substring(0, 1), "-", imbuement.TurnsLeft, ")");
+                }
+            }
+
+            Console.Print(2, GameSettings.GAME_HEIGHT - 6, string.Concat("Weapon: ", weaponText));
             Console.Print(2, GameSettings.GAME_HEIGHT - 5, string.Concat("Skill 1: ", skills.Skill1 == EntityReference.Null ? string.Empty : string.Concat(skills.Skill1.Entity.Get<Name>().EntityName, " (", skills.Skill1.Entity.Get<Skill>().ManaCost, "mp)")));
             Console.Print(2, GameSettings.GAME_HEIGHT - 4, string.Concat("Skill 2: ", skills.Skill2 == EntityReference.Null ? string.Empty : string.Concat(skills.Skill2.Entity.Get<Name>().EntityName, " (", skills.Skill2.Entity.Get<Skill>().ManaCost, "mp)")));
             Console.Print(2, GameSettings.GAME_HEIGHT - 3, string.Concat("Skill 3: ", skills.Skill3 == EntityReference.Null ? string.Empty : string.Concat(skills.Skill3.Entity.Get<Name>().EntityName, " (", skills.Skill3.Entity.Get<Skill>().ManaCost, "mp)")));
