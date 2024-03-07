@@ -8,7 +8,8 @@
       "Dexterity": 10,
       "Mainhand": "Dagger",
       "Offhand": "Buckler",
-      "Armor": ""
+      "Armor": "",
+      "StartSkill": "Fire Imbuement"
     },
     {
       "Name": "Ranger",
@@ -18,7 +19,8 @@
       "Dexterity": 15,
       "Mainhand": "Short Bow",
       "Offhand": "",
-      "Armor": ""
+      "Armor": "",
+      "StartSkill": "Flash Step"
     },
     {
       "Name": "Mage",
@@ -28,7 +30,8 @@
       "Dexterity": 10,
       "Mainhand": "Quarterstaff",
       "Offhand": "",
-      "Armor": ""
+      "Armor": "",
+      "StartSkill": "Ice Shard"
     }
   ]
 }

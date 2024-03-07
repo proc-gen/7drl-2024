@@ -77,6 +77,8 @@ namespace Magi.UI
                 screen.Print(horizontalOffset - 12, 29, string.Concat("Main Hand: ", container.Mainhand), Color.White, Color.Black);
                 screen.Print(horizontalOffset - 12, 30, string.Concat("Off Hand: ", container.Offhand), Color.White, Color.Black);
                 screen.Print(horizontalOffset - 12, 31, string.Concat("Armor: ", container.Armor), Color.White, Color.Black);
+
+                screen.Print(horizontalOffset - 12, 33, string.Concat("Skill: ", container.StartSkill), Color.White, Color.Black);
             }
 
             screen.Print(screen.Width / 2 - 29, 50, "Press enter to start or escape to go back to the main menu", Color.White, Color.Black);
