@@ -69,93 +69,18 @@ namespace Magi.UI
 
             InitWindows();
             InitSystems();
-
-            world.CurrentState = GameState.AwaitingPlayerInput;
         }
 
         private void NewGame()
         {
             world = SaveGameManager.NewGame();
-
-            GoNextLevel();
-        }
-
-        private void GoNextLevel()
-        {
-            if (world.PlayerReference != EntityReference.Null)
-            {
-                world.RemoveAllNonPlayerOwnedEntities();
-            }
-            var element = ElementsTable.Roll(Random);
-            var generator = GetGenerator();
-            generator.Generate();
-
-            world.Map = generator.Map;
-
-            var startPosition = generator.GetPlayerStartingPosition();
-            int playerLevel = 1;
-            if (world.PlayerReference == EntityReference.Null)
-            {
-                new PlayerSpawner().SpawnPlayer(world, startPosition);
-            }
-            else
-            {
-                var position = world.PlayerReference.Entity.Get<Position>();
-                position.Point = generator.GetPlayerStartingPosition();
-                world.PlayerReference.Entity.Set(position);
-                world.PhysicsWorld.AddEntity(world.PlayerReference, position.Point);
-                world.LogItems.Add(new LogItem("You have descended to the next level"));
-
-                playerLevel = world.PlayerReference.Entity.Get<CombatStats>().Level;
-            }
-
-            FieldOfView.CalculatePlayerFOV(world);
-
-            var enemyTable = new RandomTable<string>();
-            foreach (var enemy in EnemySpawner.EnemyContainers)
-            {
-                if (enemy.Value.LevelRequirement <= playerLevel
-                    && (enemy.Value.Element == element || enemy.Value.Element == Elements.None))
-                {
-                    enemyTable = enemyTable.Add(enemy.Key, 1);
-                }
-            }
-            var itemTable = new RandomTable<string>();
-            foreach (var item in ItemSpawner.ItemContainers)
-            {
-                itemTable = itemTable.Add(item.Key, 1);
-            }
-
-            generator.SpawnEntitiesForMap(world, enemyTable, itemTable);
-            generator.SpawnExitForMap(world);
-
-            world.CurrentState = GameState.AwaitingPlayerInput;
-        }
-
-        private Generator GetGenerator()
-        {
-            var key = GeneratorTable.Roll(Random);
-            switch(key)
-            {
-                case "RoomsAndCorridors":
-                    return new RoomsAndCorridorsGenerator(GameSettings.GAME_WIDTH, GameSettings.GAME_HEIGHT);
-                case "BspRoom":
-                    return new BspRoomGenerator(GameSettings.GAME_WIDTH, GameSettings.GAME_HEIGHT);
-                case "BspInterior":
-                    return new BspInteriorGenerator(GameSettings.GAME_WIDTH, GameSettings .GAME_HEIGHT);
-                case "CellularAutomata":
-                    return new CellularAutomataGenerator(GameSettings.GAME_WIDTH, GameSettings.GAME_HEIGHT);
-                case "DrunkardWalk":
-                    return new DrunkardWalkGenerator(GameSettings.GAME_WIDTH, GameSettings.GAME_HEIGHT);
-                case "Random":
-                default:
-                    return new RandomGenerator(GameSettings.GAME_WIDTH, GameSettings.GAME_HEIGHT);
-            }
+            world.GoNextLevel();
         }
 
         private void LoadGame()
         {
             world = SaveGameManager.LoadGame();
+            world.CurrentState = GameState.AwaitingPlayerInput;
         }
 
         private void InitSystems()
@@ -260,7 +185,7 @@ namespace Magi.UI
                     var entitiesAtLocation = world.PhysicsWorld.GetEntitiesAtLocation(world.PlayerReference.Entity.Get<Position>().Point);
                     if (entitiesAtLocation != null && entitiesAtLocation.Where(a => a.Entity.Has<Exit>()).Any())
                     {
-                        GoNextLevel();
+                        world.GoNextLevel();
                     }
                 }
             }
