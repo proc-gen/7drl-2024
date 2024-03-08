@@ -14,10 +14,10 @@ namespace Magi.Maps.Spawners
 {
     public class ItemSpawner : Spawner
     {
-        public static Dictionary<string, ItemContainer> ItemContainers;
-        public static Dictionary<string, ConsumableContainer> ConsumableContainers;
-        public static Dictionary<string, WeaponContainer> WeaponContainers;
-        public static Dictionary<string, ArmorContainer> ArmorContainers;
+        static Dictionary<string, ItemContainer> ItemContainers;
+        static Dictionary<string, ConsumableContainer> ConsumableContainers;
+        static Dictionary<string, WeaponContainer> WeaponContainers;
+        static Dictionary<string, ArmorContainer> ArmorContainers;
 
         static ItemSpawner()
         {
@@ -100,6 +100,67 @@ namespace Magi.Maps.Spawners
             }
 
             return world.World.CreateFromArray(components.ToArray()).Reference();
+        }
+
+        public static List<string> GetItemsForLevel(int level)
+        {
+            var items = new List<string>();
+            foreach (var item in ItemContainers)
+            {
+                if (item.Value.LevelRequirement >= level)
+                {
+                    items.Add(item.Key);
+                }
+            }
+
+            return items;
+        }
+
+        public static List<string> GetWeaponsForLevel(int level)
+        {
+            var weapons = new List<string>();
+            foreach (var item in ItemContainers)
+            {
+                if(item.Value.ItemType == Constants.ItemTypes.Weapon
+                    && item.Value.LevelRequirement >= level)
+                {
+                    weapons.Add(item.Key);
+                }
+            }
+
+            return weapons;
+        }
+
+        public static List<string> GetArmorsForLevel(int level)
+        {
+            var armors = new List<string>();
+            foreach (var item in ItemContainers)
+            {
+                if (item.Value.ItemType == Constants.ItemTypes.Armor
+                    && ArmorContainers[item.Key].ArmorType == Constants.ArmorType.Wearable
+                    && item.Value.LevelRequirement >= level)
+                {
+                    armors.Add(item.Key);
+                }
+            }
+
+            return armors;
+        }
+
+        public static List<string> GetShieldsForLevel(int level)
+        {
+            var shields = new List<string>();
+            foreach (var item in ItemContainers)
+            {
+                if (item.Value.ItemType == Constants.ItemTypes.Armor
+                    && ArmorContainers[item.Key].ArmorType == Constants.ArmorType.Shield
+                    && item.Value.LevelRequirement >= level)
+                {
+                    shields.Add(item.Key);
+                }
+            }
+
+            return shields;
         }
 
         private static List<object> GetConsumableComponents(string key)

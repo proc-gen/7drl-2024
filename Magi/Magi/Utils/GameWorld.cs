@@ -173,9 +173,9 @@ namespace Magi.Utils
                 }
             }
             var itemTable = new RandomTable<string>();
-            foreach (var item in ItemSpawner.ItemContainers)
+            foreach (var item in ItemSpawner.GetItemsForLevel(playerLevel))
             {
-                itemTable = itemTable.Add(item.Key, 1);
+                itemTable = itemTable.Add(item, 1);
             }
 
             if (Tomb.CurrentLevel == Tomb.Levels.Keys.Max())
