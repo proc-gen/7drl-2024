@@ -32,7 +32,7 @@ namespace Magi.Utils
             return CalculateFOV(world, entityPosition.Point, entityViewDistance.Distance);
         }
 
-        public static HashSet<Point> CalculateFOV(GameWorld world, Point originPoint, int viewDistance)
+        public static HashSet<Point> CalculateFOV(GameWorld world, Point originPoint, int viewDistance, bool includeWall = true)
         {
             HashSet<Point> fov = new HashSet<Point>(viewDistance * viewDistance * 4);
 
@@ -50,9 +50,13 @@ namespace Magi.Utils
                     }
                     if (!hitWall)
                     {
-                        fov.Add(point);
+                        var tile = world.Map.GetTile(point);
+                        if (includeWall || tile.BaseTileType != Constants.TileTypes.Wall)
+                        {
+                            fov.Add(point);
+                        }
 
-                        if (world.Map.GetTile(point).BaseTileType == Constants.TileTypes.Wall)
+                        if (tile.BaseTileType == Constants.TileTypes.Wall)
                         {
                             hitWall = true;
                         }

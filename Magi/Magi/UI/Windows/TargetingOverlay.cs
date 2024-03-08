@@ -188,6 +188,14 @@ namespace Magi.UI.Windows
             {
                 Console.SetGlyph(point.X - minX, point.Y - minY, (char)219, lineColor);
             }
+            if(EffectRange > 0 && lineColor.FillAlpha() != Color.Red)
+            {
+                var aoePoints = FieldOfView.CalculateFOV(World, End, EffectRange + 1, false);
+                foreach (var point in aoePoints)
+                {
+                    Console.SetGlyph(point.X - minX, point.Y - minY, (char)219, lineColor);
+                }
+            }
         }
 
         private Color TrajectoryColor()
