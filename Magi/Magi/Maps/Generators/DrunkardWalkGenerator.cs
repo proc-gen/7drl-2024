@@ -37,7 +37,7 @@ namespace Magi.Maps.Generators
             {
                 int drunkX = start.X,
                     drunkY = start.Y,
-                    drunkLife = 150;
+                    drunkLife = Random.Next(100, 400);
 
                 while(drunkLife > 0)
                 {

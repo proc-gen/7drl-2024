@@ -1,4 +1,5 @@
-﻿using Arch.Core.Extensions;
+﻿using Arch.Core;
+using Arch.Core.Extensions;
 using Magi.Containers.DatasetContainers;
 using Magi.ECS.Components;
 using Magi.Utils;
@@ -25,23 +26,28 @@ namespace Magi.Maps.Spawners
         {
         }
 
-        public override void SpawnEntityForPoint(GameWorld world, Point point)
+        public override void SpawnAnEntityForPoint(GameWorld world, Point point)
         {
             string key = SpawnTable.Roll(Random);
             var enemyContainer = EnemyContainers[key];
 
+            SpawnEntityForPoint(world, point, enemyContainer);
+        }
+
+        public static void SpawnEntityForPoint(GameWorld world, Point point, EnemyContainer enemyContainer)
+        {
             var combatEquipment = new CombatEquipment();
 
             var reference = world.World.Create(
                 new Position() { Point = point },
                 new Name() { EntityName = enemyContainer.Name },
                 new ViewDistance() { Distance = enemyContainer.ViewDistance },
-                new Renderable() { Glyph = enemyContainer.Glyph, Color = new Color(enemyContainer.GlyphColorRed, enemyContainer.GlyphColorGreen, enemyContainer.GlyphColorBlue)},
+                new Renderable() { Glyph = enemyContainer.Glyph, Color = new Color(enemyContainer.GlyphColorRed, enemyContainer.GlyphColorGreen, enemyContainer.GlyphColorBlue) },
                 new Input() { CanAct = true },
                 new Blocker(),
-                new CombatStats() 
-                { 
-                    MaxHealth = enemyContainer.Health, 
+                new CombatStats()
+                {
+                    MaxHealth = enemyContainer.Health,
                     CurrentHealth = enemyContainer.Health,
                     MaxMana = enemyContainer.Mana,
                     CurrentMana = enemyContainer.Mana,
@@ -58,7 +64,7 @@ namespace Magi.Maps.Spawners
                 combatEquipment
             ).Reference();
 
-            if(!string.IsNullOrEmpty(enemyContainer.Mainhand))
+            if (!string.IsNullOrEmpty(enemyContainer.Mainhand))
             {
                 combatEquipment.MainHandReference = ItemSpawner.SpawnEntityForOwner(world, enemyContainer.Mainhand, reference);
                 combatEquipment.MainHandReference.Entity.Add(new Equipped());

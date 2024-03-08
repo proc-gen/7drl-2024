@@ -22,10 +22,10 @@ namespace Magi.Maps.Spawners
         {
             foreach (var point in points)
             {
-                SpawnEntityForPoint(world, point);
+                SpawnAnEntityForPoint(world, point);
             }
         }
 
-        public abstract void SpawnEntityForPoint(GameWorld world, Point point);
+        public abstract void SpawnAnEntityForPoint(GameWorld world, Point point);
     }
 }

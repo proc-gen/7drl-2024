@@ -39,7 +39,7 @@ namespace Magi.Maps.Spawners
         {
         }
 
-        public override void SpawnEntityForPoint(GameWorld world, Point point)
+        public override void SpawnAnEntityForPoint(GameWorld world, Point point)
         {
             string key = SpawnTable.Roll(Random);
             var itemContainer = ItemContainers[key];
