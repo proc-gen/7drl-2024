@@ -13,42 +13,42 @@
 - [Water](#water)
 - [Air](#air)
 
-## Fire
+## Fire 2
 
 - Ember Shot
 - Fire Imbuement
 - Fireball
 - Rain of Fire
 
-## Ice
+## Ice 6
 
 - Ice Imbuement
 - Ice Shard
 - Blizzard
-- Frozen Armor
+- Ice Nova
 
-## Lightning
+## Lightning 5
 
 - Flash Step
 - Zap
 - Chain Lightning
 - Lightning Imbuement
 
-## Earth
+## Earth 4
 
 - Rock Crush
 - Dig
 - Dirt Wall
 - Earth Imbuement
 
-## Water
+## Water 3
 
 - Bubble
 - Water Jet
 - Water Imbuement
 - Tsunami
 
-## Air
+## Air 1
 
 - Tornado
 - Wind Wall
