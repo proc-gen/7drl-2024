@@ -34,44 +34,46 @@ namespace Magi.ECS.Systems.UpdateSystems
 
                 sourceStats.CurrentMana -= skillInfo.ManaCost;
 
-                if (skillAttack.Target != EntityReference.Null)
+                if (skillInfo.TargetingType == Constants.TargetingType.Imbuement)
                 {
-                    var targetName = skillAttack.Target.Entity.Get<Name>();
-                    var targetStats = skillAttack.Target.Entity.Get<CombatStats>();
-                    var targetEquipment = skillAttack.Target.Entity.Get<CombatEquipment>();
+                    HandleImbuement(skillAttack, skillInfo, sourceName);
+                }
+                else if(skillInfo.TargetingType == Constants.TargetingType.Self)
+                {
+                    
+                }
+                else if (skillInfo.TargetingType == Constants.TargetingType.ChainTargetDamage)
+                {
 
-                    var damage = CombatStatHelper.CalculateMagicDamage(random, skillInfo, sourceStats, sourceEquipment, targetStats, targetEquipment);
+                }
+                else if (skillInfo.TargetingType == Constants.TargetingType.Directional)
+                {
 
-                    if (damage > 0)
-                    {
-                        targetStats.CurrentHealth = Math.Max(0, targetStats.CurrentHealth - damage);
-                        World.AddLogEntry(string.Concat(sourceName.EntityName, " uses ", skillName.EntityName, " and damages ", targetName.EntityName, " for ", damage, "hp."));
-                        if (targetStats.CurrentHealth == 0)
-                        {
-                            World.AddLogEntry(string.Concat(sourceName.EntityName, " killed ", targetName.EntityName, "!"));
-                            if (skillAttack.Source.Entity.Has<Player>())
-                            {
-                                sourceStats.Experience += targetStats.Experience;
-                                skillAttack.Source.Entity.Set(sourceStats);
-                                skillAttack.Target.Entity.Add(new Dead());
-                            }
-                            else if (skillAttack.Target.Entity.Has<Player>())
-                            {
-                                World.CurrentState = Constants.GameState.PlayerDeath;
-                            }
-                        }
-                        skillAttack.Target.Entity.Set(targetStats);
-                    }
-                    else
-                    {
-                        World.AddLogEntry(string.Concat(sourceName.EntityName, " is unable to hurt ", targetName.EntityName, " with ", skillName.EntityName, "."));
-                    }
                 }
                 else
                 {
-                    if(skillInfo.TargetingType == Constants.TargetingType.Imbuement)
+                    var aoePoints = FieldOfView.CalculateFOV(World, skillAttack.TargetLocation, skillInfo.EffectRange + 1, false);
+                    foreach( var aoePoint in aoePoints)
                     {
-                        HandleImbuement(skillAttack, skillInfo, sourceName);
+                        var entitiesAtLocation = World.PhysicsWorld.GetEntitiesAtLocation(aoePoint);
+                        if (entitiesAtLocation != null)
+                        {
+                            foreach( var entity in entitiesAtLocation)
+                            {
+                                if(entity != skillAttack.Source && entity.Entity.Has<CombatStats>())
+                                {
+                                    HandleTargetDamage(skillAttack.Source,
+                                        entity,
+                                        sourceName,
+                                        skillName,
+                                        skillInfo,
+                                        sourceStats,
+                                        sourceEquipment
+                                    );
+                                }
+                            }
+                            
+                        }
                     }
                 }
 
@@ -80,6 +82,40 @@ namespace Magi.ECS.Systems.UpdateSystems
             });
 
             World.World.Destroy(in skillAttacksQuery);
+        }
+
+        private void HandleTargetDamage(EntityReference Source, EntityReference Target, Name sourceName, Name skillName, Skill skillInfo, CombatStats sourceStats, CombatEquipment sourceEquipment)
+        {
+            var targetName = Target.Entity.Get<Name>();
+            var targetStats = Target.Entity.Get<CombatStats>();
+            var targetEquipment = Target.Entity.Get<CombatEquipment>();
+
+            var damage = CombatStatHelper.CalculateMagicDamage(random, skillInfo, sourceStats, sourceEquipment, targetStats, targetEquipment);
+
+            if (damage > 0)
+            {
+                targetStats.CurrentHealth = Math.Max(0, targetStats.CurrentHealth - damage);
+                World.AddLogEntry(string.Concat(sourceName.EntityName, " uses ", skillName.EntityName, " and damages ", targetName.EntityName, " for ", damage, "hp."));
+                if (targetStats.CurrentHealth == 0)
+                {
+                    World.AddLogEntry(string.Concat(sourceName.EntityName, " killed ", targetName.EntityName, "!"));
+                    if (Source.Entity.Has<Player>())
+                    {
+                        sourceStats.Experience += targetStats.Experience;
+                        Source.Entity.Set(sourceStats);
+                        Target.Entity.Add(new Dead());
+                    }
+                    else if (Target.Entity.Has<Player>())
+                    {
+                        World.CurrentState = Constants.GameState.PlayerDeath;
+                    }
+                }
+                Target.Entity.Set(targetStats);
+            }
+            else
+            {
+                World.AddLogEntry(string.Concat(sourceName.EntityName, " is unable to hurt ", targetName.EntityName, " with ", skillName.EntityName, "."));
+            }
         }
 
         private void HandleImbuement(SkillAttack skillAttack, Skill skillInfo, Name sourceName)
