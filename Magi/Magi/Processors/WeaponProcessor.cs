@@ -18,38 +18,47 @@ namespace Magi.Processors
         {
             var ownerReference = weaponReference.Entity.Get<Owner>().OwnerReference;
             var ownerName = ownerReference.Entity.Get<Name>();
+            var ownerStats = ownerReference.Entity.Get<CombatStats>();
             var ownerEquipment = ownerReference.Entity.Get<CombatEquipment>();
             var itemName = weaponReference.Entity.Get<Name>();
+            var itemInfo = weaponReference.Entity.Get<Item>();
             var weaponInfo = weaponReference.Entity.Get<Weapon>();
 
-            if (ownerEquipment.MainHandReference == EntityReference.Null
-                && ownerEquipment.OffHandReference == EntityReference.Null)
+            if (ItemProcessor.CanEquip(itemInfo, ownerStats))
             {
-                ownerEquipment.MainHandReference = weaponReference;
-                ownerEquipment.OffHandReference = IsTwoHanded(weaponInfo.WeaponType) ? weaponReference : ownerEquipment.OffHandReference;
-            }
-            else if (ownerEquipment.MainHandReference == EntityReference.Null
-                && !IsTwoHanded(weaponInfo.WeaponType))
-            {
-                ownerEquipment.MainHandReference = weaponReference;
-            }
-            else if (ownerEquipment.MainHandReference != EntityReference.Null)
-            {
-                ownerEquipment.MainHandReference.Entity.Remove<Equipped>();
-                if (IsTwoHanded(weaponInfo.WeaponType)
-                    && ownerEquipment.MainHandReference != ownerEquipment.OffHandReference
-                    && ownerEquipment.OffHandReference != EntityReference.Null)
+                if (ownerEquipment.MainHandReference == EntityReference.Null
+                    && ownerEquipment.OffHandReference == EntityReference.Null)
                 {
-                    ownerEquipment.OffHandReference.Entity.Remove<Equipped>();
+                    ownerEquipment.MainHandReference = weaponReference;
+                    ownerEquipment.OffHandReference = IsTwoHanded(weaponInfo.WeaponType) ? weaponReference : ownerEquipment.OffHandReference;
+                }
+                else if (ownerEquipment.MainHandReference == EntityReference.Null
+                    && !IsTwoHanded(weaponInfo.WeaponType))
+                {
+                    ownerEquipment.MainHandReference = weaponReference;
+                }
+                else if (ownerEquipment.MainHandReference != EntityReference.Null)
+                {
+                    ownerEquipment.MainHandReference.Entity.Remove<Equipped>();
+                    if (IsTwoHanded(weaponInfo.WeaponType)
+                        && ownerEquipment.MainHandReference != ownerEquipment.OffHandReference
+                        && ownerEquipment.OffHandReference != EntityReference.Null)
+                    {
+                        ownerEquipment.OffHandReference.Entity.Remove<Equipped>();
+                    }
+
+                    ownerEquipment.MainHandReference = weaponReference;
+                    ownerEquipment.OffHandReference = IsTwoHanded(weaponInfo.WeaponType) ? weaponReference : ownerEquipment.OffHandReference;
                 }
 
-                ownerEquipment.MainHandReference = weaponReference;
-                ownerEquipment.OffHandReference = IsTwoHanded(weaponInfo.WeaponType) ? weaponReference : ownerEquipment.OffHandReference;
+                world.AddLogEntry(string.Concat(ownerName.EntityName, " equipped ", itemName.EntityName));
+                ownerReference.Entity.Set(ownerEquipment);
+                weaponReference.Entity.Add(new Equipped());
             }
-
-            world.AddLogEntry(string.Concat(ownerName.EntityName, " equipped ", itemName.EntityName));
-            ownerReference.Entity.Set(ownerEquipment);
-            weaponReference.Entity.Add(new Equipped());
+            else
+            {
+                world.AddLogEntry(string.Concat(ownerName.EntityName, " doesn't meet the requirements for ", itemName.EntityName));
+            }
         }
 
         public static bool IsTwoHanded(WeaponTypes weaponType)

@@ -46,7 +46,12 @@ namespace Magi.Maps.Spawners
 
             List<object> components = new List<object>()
             {
-                new Item(),
+                new Item()
+                {
+                    StrengthRequirement = itemContainer.StrengthRequirement,
+                    DexterityRequirement = itemContainer.DexterityRequirement,
+                    IntelligenceRequirement = itemContainer.IntelligenceRequirement,
+                },
                 new Position() { Point =  point },
                 new Name() { EntityName = itemContainer.Name },
                 new Renderable() { Glyph = (char)itemContainer.Glyph, Color = new Color(itemContainer.GlyphColorRed, itemContainer.GlyphColorGreen, itemContainer.GlyphColorBlue)}
@@ -78,7 +83,11 @@ namespace Magi.Maps.Spawners
 
             List<object> components = new List<object>()
             {
-                new Item(),
+                new Item(){
+                    StrengthRequirement = itemContainer.StrengthRequirement,
+                    DexterityRequirement = itemContainer.DexterityRequirement,
+                    IntelligenceRequirement = itemContainer.IntelligenceRequirement,
+                },
                 new Owner() { OwnerReference =  owner },
                 new Name() { EntityName = itemContainer.Name },
                 new Renderable() { Glyph = (char)itemContainer.Glyph, Color = new Color(itemContainer.GlyphColorRed, itemContainer.GlyphColorGreen, itemContainer.GlyphColorBlue)}

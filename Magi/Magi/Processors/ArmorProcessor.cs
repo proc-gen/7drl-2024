@@ -17,21 +17,30 @@ namespace Magi.Processors
         {
             var ownerReference = armorReference.Entity.Get<Owner>().OwnerReference;
             var ownerName = ownerReference.Entity.Get<Name>();
+            var ownerStats = ownerReference.Entity.Get<CombatStats>();
             var ownerEquipment = ownerReference.Entity.Get<CombatEquipment>();
             var itemName = armorReference.Entity.Get<Name>();
+            var itemInfo = armorReference.Entity.Get<Item>();
             var armorInfo = armorReference.Entity.Get<Armor>();
 
-            if (armorInfo.ArmorType == Constants.ArmorType.Shield)
+            if (ItemProcessor.CanEquip(itemInfo, ownerStats))
             {
-                EquipShield(world, armorReference, ownerReference, ownerName, ownerEquipment, itemName, armorInfo);
-            }
-            else if (armorInfo.ArmorType == Constants.ArmorType.Wearable)
-            {
-                EquipWearable(world, armorReference, ownerReference, ownerName, ownerEquipment, itemName, armorInfo);
-            }
+                if (armorInfo.ArmorType == Constants.ArmorType.Shield)
+                {
+                    EquipShield(world, armorReference, ownerReference, ownerName, ownerEquipment, itemName, armorInfo);
+                }
+                else if (armorInfo.ArmorType == Constants.ArmorType.Wearable)
+                {
+                    EquipWearable(world, armorReference, ownerReference, ownerName, ownerEquipment, itemName, armorInfo);
+                }
 
-            world.AddLogEntry(string.Concat(ownerName.EntityName, " equipped ", itemName.EntityName));
-            armorReference.Entity.Add(new Equipped());
+                world.AddLogEntry(string.Concat(ownerName.EntityName, " equipped ", itemName.EntityName));
+                armorReference.Entity.Add(new Equipped());
+            }
+            else
+            {
+                world.AddLogEntry(string.Concat(ownerName.EntityName, " doesn't meet the requirements for ", itemName.EntityName));
+            }
         }
 
         private static void EquipWearable(GameWorld world, EntityReference armorReference, EntityReference ownerReference, Name ownerName, CombatEquipment ownerEquipment, Name itemName, Armor armorInfo)
