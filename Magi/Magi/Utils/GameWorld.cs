@@ -101,11 +101,11 @@ namespace Magi.Utils
             SetNextLevel(playerLevel);
 
             var generator = Tomb.IncrementLevel();
-            FloorDecorator.Decorate(generator, Tomb.Element);
             Map = generator.Map;
 
             SetStartingPosition(generator);
             SpawnEntitiesForMap(generator, playerLevel);
+            FloorDecorator.Decorate(generator, Tomb.Element);
 
             CurrentState = GameState.AwaitingPlayerInput;
         }
@@ -130,10 +130,10 @@ namespace Magi.Utils
         private void GenerateTomb(int playerLevel)
         {
             var ElementsTable = new RandomTable<Elements>()
-                .Add(Elements.Air, 1)
+                //.Add(Elements.Air, 1)
                 .Add(Elements.Fire, 1)
-                .Add(Elements.Water, 1)
-                .Add(Elements.Earth, 1)
+                //.Add(Elements.Water, 1)
+                //.Add(Elements.Earth, 1)
                 .Add(Elements.Lightning, 1)
                 .Add(Elements.Ice, 1);
 
@@ -178,7 +178,6 @@ namespace Magi.Utils
                 itemTable = itemTable.Add(item.Key, 1);
             }
 
-            generator.SpawnEntitiesForMap(this, enemyTable, itemTable);
             if (Tomb.CurrentLevel == Tomb.Levels.Keys.Max())
             {
                 generator.SpawnBossRoomForMap(this);
@@ -187,6 +186,8 @@ namespace Magi.Utils
             {
                 generator.SpawnExitForMap(this);
             }
+
+            generator.SpawnEntitiesForMap(this, enemyTable, itemTable);
         }
 
         private void RemoveAllNonPlayerOwnedEntities()

@@ -1,5 +1,7 @@
 ﻿using Arch.Core.Extensions;
+using Magi.Containers.DatasetContainers;
 using Magi.ECS.Components;
+using Magi.Maps.Spawners;
 using Magi.Utils;
 using System;
 using System.Collections.Generic;
@@ -45,6 +47,7 @@ namespace Magi.Maps.Generators
             ApplyBossRoomToMap(bossRoom);
 
             SpawnExit(world, bossRoom.Center);
+            SpawnBoss(world, bossRoom.Center);
         }
 
         private Point GetBossRoomLocation(Point exit)
@@ -96,6 +99,34 @@ namespace Magi.Maps.Generators
                 }
             }
         }
+
+        private void SpawnBoss(GameWorld world, Point position)
+        {
+            var playerStats = world.PlayerReference.Entity.Get<CombatStats>();
+
+            var health = CombatStatHelper.CalculateMaxHealth(playerStats.Level, 10 + 5 * playerStats.Level);
+            var mana = CombatStatHelper.CalculateMaxMana(playerStats.Level, 10 + 5 * playerStats.Level);
+
+            EnemyContainer enemyContainer = new EnemyContainer()
+            {
+                Name = world.Tomb.Mage,
+                Health = health,
+                Mana = mana,
+                Strength = 10 + 5 * playerStats.Level,
+                Intelligence = 10 + 5 * playerStats.Level,
+                Vitality = 10 + 5 * playerStats.Level,
+                Dexterity = 10 + 5 * playerStats.Level,
+                ViewDistance = 10,
+                Experience = 20 * playerStats.Level,
+                Glyph = (char)Random.Next(224, 233),
+                GlyphColorRed = 192,
+                GlyphColorBlue = 50,
+                GlyphColorGreen = 0,
+            };
+
+            EnemySpawner.SpawnEntityForPoint(world, position, enemyContainer);
+        }
+        
         protected void SpawnExit(GameWorld world, Point position)
         {
             var endOfTomb = world.Tomb.CurrentLevel == world.Tomb.Levels.Keys.Max();
