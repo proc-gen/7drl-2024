@@ -16,5 +16,6 @@ namespace Magi.Containers.DatasetContainers
         public string Mainhand { get; set; }
         public string Offhand { get; set; }
         public string Armor { get; set; }
+        public string StartSkill { get; set; }
     }
 }

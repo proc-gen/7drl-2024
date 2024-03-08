@@ -51,7 +51,7 @@ namespace Magi.Utils
         {
             List<string> splitEntries = new List<string>();
             int character = 0;
-            int lineLength = 50;
+            int lineLength = 45;
             do
             {
                 string nextEntry = entry.Substring(character);

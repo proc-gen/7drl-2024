@@ -2,7 +2,6 @@
 using Arch.Core.Extensions;
 using Magi.Containers;
 using Magi.ECS.Components;
-using Magi.Items.Processors;
 using Magi.Utils;
 using System;
 using System.Collections.Generic;
@@ -32,7 +31,7 @@ namespace Magi.ECS.Systems.UpdateSystems
                 var targetStats = rangedAttack.Target.Entity.Get<CombatStats>();
                 var targetEquipment = rangedAttack.Target.Entity.Get<CombatEquipment>();
 
-                var damage = CalculateDamage(sourceStats, targetStats, sourceEquipment, targetEquipment);
+                var damage = CombatStatHelper.CalculatePhysicalDamage(random, Constants.AttackType.Ranged, sourceStats, sourceEquipment, targetStats, targetEquipment);
                 if (damage > 0)
                 {
                     targetStats.CurrentHealth = Math.Max(0, targetStats.CurrentHealth - damage);
@@ -60,18 +59,6 @@ namespace Magi.ECS.Systems.UpdateSystems
             });
 
             World.World.Destroy(in rangedAttacksQuery);
-        }
-
-        private int CalculateDamage(CombatStats sourceStats, CombatStats targetStats, CombatEquipment sourceEquipment, CombatEquipment targetEquipment)
-        {
-            int damage = 0;
-
-            var weaponDamage = WeaponProcessor.CalculateDamage(random, sourceEquipment.MainHandReference, false, damage);
-            damage = weaponDamage.Damage;
-
-            int damageReduction = ArmorProcessor.CalculateDamageReduction(random, weaponDamage, targetEquipment.ArmorReference, targetEquipment.OffHandReference, false);
-
-            return damage - damageReduction;
         }
     }
 }

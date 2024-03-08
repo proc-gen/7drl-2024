@@ -42,6 +42,8 @@ namespace Magi.Maps.Spawners
                 ExperienceForNextLevel = 0,
             };
 
+            var combatSkills = new CombatSkills();
+
             CombatStatHelper.ProcessLevelUp(ref stats);
             var combatEquipment = new CombatEquipment();
             world.PlayerReference = world.World.Create(
@@ -53,7 +55,8 @@ namespace Magi.Maps.Spawners
                 new Name() { EntityName = "Player" },
                 new ViewDistance() { Distance = 10 },
                 stats,
-                combatEquipment
+                combatEquipment,
+                combatSkills
             ).Reference();
 
             if (!string.IsNullOrEmpty(playerContainer.Mainhand))
@@ -72,7 +75,12 @@ namespace Magi.Maps.Spawners
                 combatEquipment.ArmorReference.Entity.Add(new Equipped());
             }
 
-            world.PlayerReference.Entity.Set(combatEquipment);
+            if(!string.IsNullOrEmpty(playerContainer.StartSkill))
+            {
+                combatSkills.Skill1 = SkillSpawner.SpawnEntityForOwner(world, playerContainer.StartSkill, world.PlayerReference);
+            }
+
+            world.PlayerReference.Entity.Set(combatEquipment, combatSkills);
 
             world.PhysicsWorld.AddEntity(world.PlayerReference, startingPosition);
         }

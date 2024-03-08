@@ -2,7 +2,6 @@
 using Arch.Core.Extensions;
 using Magi.Containers;
 using Magi.ECS.Components;
-using Magi.Items.Processors;
 using Magi.Utils;
 using System;
 using System.Collections.Generic;
@@ -32,7 +31,7 @@ namespace Magi.ECS.Systems.UpdateSystems
                 var targetStats = meleeAttack.Target.Entity.Get<CombatStats>();
                 var targetEquipment = meleeAttack.Target.Entity.Get<CombatEquipment>();
 
-                var damage = CalculateDamage(sourceStats, sourceEquipment, targetStats, targetEquipment);
+                var damage = CombatStatHelper.CalculatePhysicalDamage(random, Constants.AttackType.Melee, sourceStats, sourceEquipment, targetStats, targetEquipment);
                 if (damage > 0)
                 {
                     targetStats.CurrentHealth = Math.Max(0, targetStats.CurrentHealth - damage);
@@ -60,18 +59,6 @@ namespace Magi.ECS.Systems.UpdateSystems
             });
 
             World.World.Destroy(in meleeAttacksQuery);
-        }
-
-        private int CalculateDamage(CombatStats sourceStats, CombatEquipment sourceEquipment, CombatStats targetStats, CombatEquipment targetEquipment)
-        {
-            int damage = Math.Max(0, (int)((sourceStats.CurrentStrength - 10f) / 2f + 1f));
-
-            var weaponDamage = WeaponProcessor.CalculateDamage(random, sourceEquipment.MainHandReference, true, damage);
-            damage = weaponDamage.Damage;
-
-            int damageReduction = ArmorProcessor.CalculateDamageReduction(random,weaponDamage, targetEquipment.ArmorReference, targetEquipment.OffHandReference, true);
-
-            return damage - damageReduction;
         }
     }
 }

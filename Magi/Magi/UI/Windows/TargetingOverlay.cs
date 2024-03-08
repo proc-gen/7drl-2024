@@ -1,5 +1,6 @@
 ﻿using Arch.Core;
 using Arch.Core.Extensions;
+using Magi.Constants;
 using Magi.ECS.Components;
 using Magi.Utils;
 using SadConsole.Input;
@@ -18,6 +19,9 @@ namespace Magi.UI.Windows
         GameWorld World;
         EntityReference Source;
         int SourceRange;
+        int EffectRange;
+        TargetingType TargetingType;
+        TargetSpace TargetSpace;
         EntityReference Target;
         Point Start;
         Point End;
@@ -33,7 +37,21 @@ namespace Magi.UI.Windows
         public void SetEntityForTargeting(EntityReference source)
         {
             Source = source;
-            SourceRange = source.Entity.Get<Weapon>().Range;
+            if (source.Entity.Has<Weapon>())
+            {
+                SourceRange = source.Entity.Get<Weapon>().Range;
+                TargetingType = TargetingType.SingleTargetDamage;
+                TargetSpace = TargetSpace.Enemy;
+                EffectRange = 0;
+            }
+            else
+            {
+                var skillInfo = source.Entity.Get<Skill>();
+                SourceRange = skillInfo.TargetRange;
+                TargetingType = skillInfo.TargetingType;
+                TargetSpace = skillInfo.TargetSpace;
+                EffectRange = skillInfo.EffectRange;
+            }
             Start = World.PlayerReference.Entity.Get<Position>().Point;
             End = Start + new Point(1, 0);
         }
@@ -77,11 +95,39 @@ namespace Magi.UI.Windows
             }
             else if (keyboard.IsKeyPressed(Keys.Enter))
             {
-                if (!IsPathBlocked() && Target != EntityReference.Null)
+                if (!IsPathBlocked())
                 {
-                    World.World.Create(new RangedAttack() { Source = World.PlayerReference, Target = Target });
-                    World.StartPlayerTurn(Point.None);
-                    Visible = false;
+                    bool attacked = false;
+                    if (Source.Entity.Has<Weapon>() && Target != EntityReference.Null)
+                    {
+                        World.World.Create(new RangedAttack() { Source = World.PlayerReference, Target = Target });
+                        attacked = true;
+                    }
+                    else
+                    {
+                        var skillInfo = Source.Entity.Get<Skill>();
+                        if((skillInfo.TargetSpace == Constants.TargetSpace.Any || skillInfo.TargetSpace == Constants.TargetSpace.Enemy) && Target != EntityReference.Null)
+                        {
+                            World.World.Create(new SkillAttack() { Source = World.PlayerReference, SourceSkill = Source, Target = Target, TargetLocation = End });
+                            attacked = true;
+                        }
+                        else if ((skillInfo.TargetSpace == Constants.TargetSpace.Any || skillInfo.TargetSpace == Constants.TargetSpace.Empty) && Target == EntityReference.Null)
+                        {
+                            World.World.Create(new SkillAttack() { Source = World.PlayerReference, SourceSkill = Source, Target = Target, TargetLocation = End });
+                            attacked = true;
+                        }
+                        else if ((skillInfo.TargetSpace == Constants.TargetSpace.Any || skillInfo.TargetSpace == Constants.TargetSpace.Wall) && World.Map.GetTile(End).BaseTileType == Constants.TileTypes.Wall)
+                        {
+                            World.World.Create(new SkillAttack() { Source = World.PlayerReference, SourceSkill = Source, Target = Target, TargetLocation = End });
+                            attacked = true;
+                        }
+                    }
+
+                    if (attacked)
+                    {
+                        World.StartPlayerTurn(Point.None);
+                        Visible = false;
+                    }
                 }
                 retVal = true;
             }
@@ -142,6 +188,14 @@ namespace Magi.UI.Windows
             {
                 Console.SetGlyph(point.X - minX, point.Y - minY, (char)219, lineColor);
             }
+            if(EffectRange > 0 && lineColor.FillAlpha() != Color.Red)
+            {
+                var aoePoints = FieldOfView.CalculateFOV(World, End, EffectRange + 1, false);
+                foreach (var point in aoePoints)
+                {
+                    Console.SetGlyph(point.X - minX, point.Y - minY, (char)219, lineColor);
+                }
+            }
         }
 
         private Color TrajectoryColor()
@@ -150,13 +204,37 @@ namespace Magi.UI.Windows
             {
                 return Color.Red;
             }
+            else if(TargetSpace == TargetSpace.Empty)
+            {
+                var entitiesAtLocation = World.PhysicsWorld.GetEntitiesAtLocation(End);
+                if(entitiesAtLocation != null && entitiesAtLocation.Where(a => a.Entity.Has<Blocker>()).Any())
+                {
+                    return Color.Red;
+                }
+                else
+                {
+                    return Color.Green;
+                }
+            }
+            else if(TargetSpace == TargetSpace.Wall)
+            {
+                var tile = World.Map.GetTile(End);
+                if(tile.BaseTileType == TileTypes.Floor)
+                {
+                    return Color.Red;
+                }
+                else
+                {
+                    return Color.Green;
+                }
+            }
 
             return Target == EntityReference.Null ? Color.Yellow : Color.Green;
         }
 
         private bool IsPathBlocked()
         {
-            return World.Map.IsPathBlocked(Start, End, SourceRange);
+            return World.Map.IsPathBlocked(Start, End, SourceRange, TargetSpace);
         }
     }
 }
