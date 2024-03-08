@@ -58,15 +58,37 @@ namespace Magi.Maps.Generators
 
         public override void SpawnEntitiesForMap(GameWorld world, RandomTable<string> enemySpawnTable, RandomTable<string> itemSpawnTable)
         {
+
             EnemySpawner enemySpawner = new EnemySpawner(enemySpawnTable, Random);
             ItemSpawner itemSpawner = new ItemSpawner(itemSpawnTable, Random);
-            var room = Rooms.First();
 
-            int numSpawns = Random.Next(0, 100);
+            List<Rectangle> rooms = new List<Rectangle>();
+            int width = Map.Width / 10;
+            int height = Map.Height / 10;
+
+            for (int i = 0; i < Map.Width - width; i += width)
+            {
+                for (int j = 0; j < Map.Height - height; j += height)
+                {
+                    rooms.Add(new Rectangle(i, j, width, height));
+                }
+            }
+
+            foreach (var room in rooms)
+            {
+                SpawnEntitiesForRoom(world, enemySpawner, itemSpawner, room);
+            }
+        }
+
+        private void SpawnEntitiesForRoom(GameWorld world, EnemySpawner enemySpawner, ItemSpawner itemSpawner, Rectangle room)
+        {
+            int numSpawns = Random.Next(0, 4);
             HashSet<Point> enemyLocations = new HashSet<Point>();
             HashSet<Point> itemLocations = new HashSet<Point>();
 
-            while ((enemyLocations.Count + itemLocations.Count) < numSpawns)
+            int tries = 0;
+
+            while ((enemyLocations.Count + itemLocations.Count) < numSpawns && tries < 20)
             {
                 var point = new Point(room.X + Random.Next(1, room.Width), room.Y + Random.Next(1, room.Height));
                 if (Map.GetTile(point).BaseTileType != Constants.TileTypes.Wall)
@@ -80,6 +102,8 @@ namespace Magi.Maps.Generators
                         enemyLocations.Add(point);
                     }
                 }
+
+                tries++;
             }
 
             enemySpawner.SpawnEntitiesForPoints(world, enemyLocations);
