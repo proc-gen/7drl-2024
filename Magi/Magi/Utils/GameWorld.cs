@@ -112,7 +112,7 @@ namespace Magi.Utils
 
         private void SetNextLevel(int playerLevel)
         {
-            if (Tomb == null || Tomb.CurrentLevel == Tomb.Levels.Count())
+            if (Tomb == null || Tomb.CurrentLevel == Tomb.Levels.Keys.Max())
             {
                 if(Tomb != null)
                 {
@@ -179,7 +179,14 @@ namespace Magi.Utils
             }
 
             generator.SpawnEntitiesForMap(this, enemyTable, itemTable);
-            generator.SpawnExitForMap(this);
+            if (Tomb.CurrentLevel == Tomb.Levels.Keys.Max())
+            {
+                generator.SpawnBossRoomForMap(this);
+            }
+            else
+            {
+                generator.SpawnExitForMap(this);
+            }
         }
 
         private void RemoveAllNonPlayerOwnedEntities()

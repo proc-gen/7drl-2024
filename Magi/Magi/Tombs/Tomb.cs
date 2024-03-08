@@ -40,7 +40,7 @@ namespace Magi.Tombs
                 .Add("CellularAutomata", 1)
                 .Add("DrunkardWalk", 1);
 
-            int numLevels = 2 + playerLevel / 8;
+            int numLevels = 1; // 2 + playerLevel / 8;
             CurrentLevel = -1;
             Mage = MageNameContainers.ToList()[Random.Next(MageNameContainers.Count)].Value.Name;
             Levels = new Dictionary<int, string>();

@@ -245,7 +245,7 @@ namespace Magi.UI.Windows
 
 
             Console.Print(GameSettings.GAME_WIDTH * 3 / 4 + 2, GameSettings.GAME_HEIGHT - 9, string.Concat("Tomb: ", world.Tomb.Mage, " (", world.Tomb.Element.ToString(), ")"));
-            Console.Print(GameSettings.GAME_WIDTH * 3 / 4 + 2, GameSettings.GAME_HEIGHT - 7, string.Concat("Depth: ", world.Tomb.CurrentLevel + 1, "/", world.Tomb.Levels.Count() + 1));;
+            Console.Print(GameSettings.GAME_WIDTH * 3 / 4 + 2, GameSettings.GAME_HEIGHT - 7, string.Concat("Depth: ", world.Tomb.CurrentLevel + 1, "/", world.Tomb.Levels.Keys.Max() + 1));;
 
             Console.Print(GameSettings.GAME_WIDTH * 3 / 4 + 2, GameSettings.GAME_HEIGHT - 5, string.Concat("Position: ", position));
             Console.Print(GameSettings.GAME_WIDTH * 3 / 4 + 2, GameSettings.GAME_HEIGHT - 3, string.Concat("Ground: ", itemName));
