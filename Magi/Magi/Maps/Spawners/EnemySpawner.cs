@@ -63,6 +63,12 @@ namespace Magi.Maps.Spawners
                     CurrentDexterity = enemyContainer.Dexterity,
                     Experience = enemyContainer.Experience,
                 },
+                new Enemy()
+                {
+                    MeleeChance = enemyContainer.MeleeChance,
+                    RangedChance = enemyContainer.RangedChance,
+                    SkillChance = enemyContainer.SkillChance,
+                },
                 combatEquipment,
                 combatSkills,
             };
