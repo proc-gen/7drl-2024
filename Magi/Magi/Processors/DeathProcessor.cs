@@ -22,17 +22,41 @@ namespace Magi.Processors
                 {
                     sourceStats.Experience += targetStats.Experience;
                     Source.Entity.Set(sourceStats);
-                    Target.Entity.Add(new Dead());
+                    if (Target.Entity.Has<Boss>())
+                    {
+                        World.CurrentState = Constants.GameState.SkillAcquired;
+                    }
+                    else
+                    {
+                        Target.Entity.Add(new Dead());
+                    }
                 }
                 else if (Target.Entity.Has<Player>())
                 {
                     World.CurrentState = Constants.GameState.PlayerDeath;
                 }
-                else if (Target.Entity.Has<Boss>())
-                {
-                    World.CurrentState = Constants.GameState.SkillAcquired;
-                }
             }
+        }
+
+        public static void MarkEntityForRemoval(GameWorld World, EntityReference entityReference, Position position)
+        {
+            QueryDescription ownerQuery = new QueryDescription().WithAll<Owner>();
+
+            World.PhysicsWorld.RemoveEntity(entityReference, position.Point);
+
+            World.World.Query(in ownerQuery, (Entity ownedEntity, ref Owner owner) =>
+            {
+                if (owner.OwnerReference == entityReference)
+                {
+                    ownedEntity.Add(new Remove());
+                }
+            });
+        }
+
+        public static void RemoveMarkedEntities(GameWorld World)
+        {
+            QueryDescription removeQuery = new QueryDescription().WithAll<Remove>();
+            World.World.Destroy(in removeQuery);
         }
     }
 }

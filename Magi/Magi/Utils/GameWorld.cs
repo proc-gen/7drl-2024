@@ -115,10 +115,6 @@ namespace Magi.Utils
         {
             if (Tomb == null || Tomb.CurrentLevel == Tomb.Levels.Keys.Max())
             {
-                if(Tomb != null)
-                {
-                    AddLogEntry(string.Concat("You have vanquished ", Tomb.Mage, " the ", Tomb.Element.ToString(), " mage!"));
-                }
                 GenerateTomb(playerLevel);
                 AddLogEntry(string.Concat("You have ventured into the tomb of ", Tomb.Mage, " the ", Tomb.Element.ToString(), " mage"));
             }

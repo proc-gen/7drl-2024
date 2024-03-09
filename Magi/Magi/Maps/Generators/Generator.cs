@@ -187,6 +187,7 @@ namespace Magi.Maps.Generators
                 GlyphColorGreen = 0,
                 Mainhand = weaponTable.Roll(Random),
                 Armor = armorTable.Roll(Random),
+                Boss = true,
             };
 
             var allowedSkills = SkillSpawner.GetSkillsForElement(world.Tomb.Element).AsSpan();
