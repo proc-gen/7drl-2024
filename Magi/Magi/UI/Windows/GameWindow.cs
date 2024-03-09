@@ -67,8 +67,15 @@ namespace Magi.UI.Windows
                 if (weapon != EntityReference.Null
                     && weapon.Entity.Get<Weapon>().Range > 1)
                 {
-                    targetingOverlay.SetEntityForTargeting(weapon);
-                    world.CurrentState = Constants.GameState.Targeting;
+                    if (weapon.Entity.Has<Reloading>())
+                    {
+                        world.AddLogEntry(string.Concat(weapon.Entity.Get<Name>().EntityName, " needs another turn to reload"));
+                    }
+                    else
+                    {
+                        targetingOverlay.SetEntityForTargeting(weapon);
+                        world.CurrentState = Constants.GameState.Targeting;
+                    }
                 }
             }
             else if (keyboard.IsKeyPressed(Keys.D1))

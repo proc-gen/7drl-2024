@@ -2,6 +2,7 @@
 using Arch.Core.Extensions;
 using Magi.Containers.DatasetContainers;
 using Magi.ECS.Components;
+using Magi.ECS.Helpers;
 using Magi.Utils;
 using System;
 using System.Collections.Generic;
@@ -37,8 +38,9 @@ namespace Magi.Maps.Spawners
         public static void SpawnEntityForPoint(GameWorld world, Point point, EnemyContainer enemyContainer)
         {
             var combatEquipment = new CombatEquipment();
-
-            var reference = world.World.Create(
+            var combatSkills = new CombatSkills();
+            List<object> components = new List<object>()
+            {
                 new Position() { Point = point },
                 new Name() { EntityName = enemyContainer.Name },
                 new ViewDistance() { Distance = enemyContainer.ViewDistance },
@@ -61,8 +63,16 @@ namespace Magi.Maps.Spawners
                     CurrentDexterity = enemyContainer.Dexterity,
                     Experience = enemyContainer.Experience,
                 },
-                combatEquipment
-            ).Reference();
+                combatEquipment,
+                combatSkills,
+            };
+
+            if (enemyContainer.Boss)
+            {
+                components.Add(new Boss());
+            }
+
+            var reference = world.World.CreateFromArray(components.ToArray()).Reference();
 
             if (!string.IsNullOrEmpty(enemyContainer.Mainhand))
             {
@@ -80,7 +90,24 @@ namespace Magi.Maps.Spawners
                 combatEquipment.ArmorReference.Entity.Add(new Equipped());
             }
 
-            reference.Entity.Set(combatEquipment);
+            if (!string.IsNullOrEmpty(enemyContainer.Skill1))
+            {
+                combatSkills.Skill1 = SkillSpawner.SpawnEntityForOwner(world, enemyContainer.Skill1, reference);
+            }
+            if (!string.IsNullOrEmpty(enemyContainer.Skill2))
+            {
+                combatSkills.Skill2 = SkillSpawner.SpawnEntityForOwner(world, enemyContainer.Skill2, reference);
+            }
+            if (!string.IsNullOrEmpty(enemyContainer.Skill3))
+            {
+                combatSkills.Skill3 = SkillSpawner.SpawnEntityForOwner(world, enemyContainer.Skill3, reference);
+            }
+            if (!string.IsNullOrEmpty(enemyContainer.Skill4))
+            {
+                combatSkills.Skill4 = SkillSpawner.SpawnEntityForOwner(world, enemyContainer.Skill4, reference);
+            }
+
+            reference.Entity.Set(combatEquipment, combatSkills);
 
             world.PhysicsWorld.AddEntity(reference, point);
         }

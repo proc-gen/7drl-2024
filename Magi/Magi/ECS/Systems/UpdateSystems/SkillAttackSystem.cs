@@ -144,6 +144,11 @@ namespace Magi.ECS.Systems.UpdateSystems
                 World.PhysicsWorld.MoveEntity(skillAttack.Source, position.Point, skillAttack.TargetLocation);
                 position.Point = skillAttack.TargetLocation;
                 skillAttack.Source.Entity.Set(position);
+
+                if(skillAttack.Source == World.PlayerReference)
+                {
+                    FieldOfView.CalculatePlayerFOV(World);
+                }
             }
         }
     }

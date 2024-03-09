@@ -14,6 +14,7 @@ namespace Magi.ECS.Systems.UpdateSystems
     public class RangedAttackSystem : ArchSystem, IUpdateSystem
     {
         QueryDescription rangedAttacksQuery = new QueryDescription().WithAll<RangedAttack>();
+        QueryDescription reloadingQuery = new QueryDescription().WithAll<Reloading>();
         Random random = new Random();
         public RangedAttackSystem(GameWorld world)
             : base(world)
@@ -22,6 +23,15 @@ namespace Magi.ECS.Systems.UpdateSystems
 
         public void Update(TimeSpan delta)
         {
+            World.World.Query(in reloadingQuery, (Entity entity, ref Owner owner) =>
+            {
+                if ((owner.OwnerReference.Entity.Has<Player>() && World.CurrentState == Constants.GameState.PlayerTurn)
+                    || (!owner.OwnerReference.Entity.Has<Player>() && World.CurrentState == Constants.GameState.MonsterTurn))
+                {
+                    entity.Remove<Reloading>();
+                }
+            });
+
             World.World.Query(in rangedAttacksQuery, (ref RangedAttack rangedAttack) =>
             {
                 var sourceName = rangedAttack.Source.Entity.Get<Name>();
@@ -56,6 +66,8 @@ namespace Magi.ECS.Systems.UpdateSystems
                 {
                     World.AddLogEntry(string.Concat(sourceName.EntityName, " is unable to hurt ", targetName.EntityName, "."));
                 }
+
+                sourceEquipment.MainHandReference.Entity.Add(new Reloading());
             });
 
             World.World.Destroy(in rangedAttacksQuery);
