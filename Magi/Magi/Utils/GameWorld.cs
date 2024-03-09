@@ -101,7 +101,7 @@ namespace Magi.Utils
 
             SetNextLevel(playerLevel);
 
-            var generator = Tomb.IncrementLevel();
+            var generator = Tomb.IncrementLevel(playerLevel);
             Map = generator.Map;
 
             SetStartingPosition(generator);

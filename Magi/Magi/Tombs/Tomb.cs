@@ -50,36 +50,38 @@ namespace Magi.Tombs
             }
         }
 
-        public Generator IncrementLevel()
+        public Generator IncrementLevel(int playerLevel)
         {
             CurrentLevel++;
-            return GenerateLevel();
+            return GenerateLevel(playerLevel);
         }
 
-        private Generator GenerateLevel()
+        private Generator GenerateLevel(int playerLevel)
         {
-            var generator = GetGenerator(Levels[CurrentLevel]);
+            var generator = GetGenerator(Levels[CurrentLevel], playerLevel);
             generator.Generate();
             return generator;
         }
 
-        private Generator GetGenerator(string key)
+        private Generator GetGenerator(string key, int playerLevel)
         {
+            int width = 50 + playerLevel * 2;
+
             switch (key)
             {
                 case "RoomsAndCorridors":
-                    return new RoomsAndCorridorsGenerator(GameSettings.GAME_WIDTH, GameSettings.GAME_HEIGHT);
+                    return new RoomsAndCorridorsGenerator(width, width);
                 case "BspRoom":
-                    return new BspRoomGenerator(GameSettings.GAME_WIDTH, GameSettings.GAME_HEIGHT);
+                    return new BspRoomGenerator(width, width);
                 case "BspInterior":
-                    return new BspInteriorGenerator(GameSettings.GAME_WIDTH, GameSettings.GAME_HEIGHT);
+                    return new BspInteriorGenerator(width, width);
                 case "CellularAutomata":
-                    return new CellularAutomataGenerator(GameSettings.GAME_WIDTH, GameSettings.GAME_HEIGHT);
+                    return new CellularAutomataGenerator(width, width);
                 case "DrunkardWalk":
-                    return new DrunkardWalkGenerator(GameSettings.GAME_WIDTH, GameSettings.GAME_HEIGHT);
+                    return new DrunkardWalkGenerator(width, width);
                 case "Random":
                 default:
-                    return new RandomGenerator(GameSettings.GAME_WIDTH, GameSettings.GAME_HEIGHT);
+                    return new RandomGenerator(width, width);
             }
         }
     }
