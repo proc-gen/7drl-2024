@@ -1,5 +1,6 @@
 ﻿using Arch.Core;
 using Arch.Core.Extensions;
+using Magi.Constants;
 using Magi.Containers.DatasetContainers;
 using Magi.ECS.Components;
 using Magi.ECS.Helpers;
@@ -57,6 +58,13 @@ namespace Magi.Maps.Spawners
             };
 
             return world.World.CreateFromArray(components.ToArray()).Reference();
+        }
+
+        public static List<string> GetSkillsForElement(Elements element)
+        {
+            var skills = MagicContainers.Values.Where(a => a.Element == element).Select(a => a.Name).ToList();
+
+            return skills;
         }
     }
 }

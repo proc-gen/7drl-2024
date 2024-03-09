@@ -1,4 +1,5 @@
 ﻿using Arch.Core.Extensions;
+using CommunityToolkit.HighPerformance;
 using Magi.Containers.DatasetContainers;
 using Magi.ECS.Components;
 using Magi.Maps.Spawners;
@@ -187,6 +188,27 @@ namespace Magi.Maps.Generators
                 Mainhand = weaponTable.Roll(Random),
                 Armor = armorTable.Roll(Random),
             };
+
+            var allowedSkills = SkillSpawner.GetSkillsForElement(world.Tomb.Element).AsSpan();
+            Random.Shuffle(allowedSkills);
+
+            int numSkills = Math.Min(4, Math.Max(1, playerStats.Level / 5));
+            if(numSkills > 0)
+            {
+                enemyContainer.Skill1 = allowedSkills[0];
+            }
+            if (numSkills > 1)
+            {
+                enemyContainer.Skill2 = allowedSkills[1];
+            }
+            if (numSkills > 2)
+            {
+                enemyContainer.Skill3 = allowedSkills[2];
+            }
+            if (numSkills > 3)
+            {
+                enemyContainer.Skill4 = allowedSkills[3];
+            }
 
             EnemySpawner.SpawnEntityForPoint(world, position, enemyContainer);
         }

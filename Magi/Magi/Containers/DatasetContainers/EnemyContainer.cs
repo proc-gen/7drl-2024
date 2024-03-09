@@ -27,5 +27,10 @@ namespace Magi.Containers.DatasetContainers
         public string Offhand { get; set; }
         public string Armor { get; set; }
         public int Experience { get; set; }
+        public bool Boss { get; set; }
+        public string Skill1 { get; set; }
+        public string Skill2 { get; set; }
+        public string Skill3 { get; set; }
+        public string Skill4 { get; set; }
     }
 }
