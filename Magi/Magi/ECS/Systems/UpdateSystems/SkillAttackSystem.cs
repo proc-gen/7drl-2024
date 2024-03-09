@@ -40,7 +40,38 @@ namespace Magi.ECS.Systems.UpdateSystems
                 }
                 else if (skillInfo.TargetingType == Constants.TargetingType.ChainTargetDamage)
                 {
+                    HashSet<EntityReference> affectedEntities = new HashSet<EntityReference>() { skillAttack.Target };
+                    int radius = 1;
+                    while(radius < skillInfo.EffectRange && affectedEntities.Count < 3)
+                    {
+                        var aoePoints = FieldOfView.CalculateFOV(World, skillAttack.TargetLocation, radius + 1, false);
+                        foreach (var aoePoint in aoePoints)
+                        {
+                            var entitiesAtLocation = World.PhysicsWorld.GetEntitiesAtLocation(aoePoint);
+                            if (entitiesAtLocation != null)
+                            {
+                                foreach (var entityAtLocation in entitiesAtLocation)
+                                {
+                                    if (entityAtLocation != skillAttack.Source && entityAtLocation.Entity.Has<CombatStats>())
+                                    {
+                                        affectedEntities.Add(entityAtLocation);
+                                    }
+                                }
+                            }
+                        }
+                    }
 
+                    foreach(var affectedEntity in affectedEntities)
+                    {
+                        HandleTargetDamage(skillAttack.Source,
+                                            affectedEntity,
+                                            sourceName,
+                                            skillName,
+                                            skillInfo,
+                                            ref sourceStats,
+                                            sourceEquipment
+                                        );
+                    }
                 }
                 else
                 {
@@ -55,13 +86,13 @@ namespace Magi.ECS.Systems.UpdateSystems
                                 if(entityAtLocation != skillAttack.Source && entityAtLocation.Entity.Has<CombatStats>())
                                 {
                                     HandleTargetDamage(skillAttack.Source,
-                                        entityAtLocation,
-                                        sourceName,
-                                        skillName,
-                                        skillInfo,
-                                        ref sourceStats,
-                                        sourceEquipment
-                                    );
+                                                        entityAtLocation,
+                                                        sourceName,
+                                                        skillName,
+                                                        skillInfo,
+                                                        ref sourceStats,
+                                                        sourceEquipment
+                                                    );
                                 }
                             }
                             
