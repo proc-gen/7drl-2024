@@ -105,8 +105,8 @@ namespace Magi.Maps.Generators
             ItemSpawner itemSpawner = new ItemSpawner(itemSpawnTable, Random);
 
             List<Rectangle> rooms = new List<Rectangle>();
-            int width = Map.Width / 10;
-            int height = Map.Height / 10;
+            int width = 10;
+            int height = 10;
 
             for (int i = 0; i < Map.Width - width; i += width)
             {
