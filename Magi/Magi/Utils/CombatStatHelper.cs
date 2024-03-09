@@ -61,11 +61,11 @@ namespace Magi.Utils
         {
             if(attackType == AttackType.Melee)
             {
-                return Math.Max(0, (int)((sourceStats.CurrentStrength - 10f) / 2f + 1f));
+                return Math.Max(0, (int)((sourceStats.CurrentStrength - 10f) / 5f + 1f));
             }
             else if (attackType == AttackType.Magic)
             {
-                return Math.Max(0, (int)((sourceStats.CurrentIntelligence - 10f) / 2f + 1f));
+                return Math.Max(0, (int)((sourceStats.CurrentIntelligence - 10f) / 5f + 1f));
             }
 
             return 0;

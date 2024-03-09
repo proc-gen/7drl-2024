@@ -67,7 +67,7 @@ namespace Magi.ECS.Systems.UpdateSystems
                                         sourceName,
                                         skillName,
                                         skillInfo,
-                                        sourceStats,
+                                        ref sourceStats,
                                         sourceEquipment
                                     );
                                 }
@@ -84,7 +84,7 @@ namespace Magi.ECS.Systems.UpdateSystems
             World.World.Destroy(in skillAttacksQuery);
         }
 
-        private void HandleTargetDamage(EntityReference Source, EntityReference Target, Name sourceName, Name skillName, Skill skillInfo, CombatStats sourceStats, CombatEquipment sourceEquipment)
+        private void HandleTargetDamage(EntityReference Source, EntityReference Target, Name sourceName, Name skillName, Skill skillInfo, ref CombatStats sourceStats, CombatEquipment sourceEquipment)
         {
             var targetName = Target.Entity.Get<Name>();
             var targetStats = Target.Entity.Get<CombatStats>();

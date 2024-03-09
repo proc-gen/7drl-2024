@@ -9,6 +9,26 @@
       "Name": "Small Mana Potion",
       "ConsumableType": 2,
       "ConsumableAmount": 10
+    },
+    {
+      "Name": "Health Potion",
+      "ConsumableType": 1,
+      "ConsumableAmount": 25
+    },
+    {
+      "Name": "Mana Potion",
+      "ConsumableType": 2,
+      "ConsumableAmount": 25
+    },
+    {
+      "Name": "Large Health Potion",
+      "ConsumableType": 1,
+      "ConsumableAmount": 50
+    },
+    {
+      "Name": "Large Mana Potion",
+      "ConsumableType": 2,
+      "ConsumableAmount": 50
     }
   ]
 }

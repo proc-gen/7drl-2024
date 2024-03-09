@@ -2,6 +2,7 @@
 using Arch.Core.Extensions;
 using Magi.Containers;
 using Magi.ECS.Components;
+using Magi.Processors;
 using Magi.UI.Helpers;
 using Magi.Utils;
 using SadConsole.Input;
@@ -18,7 +19,7 @@ namespace Magi.UI.Windows
         GameWorld World;
         List<EntityReference> InventoryItems;
         int selectedItem = 0;
-        QueryDescription ownedItemsQuery = new QueryDescription().WithAll<Owner>();
+        QueryDescription ownedItemsQuery = new QueryDescription().WithAll<Item, Owner>();
         public InventoryWindow(GameWorld world)
             : base(GameSettings.GAME_WIDTH / 4,
                     GameSettings.GAME_HEIGHT / 4 - 5,
@@ -152,10 +153,21 @@ namespace Magi.UI.Windows
 
         private void DrawInventoryItems()
         {
+            var stats = World.PlayerReference.Entity.Get<CombatStats>();
+
             Console.Print(6 + Console.Width / 2, 4, "Backpack Items");
             for (int i = 0; i < 12; i++)
             {
-                Console.Print(6 + Console.Width / 2, 6 + i, string.Concat(1 + i, ": ", i < InventoryItems.Count ? InventoryItems[i].Entity.Get<Name>().EntityName : string.Empty));
+                if (i < InventoryItems.Count)
+                {
+                    var itemInfo = InventoryItems[i].Entity.Get<Item>();
+
+                    Console.Print(6 + Console.Width / 2, 6 + i, string.Concat(1 + i, ": ", i < InventoryItems.Count ? InventoryItems[i].Entity.Get<Name>().EntityName : string.Empty), ItemProcessor.CanEquip(itemInfo, stats) ? Color.White : Color.Red, Color.Black);
+                }
+                else
+                {
+                    Console.Print(6 + Console.Width / 2, 6 + i, string.Concat(1 + i, ": "));
+                }
             }
         }
 
@@ -237,7 +249,7 @@ namespace Magi.UI.Windows
                 if (item.Entity.Has<Consumable>())
                 {
                     var consumable = item.Entity.Get<Consumable>();
-                    switch(consumable.ConsumableType)
+                    switch (consumable.ConsumableType)
                     {
                         case Constants.ConsumableTypes.Health:
                             Console.Print(6 + Console.Width / 2, 21, string.Concat("Restores up to ", consumable.ConsumableAmount, "hp"));
@@ -247,11 +259,27 @@ namespace Magi.UI.Windows
                             break;
                     }
                 }
-                else if (item.Entity.Has<Weapon>())
+                else
                 {
-                    Console.Print(6 + Console.Width / 2, 21, string.Concat("Weapon Damage: ", string.Concat(item.Entity.Get<Weapon>().DamageRoll, " ", item.Entity.Get<Weapon>().DamageType)));
-                    Console.Print(6 + Console.Width / 2, 22, string.Concat("Critical Hit Chance: ", string.Concat((20 - item.Entity.Get<Weapon>().CriticalHitRoll + 1) * 5, "%")));
-                    Console.Print(6 + Console.Width / 2, 23, string.Concat("Range: ", item.Entity.Get<Weapon>().Range > 1 ? item.Entity.Get<Weapon>().Range : "Melee"));
+                    var itemInfo = item.Entity.Get<Item>();
+                    if (item.Entity.Has<Weapon>())
+                    {
+                        var weapon = item.Entity.Get<Weapon>();
+                        Console.Print(6 + Console.Width / 2, 21, string.Concat("Weapon Damage: ", string.Concat(weapon.DamageRoll, " ", weapon.DamageType)));
+                        Console.Print(6 + Console.Width / 2, 22, string.Concat("Critical Hit Chance: ", string.Concat((20 - weapon.CriticalHitRoll + 1) * 5, "%")));
+                        Console.Print(6 + Console.Width / 2, 23, string.Concat("Range: ", weapon.Range > 1 ? weapon.Range : "Melee"));
+                    }
+                    else if(item.Entity.Has<Armor>())
+                    {
+                        var armor = item.Entity.Get<Armor>();
+                        Console.Print(6 + Console.Width / 2, 21, string.Concat("Armor: ", armor.ArmorBonus));
+                        Console.Print(6 + Console.Width / 2, 22, string.Concat("Class: ", armor.ArmorClass));
+                        Console.Print(6 + Console.Width / 2, 23, string.Concat("Block Chance: ", armor.BlockChance > 0 ? string.Concat(armor.BlockChance, "%") : string.Empty));
+                    }
+
+                    Console.Print(6 + Console.Width / 2, 25, string.Concat("Strength Req.: ", itemInfo.StrengthRequirement));
+                    Console.Print(6 + Console.Width / 2, 26, string.Concat("Dexterity Req.: ", itemInfo.DexterityRequirement));
+                    Console.Print(6 + Console.Width / 2, 27, string.Concat("Intelligence Req.: ", itemInfo.IntelligenceRequirement));
                 }
             }
         }

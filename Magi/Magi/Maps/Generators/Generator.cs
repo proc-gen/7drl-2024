@@ -110,17 +110,14 @@ namespace Magi.Maps.Generators
             var weaponTable = new RandomTable<string>();
             var armorTable = new RandomTable<string>();
             
-            foreach (var item in ItemSpawner.ItemContainers)
+            foreach(var weapon in ItemSpawner.GetWeaponsForLevel(playerStats.Level))
             {
-                if (item.Value.ItemType == Constants.ItemTypes.Weapon)
-                {
-                    weaponTable = weaponTable.Add(item.Key, 1);
-                }
-                else if(item.Value.ItemType == Constants.ItemTypes.Armor 
-                    && ItemSpawner.ArmorContainers[item.Key].ArmorType == Constants.ArmorType.Wearable)
-                {
-                    armorTable = armorTable.Add(item.Key, 1);
-                }
+                weaponTable = weaponTable.Add(weapon, 1);
+            }
+
+            foreach (var armor in ItemSpawner.GetArmorsForLevel(playerStats.Level))
+            {
+                armorTable = armorTable.Add(armor, 1);
             }
 
             EnemyContainer enemyContainer = new EnemyContainer()
