@@ -11,9 +11,9 @@ namespace Magi.Processors
     {
         public static bool CanEquip(Item item, CombatStats combatStats)
         {
-            return item.StrengthRequirement >= combatStats.CurrentStrength
-                && item.DexterityRequirement >= combatStats.CurrentDexterity
-                && item.IntelligenceRequirement >= combatStats.CurrentIntelligence;
+            return item.StrengthRequirement <= combatStats.CurrentStrength
+                && item.DexterityRequirement <= combatStats.CurrentDexterity
+                && item.IntelligenceRequirement <= combatStats.CurrentIntelligence;
         }
     }
 }

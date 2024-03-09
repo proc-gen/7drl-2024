@@ -116,7 +116,7 @@ namespace Magi.Maps.Spawners
             var items = new List<string>();
             foreach (var item in ItemContainers)
             {
-                if (item.Value.LevelRequirement >= level)
+                if (item.Value.LevelRequirement <= level)
                 {
                     items.Add(item.Key);
                 }
@@ -131,7 +131,7 @@ namespace Magi.Maps.Spawners
             foreach (var item in ItemContainers)
             {
                 if(item.Value.ItemType == Constants.ItemTypes.Weapon
-                    && item.Value.LevelRequirement >= level)
+                    && item.Value.LevelRequirement <= level)
                 {
                     weapons.Add(item.Key);
                 }
@@ -147,7 +147,7 @@ namespace Magi.Maps.Spawners
             {
                 if (item.Value.ItemType == Constants.ItemTypes.Armor
                     && ArmorContainers[item.Key].ArmorType == Constants.ArmorType.Wearable
-                    && item.Value.LevelRequirement >= level)
+                    && item.Value.LevelRequirement <= level)
                 {
                     armors.Add(item.Key);
                 }
@@ -163,7 +163,7 @@ namespace Magi.Maps.Spawners
             {
                 if (item.Value.ItemType == Constants.ItemTypes.Armor
                     && ArmorContainers[item.Key].ArmorType == Constants.ArmorType.Shield
-                    && item.Value.LevelRequirement >= level)
+                    && item.Value.LevelRequirement <= level)
                 {
                     shields.Add(item.Key);
                 }
