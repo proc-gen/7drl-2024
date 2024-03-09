@@ -2,6 +2,7 @@
 using Arch.Core.Extensions;
 using Magi.Containers;
 using Magi.ECS.Components;
+using Magi.Processors;
 using Magi.Utils;
 using System;
 using System.Collections.Generic;
@@ -46,20 +47,7 @@ namespace Magi.ECS.Systems.UpdateSystems
                 {
                     targetStats.CurrentHealth = Math.Max(0, targetStats.CurrentHealth - damage);
                     World.AddLogEntry(string.Concat(sourceName.EntityName, " shoots ", targetName.EntityName, " for ", damage, "hp."));
-                    if (targetStats.CurrentHealth == 0)
-                    {
-                        World.AddLogEntry(string.Concat(sourceName.EntityName, " killed ", targetName.EntityName, "!"));
-                        if (rangedAttack.Source.Entity.Has<Player>())
-                        {
-                            sourceStats.Experience += targetStats.Experience;
-                            rangedAttack.Source.Entity.Set(sourceStats);
-                            rangedAttack.Target.Entity.Add(new Dead());
-                        }
-                        else if (rangedAttack.Target.Entity.Has<Player>())
-                        {
-                            World.CurrentState = Constants.GameState.PlayerDeath;
-                        }
-                    }
+                    DeathProcessor.CheckIfDead(World, rangedAttack.Source, rangedAttack.Target, ref sourceStats, ref targetStats, sourceName, targetName);
                     rangedAttack.Target.Entity.Set(targetStats);
                 }
                 else
