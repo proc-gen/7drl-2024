@@ -16,6 +16,7 @@ namespace Magi.ECS.Systems.UpdateSystems
         SquareGridInGame SquareGrid { get; set; }
         AStarSearch<Location> AStarSearch { get; set; }
         QueryDescription nonPlayerQuery = new QueryDescription().WithAll<Position, Input>().WithNone<Player>();
+        Random random = new Random();
         public NonPlayerInputSystem(GameWorld world)
             : base(world)
         {
@@ -36,7 +37,13 @@ namespace Magi.ECS.Systems.UpdateSystems
                     {
                         bool melee = combatEquipment.MainHandReference == EntityReference.Null || combatEquipment.MainHandReference.Entity.Get<Weapon>().Range == 1;
                         bool needToMove = melee ? true : World.Map.IsPathBlocked(position.Point, playerPosition.Point, combatEquipment.MainHandReference.Entity.Get<Weapon>().Range, Constants.TargetSpace.Enemy);
+                        bool doNothing = false;
                         
+                        if(!needToMove && combatEquipment.MainHandReference.Entity.Has<Reloading>()) 
+                        {
+                            doNothing = random.Next(1, 10) < 3;
+                        }
+
                         if (needToMove)
                         {
                             var path = AStarSearch.RunSearch(new Location(position.Point), new Location(playerPosition.Point));
@@ -45,7 +52,11 @@ namespace Magi.ECS.Systems.UpdateSystems
                         }
                         else
                         {
-                            World.World.Create(new RangedAttack() { Source = entity.Reference(), Target = World.PlayerReference });
+                            if (!doNothing)
+                            {
+                                World.World.Create(new RangedAttack() { Source = entity.Reference(), Target = World.PlayerReference });
+                            }
+
                             input.SkipTurn = true;
                             input.Direction = Point.None;
                         }
