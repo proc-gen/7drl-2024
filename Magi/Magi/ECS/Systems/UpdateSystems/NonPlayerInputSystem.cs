@@ -90,7 +90,7 @@ namespace Magi.ECS.Systems.UpdateSystems
                                     }
                                 }
 
-                                World.World.Create(new SkillAttack() { Source = entity.Reference(), SourceSkill = whichAttack.Item2, Target = target, TargetLocation = targetLocation });
+                                World.World.Create(new SkillAttack() { Source = entity.Reference(), SourceSkill = whichAttack.Item2, Target = target, TargetLocation = targetLocation, TurnsLeft = whichAttack.Item2.Entity.Get<Skill>().LifetimeTurns });
                                 input.SkipTurn = true;
                                 input.Direction = Point.None;
                                 break;

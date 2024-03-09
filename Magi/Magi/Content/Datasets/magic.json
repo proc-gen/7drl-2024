@@ -325,7 +325,7 @@
     {
       "Name": "Ice Nova",
       "Element": 6,
-      "TargetingType": 5,
+      "TargetingType": 4,
       "TargetSpace": 0,
       "PostSkillEffect": 0,
       "ManaCost": 12,

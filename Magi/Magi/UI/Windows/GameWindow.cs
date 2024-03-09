@@ -118,7 +118,7 @@ namespace Magi.UI.Windows
                     }
                     else
                     {
-                        world.World.Create(new SkillAttack() { Source = world.PlayerReference, Target = EntityReference.Null, SourceSkill = skill });
+                        world.World.Create(new SkillAttack() { Source = world.PlayerReference, Target = EntityReference.Null, SourceSkill = skill, TargetLocation = world.PlayerReference.Entity.Get<Position>().Point, TurnsLeft = skillInfo.LifetimeTurns });
                         world.StartPlayerTurn(Point.None);
                     }
                 }

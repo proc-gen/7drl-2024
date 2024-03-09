@@ -3,7 +3,6 @@ using Arch.Core.Extensions;
 using Magi.ECS.Components;
 using Magi.Processors;
 using Magi.Utils;
-using SadConsole.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -25,7 +24,7 @@ namespace Magi.ECS.Systems.UpdateSystems
 
         public void Update(TimeSpan delta) 
         {
-            World.World.Query(in skillAttacksQuery, (ref SkillAttack skillAttack) =>
+            World.World.Query(in skillAttacksQuery, (Entity entity, ref SkillAttack skillAttack) =>
             {
                 var sourceName = skillAttack.Source.Entity.Get<Name>();
                 var sourceStats = skillAttack.Source.Entity.Get<CombatStats>();
@@ -39,15 +38,7 @@ namespace Magi.ECS.Systems.UpdateSystems
                 {
                     HandleImbuement(skillAttack, skillInfo, sourceName);
                 }
-                else if(skillInfo.TargetingType == Constants.TargetingType.Self)
-                {
-                    
-                }
                 else if (skillInfo.TargetingType == Constants.TargetingType.ChainTargetDamage)
-                {
-
-                }
-                else if (skillInfo.TargetingType == Constants.TargetingType.Directional)
                 {
 
                 }
@@ -59,12 +50,12 @@ namespace Magi.ECS.Systems.UpdateSystems
                         var entitiesAtLocation = World.PhysicsWorld.GetEntitiesAtLocation(aoePoint);
                         if (entitiesAtLocation != null)
                         {
-                            foreach( var entity in entitiesAtLocation)
+                            foreach(var entityAtLocation in entitiesAtLocation)
                             {
-                                if(entity != skillAttack.Source && entity.Entity.Has<CombatStats>())
+                                if(entityAtLocation != skillAttack.Source && entityAtLocation.Entity.Has<CombatStats>())
                                 {
                                     HandleTargetDamage(skillAttack.Source,
-                                        entity,
+                                        entityAtLocation,
                                         sourceName,
                                         skillName,
                                         skillInfo,
@@ -80,6 +71,12 @@ namespace Magi.ECS.Systems.UpdateSystems
 
                 skillAttack.Source.Entity.Set(sourceStats);
                 HandlePostProcessSkill(skillAttack, skillInfo);
+                
+                skillAttack.TurnsLeft--;
+                if(skillAttack.TurnsLeft == 0)
+                {
+                    entity.Add(new Remove());
+                }
             });
 
             World.World.Destroy(in skillAttacksQuery);
