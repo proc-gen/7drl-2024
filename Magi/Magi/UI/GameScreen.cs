@@ -116,7 +116,8 @@ namespace Magi.UI
                 new GameWindow(world, targetingOverlay),
                 new InventoryWindow(world),
                 targetingOverlay,
-                new LevelUpWindow(world)
+                new LevelUpWindow(world),
+                new SkillAcquiredWindow(world),
             };
 
             foreach(var window in windows)
@@ -130,7 +131,8 @@ namespace Magi.UI
             if (world.CurrentState == GameState.AwaitingPlayerInput
                 || world.CurrentState == GameState.ShowInventory
                 || world.CurrentState == GameState.Targeting
-                || world.CurrentState == GameState.LevelUp)
+                || world.CurrentState == GameState.LevelUp
+                || world.CurrentState == GameState.SkillAcquired)
             {
                 HandleKeyboard();
             }

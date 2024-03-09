@@ -1,6 +1,7 @@
 ﻿using Arch.Core;
 using Arch.Core.Extensions;
 using Magi.ECS.Components;
+using Magi.Processors;
 using Magi.Utils;
 using System;
 using System.Collections.Generic;
@@ -13,8 +14,6 @@ namespace Magi.ECS.Systems.UpdateSystems
     internal class DeathSystem : ArchSystem, IUpdateSystem
     {
         QueryDescription deathQuery = new QueryDescription().WithAll<Dead>();
-        QueryDescription ownerQuery = new QueryDescription().WithAll<Owner>();
-        QueryDescription removeQuery = new QueryDescription().WithAll<Remove>();
         public DeathSystem(GameWorld world)
             : base(world)
         {
@@ -24,19 +23,11 @@ namespace Magi.ECS.Systems.UpdateSystems
         {
             World.World.Query(in deathQuery, (Entity entity, ref Position position) =>
             {
-                World.PhysicsWorld.RemoveEntity(entity.Reference(), position.Point);
-
-                World.World.Query(in ownerQuery, (Entity ownedEntity, ref Owner owner) =>
-                {
-                    if(owner.OwnerReference == entity.Reference())
-                    {
-                        ownedEntity.Add(new Remove());
-                    }
-                });
+                DeathProcessor.MarkEntityForRemoval(World, entity.Reference(), position);
             });
 
             World.World.Destroy(in deathQuery);
-            World.World.Destroy(in removeQuery);
+            DeathProcessor.RemoveMarkedEntities(World);
         }
     }
 }

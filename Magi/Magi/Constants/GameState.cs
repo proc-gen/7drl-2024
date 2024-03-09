@@ -16,5 +16,6 @@ namespace Magi.Constants
         Targeting,
         PlayerDeath,
         LevelUp,
+        SkillAcquired
     }
 }
