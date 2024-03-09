@@ -62,6 +62,7 @@ namespace Magi.Utils
                 }
                 else
                 {
+                    nextEntry = entry.Substring(character, lineLength);
                     int lastSpace = nextEntry.LastIndexOf(' ');
                     splitEntries.Add(nextEntry.Substring(0, lastSpace));
                     character = lastSpace + 1;
