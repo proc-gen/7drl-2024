@@ -127,23 +127,10 @@ namespace Magi.Maps.Generators
 
             if (!madeExit)
             {
-                float distance = 999999;
-                Point corridorEnd = new Point();
-                for(int i = 0; i < Map.Width; i++) 
+                Point corridorEnd = new Point(Map.Width / 2, Map.Height / 2);
+                while(Map.GetTile(corridorEnd).BaseTileType != Constants.TileTypes.Floor)
                 {
-                    for(int j = 0; j < Map.Height; j++)
-                    {
-                        var testPoint = new Point(i, j);
-                        if(!bossRoom.Contains(testPoint))
-                        {
-                            var thisDistance = (float)Point.EuclideanDistanceMagnitude(bossRoom.Center, testPoint);
-                            if(thisDistance < distance)
-                            {
-                                distance = thisDistance;
-                                corridorEnd = testPoint;
-                            }
-                        }
-                    }
+                    corridorEnd += new Point(-1, 0);
                 }
 
                 GeneratorExtensions.ApplyCorridor(this, bossRoom.Center.X, bossRoom.Center.Y, corridorEnd.X, corridorEnd.Y);
