@@ -62,6 +62,7 @@ namespace Magi.Utils
                 }
                 else
                 {
+                    nextEntry = entry.Substring(character, lineLength);
                     int lastSpace = nextEntry.LastIndexOf(' ');
                     splitEntries.Add(nextEntry.Substring(0, lastSpace));
                     character = lastSpace + 1;
@@ -100,7 +101,7 @@ namespace Magi.Utils
 
             SetNextLevel(playerLevel);
 
-            var generator = Tomb.IncrementLevel();
+            var generator = Tomb.IncrementLevel(playerLevel);
             Map = generator.Map;
 
             SetStartingPosition(generator);

@@ -83,20 +83,69 @@ namespace Magi.Maps.Generators
                 {
                     if (i == bossRoom.X || j == bossRoom.Y || i == bossRoom.MaxExtentX || j == bossRoom.MaxExtentY)
                     {
-                        if ((i == bossRoom.X + 5 && j > 0 && j < Map.Height) || (j == bossRoom.Y + 5 && i > 0 && i < Map.Width))
-                        {
-                            Map.SetTile(i, j, Floor);
-                        }
-                        else
-                        {
-                            Map.SetTile(i, j, Wall);
-                        }
+                        Map.SetTile(i, j, Wall);
                     }
                     else
                     {
                         Map.SetTile(i, j, Floor);
                     }
                 }
+            }
+
+            Point top = new Point(bossRoom.Center.X, bossRoom.Y),
+                bottom = new Point(bossRoom.Center.X, bossRoom.MaxExtentY),
+                left = new Point(bossRoom.X, bossRoom.Center.Y),
+                right = new Point(bossRoom.MaxExtentX, bossRoom.Center.Y);
+
+            bool madeExit = false;
+
+            if(bottom.Y + 1 < Map.Height - 1
+                && Map.GetTile(bottom.X, bottom.Y + 1).BaseTileType == Constants.TileTypes.Floor)
+            {
+                Map.SetTile(bottom, Floor);
+                madeExit = true;
+            }
+            else if (top.Y - 1 > 0
+                && Map.GetTile(top.X, top.Y - 1).BaseTileType == Constants.TileTypes.Floor)
+            {
+                Map.SetTile(top, Floor);
+                madeExit = true;
+            }
+            else if (right.X + 1 < Map.Width - 1
+                && Map.GetTile(right.X + 1, right.Y).BaseTileType == Constants.TileTypes.Floor)
+            {
+                Map.SetTile(right, Floor);
+                madeExit = true;
+            }
+            else if (left.X - 1 > 0
+                && Map.GetTile(left.X - 1, left.Y).BaseTileType == Constants.TileTypes.Floor)
+            {
+                Map.SetTile(left, Floor);
+                madeExit = true;
+            }
+
+            if (!madeExit)
+            {
+                float distance = 999999;
+                Point corridorEnd = new Point();
+                for(int i = 0; i < Map.Width; i++) 
+                {
+                    for(int j = 0; j < Map.Height; j++)
+                    {
+                        var testPoint = new Point(i, j);
+                        if(!bossRoom.Contains(testPoint))
+                        {
+                            var thisDistance = (float)Point.EuclideanDistanceMagnitude(bossRoom.Center, testPoint);
+                            if(thisDistance < distance)
+                            {
+                                distance = thisDistance;
+                                corridorEnd = testPoint;
+                            }
+                        }
+                    }
+                }
+
+                GeneratorExtensions.ApplyCorridor(this, bossRoom.Center.X, bossRoom.Center.Y, corridorEnd.X, corridorEnd.Y);
             }
         }
 
