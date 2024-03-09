@@ -108,17 +108,17 @@ namespace Magi.UI.Windows
                         var skillInfo = Source.Entity.Get<Skill>();
                         if((skillInfo.TargetSpace == Constants.TargetSpace.Any || skillInfo.TargetSpace == Constants.TargetSpace.Enemy) && Target != EntityReference.Null)
                         {
-                            World.World.Create(new SkillAttack() { Source = World.PlayerReference, SourceSkill = Source, Target = Target, TargetLocation = End });
+                            World.World.Create(new SkillAttack() { Source = World.PlayerReference, SourceSkill = Source, Target = Target, TargetLocation = End, TurnsLeft = skillInfo.LifetimeTurns });
                             attacked = true;
                         }
                         else if ((skillInfo.TargetSpace == Constants.TargetSpace.Any || skillInfo.TargetSpace == Constants.TargetSpace.Empty) && Target == EntityReference.Null)
                         {
-                            World.World.Create(new SkillAttack() { Source = World.PlayerReference, SourceSkill = Source, Target = Target, TargetLocation = End });
+                            World.World.Create(new SkillAttack() { Source = World.PlayerReference, SourceSkill = Source, Target = Target, TargetLocation = End, TurnsLeft = skillInfo.LifetimeTurns });
                             attacked = true;
                         }
                         else if ((skillInfo.TargetSpace == Constants.TargetSpace.Any || skillInfo.TargetSpace == Constants.TargetSpace.Wall) && World.Map.GetTile(End).BaseTileType == Constants.TileTypes.Wall)
                         {
-                            World.World.Create(new SkillAttack() { Source = World.PlayerReference, SourceSkill = Source, Target = Target, TargetLocation = End });
+                            World.World.Create(new SkillAttack() { Source = World.PlayerReference, SourceSkill = Source, Target = Target, TargetLocation = End, TurnsLeft = skillInfo.LifetimeTurns });
                             attacked = true;
                         }
                     }

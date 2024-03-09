@@ -32,5 +32,8 @@ namespace Magi.Containers.DatasetContainers
         public string Skill2 { get; set; }
         public string Skill3 { get; set; }
         public string Skill4 { get; set; }
+        public int MeleeChance { get; set; }
+        public int RangedChance { get; set; }
+        public int SkillChance { get; set; }
     }
 }

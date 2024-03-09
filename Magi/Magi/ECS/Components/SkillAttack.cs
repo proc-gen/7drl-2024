@@ -14,5 +14,6 @@ namespace Magi.ECS.Components
         public EntityReference SourceSkill { get; set; }
         public EntityReference Target { get; set; }
         public Point TargetLocation { get; set; }
+        public int TurnsLeft { get; set; }
     }
 }

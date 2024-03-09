@@ -141,8 +141,8 @@ namespace Magi.Maps.Generators
         {
             var playerStats = world.PlayerReference.Entity.Get<CombatStats>();
 
-            var health = CombatStatHelper.CalculateMaxHealth(playerStats.Level, 10 + 5 * playerStats.Level);
-            var mana = CombatStatHelper.CalculateMaxMana(playerStats.Level, 10 + 5 * playerStats.Level);
+            var health = CombatStatHelper.CalculateMaxHealth(playerStats.Level, 10 + 2 * playerStats.Level);
+            var mana = CombatStatHelper.CalculateMaxMana(playerStats.Level, 10 + 2 * playerStats.Level);
 
             var weaponTable = new RandomTable<string>();
             var armorTable = new RandomTable<string>();
@@ -151,30 +151,40 @@ namespace Magi.Maps.Generators
             {
                 weaponTable = weaponTable.Add(weapon, 1);
             }
+            var chosenWeapon = weaponTable.Roll(Random);
 
             foreach (var armor in ItemSpawner.GetArmorsForLevel(playerStats.Level))
             {
                 armorTable = armorTable.Add(armor, 1);
             }
+            var chosenArmor = armorTable.Roll(Random);
+
+            int skillChance = Math.Min(50, playerStats.Level * 2);
+            int meleeChance = chosenWeapon.Contains("Bow") ? 10 : 100 - skillChance;
+            int rangedChance = 100 - meleeChance - skillChance;
+
 
             EnemyContainer enemyContainer = new EnemyContainer()
             {
                 Name = world.Tomb.Mage,
                 Health = health,
                 Mana = mana,
-                Strength = 10 + 5 * playerStats.Level,
-                Intelligence = 10 + 5 * playerStats.Level,
-                Vitality = 10 + 5 * playerStats.Level,
-                Dexterity = 10 + 5 * playerStats.Level,
+                Strength = 10 + 2 * playerStats.Level,
+                Intelligence = 10 + 2 * playerStats.Level,
+                Vitality = 10 + 2 * playerStats.Level,
+                Dexterity = 10 + 2 * playerStats.Level,
                 ViewDistance = 10,
                 Experience = 20 * playerStats.Level,
                 Glyph = (char)Random.Next(224, 233),
                 GlyphColorRed = 192,
                 GlyphColorBlue = 50,
                 GlyphColorGreen = 0,
-                Mainhand = weaponTable.Roll(Random),
-                Armor = armorTable.Roll(Random),
+                Mainhand = chosenWeapon,
+                Armor = chosenArmor,
                 Boss = true,
+                MeleeChance = meleeChance,
+                RangedChance = rangedChance,
+                SkillChance = skillChance,
             };
 
             var allowedSkills = SkillSpawner.GetSkillsForElement(world.Tomb.Element).AsSpan();
