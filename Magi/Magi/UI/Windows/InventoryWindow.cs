@@ -2,6 +2,7 @@
 using Arch.Core.Extensions;
 using Magi.Containers;
 using Magi.ECS.Components;
+using Magi.Processors;
 using Magi.UI.Helpers;
 using Magi.Utils;
 using SadConsole.Input;
@@ -152,10 +153,21 @@ namespace Magi.UI.Windows
 
         private void DrawInventoryItems()
         {
+            var stats = World.PlayerReference.Entity.Get<CombatStats>();
+
             Console.Print(6 + Console.Width / 2, 4, "Backpack Items");
             for (int i = 0; i < 12; i++)
             {
-                Console.Print(6 + Console.Width / 2, 6 + i, string.Concat(1 + i, ": ", i < InventoryItems.Count ? InventoryItems[i].Entity.Get<Name>().EntityName : string.Empty));
+                if (i < InventoryItems.Count)
+                {
+                    var itemInfo = InventoryItems[i].Entity.Get<Item>();
+
+                    Console.Print(6 + Console.Width / 2, 6 + i, string.Concat(1 + i, ": ", i < InventoryItems.Count ? InventoryItems[i].Entity.Get<Name>().EntityName : string.Empty), ItemProcessor.CanEquip(itemInfo, stats) ? Color.White : Color.Red, Color.Black);
+                }
+                else
+                {
+                    Console.Print(6 + Console.Width / 2, 6 + i, string.Concat(1 + i, ": "));
+                }
             }
         }
 
