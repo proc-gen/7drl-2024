@@ -10,6 +10,6 @@ namespace Magi.Constants
     {
         Melee,
         Ranged,
-        Magic
+        Skill
     }
 }

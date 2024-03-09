@@ -49,7 +49,7 @@ namespace Magi.Utils
 
         public static int CalculateMagicDamage(Random random, Skill skill, CombatStats sourceStats, CombatEquipment sourceEquipment, CombatStats targetStats, CombatEquipment targetEquipment)
         {
-            int damage = GetInitialDamage(AttackType.Magic, sourceStats);
+            int damage = GetInitialDamage(AttackType.Skill, sourceStats);
 
             var skillDamage = SkillDamageProcessor.CalculateDamage(random, skill, damage);
             damage += skillDamage.Damage;
@@ -63,7 +63,7 @@ namespace Magi.Utils
             {
                 return Math.Max(0, (int)((sourceStats.CurrentStrength - 10f) / 5f + 1f));
             }
-            else if (attackType == AttackType.Magic)
+            else if (attackType == AttackType.Skill)
             {
                 return Math.Max(0, (int)((sourceStats.CurrentIntelligence - 10f) / 5f + 1f));
             }
