@@ -16,6 +16,7 @@ namespace Magi.UI.Windows
     {
         GameWorld World;
         CombatStats Stats;
+        QueryDescription bossQuery = new QueryDescription().WithAll<Boss>();
 
         int selectedOption = 0;
         int statsToAllocate = 0;
@@ -81,7 +82,22 @@ namespace Magi.UI.Windows
 
                     World.PlayerReference.Entity.Set(Stats);
                     Visible = false;
-                    World.CurrentState = Constants.GameState.AwaitingPlayerInput;
+
+                    if (World.Tomb.CurrentLevel == World.Tomb.Levels.Keys.Max()
+                        && World.World.CountEntities(in bossQuery) > 0)
+                    {
+                        var bossHealth = 0;
+                        World.World.Query(in bossQuery, (ref CombatStats combatStats) =>
+                        {
+                            bossHealth = combatStats.CurrentHealth;
+                        });
+
+                        World.CurrentState = bossHealth == 0 ? Constants.GameState.SkillAcquired : Constants.GameState.AwaitingPlayerInput;
+                    }
+                    else
+                    {
+                        World.CurrentState = Constants.GameState.AwaitingPlayerInput;
+                    }
                 }
             }
             return true;

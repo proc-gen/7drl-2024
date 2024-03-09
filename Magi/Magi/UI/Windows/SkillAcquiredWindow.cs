@@ -59,6 +59,7 @@ namespace Magi.UI.Windows
                 {
                     DeathProcessor.MarkEntityForRemoval(World, boss, boss.Entity.Get<Position>());
                     DeathProcessor.RemoveMarkedEntities(World);
+                    World.World.Destroy(boss);
                 }
             }
         }
