@@ -33,9 +33,11 @@ namespace Magi.ECS.Systems.UpdateSystems
                 var targetStats = meleeAttack.Target.Entity.Get<CombatStats>();
                 var targetEquipment = meleeAttack.Target.Entity.Get<CombatEquipment>();
 
+                char glyph = sourceEquipment.MainHandReference == EntityReference.Null ? (char)19 : sourceEquipment.MainHandReference.Entity.Get<Renderable>().Glyph;
+
                 World.World.Create(
                                 new RealTime(),
-                                new Renderable() { Glyph = sourceEquipment.MainHandReference.Entity.Get<Renderable>().Glyph, Color = Color.DarkGray },
+                                new Renderable() { Glyph = glyph, Color = Color.DarkGray },
                                 new TimedLife() { TimeLeft = 1f },
                                 new Position() { Point = meleeAttack.Target.Entity.Get<Position>().Point });
 

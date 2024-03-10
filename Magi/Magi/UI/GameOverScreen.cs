@@ -58,6 +58,7 @@ namespace Magi.UI
             screen.Print(screen.Width / 2 - 22, 15, "It's the end of the line for you, justicar...", Color.White, Color.Black);
 
             RenderGameLog();
+            RenderGameStats();
 
             screen.Print(screen.Width / 2 - 19, 50, "Press enter to go back to the main menu", Color.White, Color.Black);
             screen.Render(delta);
@@ -71,6 +72,25 @@ namespace Magi.UI
             {
                 screen.Print(GameSettings.GAME_WIDTH / 4 + 2, y, LogItems[LogItems.Count - i].ToString());
                 y--;
+            }
+        }
+
+        private void RenderGameStats()
+        {
+            string tombClearedText = string.Concat("You cleared ", world.TombsCleared, " tomb", world.TombsCleared == 1 ? "" : "s");
+            screen.Print(screen.Width / 2 - tombClearedText.Length / 2, 30, tombClearedText, Color.White, Color.Black);
+
+            int x = 0;
+            int y = 32;
+            foreach(var entry in world.ConfirmedKills)
+            {
+                screen.Print(screen.Width / 5 * x - 10, y, string.Concat(entry.Key, ": ", entry.Value));
+                x++;
+                if(x == 5)
+                {
+                    x = 0;
+                    y++;
+                }
             }
         }
     }
