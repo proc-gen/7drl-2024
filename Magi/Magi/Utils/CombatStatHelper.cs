@@ -3,6 +3,7 @@ using Magi.ECS.Components;
 using Magi.Processors;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.Metrics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -54,7 +55,10 @@ namespace Magi.Utils
             var skillDamage = SkillDamageProcessor.CalculateDamage(random, skill, sourceStats.CurrentDexterity, damage);
             damage += skillDamage.Damage;
 
-            return damage;
+            int damageReduction = ArmorProcessor.CalculateDamageReduction(random, skillDamage, targetEquipment.ArmorReference, targetEquipment.OffHandReference, targetStats.CurrentDexterity, false);
+            damageReduction /= 2;
+
+            return damage - damageReduction;
         }
 
         private static int GetInitialDamage(AttackType attackType, CombatStats sourceStats)
