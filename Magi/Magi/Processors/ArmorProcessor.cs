@@ -1,5 +1,6 @@
 ﻿using Arch.Core;
 using Arch.Core.Extensions;
+using Magi.Constants;
 using Magi.Containers;
 using Magi.ECS.Components;
 using Magi.Utils;
@@ -71,15 +72,16 @@ namespace Magi.Processors
             ownerReference.Entity.Set(ownerEquipment);
         }
 
-        public static int CalculateDamageReduction(Random random, DamageCalculation damageCalculation, EntityReference armorReference, EntityReference offhandReference, bool melee)
+        public static int CalculateDamageReduction(Random random, DamageCalculation damageCalculation, EntityReference armorReference, EntityReference offhandReference, int dexterity, bool melee)
         {
             int reduction = 0;
             int blockChance = 0;
-
+            ArmorClass armorClass = ArmorClass.None;
             if (armorReference != EntityReference.Null)
             {
                 reduction += armorReference.Entity.Get<Armor>().ArmorBonus;
                 blockChance += armorReference.Entity.Get<Armor>().BlockChance;
+                armorClass = armorReference.Entity.Get<Armor>().ArmorClass;
             }
 
             if (offhandReference != EntityReference.Null)
@@ -88,12 +90,32 @@ namespace Magi.Processors
                 {
                     reduction += offhandReference.Entity.Get<Armor>().ArmorBonus;
                     blockChance += offhandReference.Entity.Get<Armor>().BlockChance;
+                    if(offhandReference.Entity.Get<Armor>().ArmorClass > armorClass)
+                    {
+                        armorClass = offhandReference.Entity.Get<Armor>().ArmorClass;
+                    }
                 }
                 else
                 {
                     blockChance += 10;
                 }
             }
+
+            int dexterityBlockChance = dexterity / 3;
+            switch (armorClass)
+            {
+                case ArmorClass.Heavy:
+                    dexterityBlockChance = 0;
+                    break;
+                case ArmorClass.Medium:
+                    dexterityBlockChance = Math.Min(10, dexterityBlockChance);
+                    break;
+                case ArmorClass.Light: 
+                    dexterityBlockChance = Math.Min(25, dexterityBlockChance);
+                    break;
+            }
+
+            blockChance += dexterityBlockChance;
 
             if (!damageCalculation.CriticalHit)
             {

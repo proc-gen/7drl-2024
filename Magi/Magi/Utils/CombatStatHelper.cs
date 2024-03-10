@@ -3,6 +3,7 @@ using Magi.ECS.Components;
 using Magi.Processors;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.Metrics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -38,10 +39,10 @@ namespace Magi.Utils
             int damage = GetInitialDamage(attackType, sourceStats); 
             bool melee = attackType == AttackType.Melee;
 
-            var weaponDamage = WeaponProcessor.CalculateDamage(random, sourceEquipment.MainHandReference, melee, damage);
+            var weaponDamage = WeaponProcessor.CalculateDamage(random, sourceEquipment.MainHandReference, sourceStats.CurrentDexterity, melee, damage);
             damage = weaponDamage.Damage;
 
-            int damageReduction = ArmorProcessor.CalculateDamageReduction(random, weaponDamage, targetEquipment.ArmorReference, targetEquipment.OffHandReference, melee);
+            int damageReduction = ArmorProcessor.CalculateDamageReduction(random, weaponDamage, targetEquipment.ArmorReference, targetEquipment.OffHandReference, targetStats.CurrentDexterity, melee);
             damage += (int)(weaponDamage.ImbuementDamage * (1f + sourceStats.CurrentIntelligence / 100f));
                 
             return damage - damageReduction;
@@ -51,10 +52,13 @@ namespace Magi.Utils
         {
             int damage = GetInitialDamage(AttackType.Skill, sourceStats);
 
-            var skillDamage = SkillDamageProcessor.CalculateDamage(random, skill, damage);
+            var skillDamage = SkillDamageProcessor.CalculateDamage(random, skill, sourceStats.CurrentDexterity, damage);
             damage += skillDamage.Damage;
 
-            return damage;
+            int damageReduction = ArmorProcessor.CalculateDamageReduction(random, skillDamage, targetEquipment.ArmorReference, targetEquipment.OffHandReference, targetStats.CurrentDexterity, false);
+            damageReduction /= 2;
+
+            return damage - damageReduction;
         }
 
         private static int GetInitialDamage(AttackType attackType, CombatStats sourceStats)
