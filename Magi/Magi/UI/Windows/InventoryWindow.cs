@@ -149,6 +149,8 @@ namespace Magi.UI.Windows
         {
             Console.DrawRLTKStyleBox(0, 0, Console.Width - 1, Console.Height - 1, Color.White, Color.Black);
             Console.Print(Console.Width / 2 - 5, 2, "Inventory");
+
+            Console.Print(3, Console.Height - 1, "[ U - Use/Equip Item, D - Drop Item ]");
         }
 
         private void DrawInventoryItems()

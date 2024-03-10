@@ -3,6 +3,7 @@ using Magi.Containers.DatasetContainers;
 using Magi.Maps;
 using Magi.Maps.Generators;
 using Magi.Utils;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -22,6 +23,7 @@ namespace Magi.Tombs
         }
 
         public Dictionary<int, string> Levels { get; set; }
+        [JsonProperty]
         public int CurrentLevel { get; protected set; }
         public Elements Element { get; set; }
         public string Mage { get; set; }

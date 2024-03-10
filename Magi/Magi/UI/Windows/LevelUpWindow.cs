@@ -26,7 +26,7 @@ namespace Magi.UI.Windows
             : base(GameSettings.GAME_WIDTH / 4,
                     GameSettings.GAME_HEIGHT / 4 - 5,
                     GameSettings.GAME_WIDTH / 2,
-                    GameSettings.GAME_HEIGHT / 2)
+                    19)
         {
             World = world;
         }
@@ -37,7 +37,7 @@ namespace Magi.UI.Windows
             {
                 Visible = true;
                 selectedOption = 0;
-                statsToAllocate = 2;
+                statsToAllocate = 4;
                 additionalStats[0] = additionalStats[1] = additionalStats[2] = additionalStats[3] = 0;
                 Stats = World.PlayerReference.Entity.Get<CombatStats>();
             }
@@ -122,7 +122,7 @@ namespace Magi.UI.Windows
 
         private void DrawPlayerStats()
         {
-            Console.Print(Console.Width / 2 - 20, 4, "You have 2 attribute points to allocate:");
+            Console.Print(Console.Width / 2 - 20, 4, "You have 4 attribute points to allocate:");
             Console.Print(6, 6, string.Concat("Strength: ", Stats.CurrentStrength, " --> ", Stats.CurrentStrength + additionalStats[0]));
             Console.Print(6, 8, string.Concat("Dexterity: ", Stats.CurrentDexterity, " --> ", Stats.CurrentDexterity + additionalStats[1]));
             Console.Print(6, 10, string.Concat("Intelligence: ", Stats.CurrentIntelligence, " --> ", Stats.CurrentIntelligence + additionalStats[2]));

@@ -14,7 +14,7 @@ namespace Magi.UI.Windows
 {
     public class TargetingOverlay : Overlay
     {
-        const float AlphaFactor = 0.8f;
+        const float MainAlphaFactor = 0.8f, AOEAlphaFactor = 0.6f;
 
         GameWorld World;
         EntityReference Source;
@@ -70,7 +70,7 @@ namespace Magi.UI.Windows
             {
                 Visible = false;
                 ClearTargetingData();
-                World.CurrentState = Constants.GameState.AwaitingPlayerInput;
+                World.CurrentState = GameState.AwaitingPlayerInput;
                 retVal = true;
             }
             else if (keyboard.IsKeyPressed(Keys.Up))
@@ -106,17 +106,17 @@ namespace Magi.UI.Windows
                     else
                     {
                         var skillInfo = Source.Entity.Get<Skill>();
-                        if((skillInfo.TargetSpace == Constants.TargetSpace.Any || skillInfo.TargetSpace == Constants.TargetSpace.Enemy) && Target != EntityReference.Null)
+                        if((skillInfo.TargetSpace == TargetSpace.Any || skillInfo.TargetSpace == TargetSpace.Enemy) && Target != EntityReference.Null)
                         {
                             World.World.Create(new SkillAttack() { Source = World.PlayerReference, SourceSkill = Source, Target = Target, TargetLocation = End, TurnsLeft = skillInfo.LifetimeTurns });
                             attacked = true;
                         }
-                        else if ((skillInfo.TargetSpace == Constants.TargetSpace.Any || skillInfo.TargetSpace == Constants.TargetSpace.Empty) && Target == EntityReference.Null)
+                        else if ((skillInfo.TargetSpace == TargetSpace.Any || skillInfo.TargetSpace == TargetSpace.Empty) && Target == EntityReference.Null)
                         {
                             World.World.Create(new SkillAttack() { Source = World.PlayerReference, SourceSkill = Source, Target = Target, TargetLocation = End, TurnsLeft = skillInfo.LifetimeTurns });
                             attacked = true;
                         }
-                        else if ((skillInfo.TargetSpace == Constants.TargetSpace.Any || skillInfo.TargetSpace == Constants.TargetSpace.Wall) && World.Map.GetTile(End).BaseTileType == Constants.TileTypes.Wall)
+                        else if ((skillInfo.TargetSpace == TargetSpace.Any || skillInfo.TargetSpace == TargetSpace.Wall) && World.Map.GetTile(End).BaseTileType == TileTypes.Wall)
                         {
                             World.World.Create(new SkillAttack() { Source = World.PlayerReference, SourceSkill = Source, Target = Target, TargetLocation = End, TurnsLeft = skillInfo.LifetimeTurns });
                             attacked = true;
@@ -155,7 +155,7 @@ namespace Magi.UI.Windows
 
         public override void Update(TimeSpan delta)
         {
-            if (!Visible && World.CurrentState == Constants.GameState.Targeting)
+            if (!Visible && World.CurrentState == GameState.Targeting)
             {
                 Visible = true;
             }
@@ -176,25 +176,27 @@ namespace Magi.UI.Windows
         {
             string title = string.Concat("Targeting: ", Source.Entity.Get<Name>().EntityName);
             Console.Print(Console.Width / 2 - title.Length / 2, 5, title, Color.White, Color.Black);
+            Console.Print(Console.Width / 2 - 19, 6, "Press Enter to fire or Escape to cancel", Color.White, Color.Black);
         }
 
         private void RenderTrajectory()
         {
-            var lineColor = new Color(TrajectoryColor(), AlphaFactor);
+            var lineColor = new Color(TrajectoryColor(), MainAlphaFactor);
+            var aoeColor = new Color(lineColor, AOEAlphaFactor);
             int minX = Start.X - GameSettings.GAME_WIDTH / 2;
             int minY = Start.Y - GameSettings.GAME_HEIGHT / 2;
             var pointsInLine = FieldOfView.GetPointsInLine(Start, End);
-            foreach ( var point in pointsInLine )
-            {
-                Console.SetGlyph(point.X - minX, point.Y - minY, (char)219, lineColor);
-            }
-            if(EffectRange > 0 && lineColor.FillAlpha() != Color.Red)
+            if (EffectRange > 0 && lineColor.FillAlpha() != Color.Red)
             {
                 var aoePoints = FieldOfView.CalculateFOV(World, End, EffectRange + 1, false);
                 foreach (var point in aoePoints)
                 {
-                    Console.SetGlyph(point.X - minX, point.Y - minY, (char)219, lineColor);
+                    Console.SetGlyph(point.X - minX, point.Y - minY, (char)219, aoeColor);
                 }
+            }
+            foreach (var point in pointsInLine)
+            {
+                Console.SetGlyph(point.X - minX, point.Y - minY, (char)219, lineColor);
             }
         }
 

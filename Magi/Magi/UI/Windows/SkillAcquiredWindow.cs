@@ -28,7 +28,7 @@ namespace Magi.UI.Windows
             : base(GameSettings.GAME_WIDTH / 4,
                     GameSettings.GAME_HEIGHT / 4 - 5,
                     GameSettings.GAME_WIDTH / 2,
-                    GameSettings.GAME_HEIGHT / 2)
+                    17)
         {
             World = world;
         }
@@ -166,17 +166,17 @@ namespace Magi.UI.Windows
                     switch(options[selectedOptionA])
                     {
                         case "Strength":
-                            combatStats.CurrentStrength += 2;
+                            combatStats.CurrentStrength += 4;
                             break;
                         case "Dexterity":
-                            combatStats.CurrentDexterity += 2;
+                            combatStats.CurrentDexterity += 4;
                             break;
                         case "Intelligence":
-                            combatStats.CurrentIntelligence += 2;
+                            combatStats.CurrentIntelligence += 4;
                             combatStats.MaxMana = CombatStatHelper.CalculateMaxMana(combatStats.Level, combatStats.CurrentIntelligence);
                             break;
                         case "Vitality":
-                            combatStats.CurrentVitality += 2;
+                            combatStats.CurrentVitality += 4;
                             combatStats.MaxHealth = CombatStatHelper.CalculateMaxHealth(combatStats.Level, combatStats.CurrentVitality);
                             break;
                     }
@@ -262,7 +262,7 @@ namespace Magi.UI.Windows
         {
             if(options.First() == "Strength")
             {
-                Console.Print(Console.Width / 2 - 31, 4, "You already know all their skills. Pick a stat to upgrade by +2");
+                Console.Print(Console.Width / 2 - 31, 4, "You already know all their skills. Pick a stat to upgrade by +4");
             }
             else
             {
