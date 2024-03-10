@@ -17,7 +17,7 @@ namespace Magi.Maps.Generators
         public static Tile Wall = new Tile()
         {
             BaseTileType = Constants.TileTypes.Wall,
-            BackgroundColor = new Color(.5f, .5f, .5f),
+            BackgroundColor = Color.DarkGray,
         };
         public static Tile Floor = new Tile()
         {
@@ -220,7 +220,7 @@ namespace Magi.Maps.Generators
                 new Exit(),
                 new Name() { EntityName = string.Concat("Exit ", endOfTomb ? "to next tomb" : "to next level") },
                 new Position() { Point = position },
-                new Renderable() { Color = Color.Black, Glyph = exitGlyph, ShowOutsidePlayerFov = true }
+                new Renderable() { Color = Color.DarkGray, Glyph = exitGlyph, ShowOutsidePlayerFov = true }
             ).Reference(), position);
         }
     }

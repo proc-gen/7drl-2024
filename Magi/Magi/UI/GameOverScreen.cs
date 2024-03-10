@@ -84,9 +84,9 @@ namespace Magi.UI
             int y = 32;
             foreach(var entry in world.ConfirmedKills)
             {
-                screen.Print(screen.Width / 5 * x - 10, y, string.Concat(entry.Key, ": ", entry.Value));
+                screen.Print(screen.Width / 5 * (x + 1) - 10, y, string.Concat(entry.Key, ": ", entry.Value));
                 x++;
-                if(x == 5)
+                if(x == 4)
                 {
                     x = 0;
                     y++;
