@@ -156,7 +156,7 @@ namespace Magi.UI
             bool handled = false;
             for(int i = windows.Count - 1; i >= 0; i--) 
             {
-                if (windows[i].Visible)
+                if (windows[i].Visible && windows[i].GetType() != typeof(EffectOverlay))
                 {
                     handled = windows[i].HandleKeyboard(keyboard);
                     break;
