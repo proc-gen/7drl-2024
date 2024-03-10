@@ -14,7 +14,7 @@ namespace Magi.UI.Windows
 {
     public class TargetingOverlay : Overlay
     {
-        const float AlphaFactor = 0.8f;
+        const float MainAlphaFactor = 0.8f, AOEAlphaFactor = 0.6f;
 
         GameWorld World;
         EntityReference Source;
@@ -176,26 +176,27 @@ namespace Magi.UI.Windows
         {
             string title = string.Concat("Targeting: ", Source.Entity.Get<Name>().EntityName);
             Console.Print(Console.Width / 2 - title.Length / 2, 5, title, Color.White, Color.Black);
-            Console.Print(Console.Width / 2 - 9, 6, "Press Enter to fire", Color.White, Color.Black);
+            Console.Print(Console.Width / 2 - 19, 6, "Press Enter to fire or Escape to cancel", Color.White, Color.Black);
         }
 
         private void RenderTrajectory()
         {
-            var lineColor = new Color(TrajectoryColor(), AlphaFactor);
+            var lineColor = new Color(TrajectoryColor(), MainAlphaFactor);
+            var aoeColor = new Color(lineColor, AOEAlphaFactor);
             int minX = Start.X - GameSettings.GAME_WIDTH / 2;
             int minY = Start.Y - GameSettings.GAME_HEIGHT / 2;
             var pointsInLine = FieldOfView.GetPointsInLine(Start, End);
-            foreach ( var point in pointsInLine )
-            {
-                Console.SetGlyph(point.X - minX, point.Y - minY, (char)219, lineColor);
-            }
-            if(EffectRange > 0 && lineColor.FillAlpha() != Color.Red)
+            if (EffectRange > 0 && lineColor.FillAlpha() != Color.Red)
             {
                 var aoePoints = FieldOfView.CalculateFOV(World, End, EffectRange + 1, false);
                 foreach (var point in aoePoints)
                 {
-                    Console.SetGlyph(point.X - minX, point.Y - minY, (char)219, lineColor);
+                    Console.SetGlyph(point.X - minX, point.Y - minY, (char)219, aoeColor);
                 }
+            }
+            foreach (var point in pointsInLine)
+            {
+                Console.SetGlyph(point.X - minX, point.Y - minY, (char)219, lineColor);
             }
         }
 
