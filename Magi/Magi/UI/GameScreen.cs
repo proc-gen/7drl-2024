@@ -3,6 +3,7 @@ using Arch.Core.Extensions;
 using Magi.Constants;
 using Magi.Containers;
 using Magi.ECS.Components;
+using Magi.ECS.Systems.RealTimeUpdateSystems;
 using Magi.ECS.Systems.RenderSystems;
 using Magi.ECS.Systems.UpdateSystems;
 using Magi.Maps;
@@ -30,33 +31,12 @@ namespace Magi.UI
         List<IUpdateSystem> updateSystems;
         List<Window> windows;
 
-        RandomTable<string> GeneratorTable;
-        RandomTable<Elements> ElementsTable;
-        Random Random;
         public GameScreen(RootScreen rootScreen, string playerClass)
         {
             RootScreen = rootScreen;
             screen = new ScreenSurface(GameSettings.GAME_WIDTH, GameSettings.GAME_HEIGHT);
 
             Children.Add(screen);
-
-            GeneratorTable = new RandomTable<string>()
-                .Add("Random", 1)
-                .Add("RoomsAndCorridors", 1)
-                .Add("BspRoom", 1)
-                .Add("BspInterior", 1)
-                .Add("CellularAutomata", 1)
-                .Add("DrunkardWalk", 1);
-            ElementsTable = new RandomTable<Elements>()
-                .Add(Elements.None, 1)
-                .Add(Elements.Air, 1)
-                .Add(Elements.Fire, 1)
-                .Add(Elements.Water, 1)
-                .Add(Elements.Earth, 1)
-                .Add(Elements.Lightning, 1)
-                .Add(Elements.Ice, 1);
-
-            Random = new Random();
 
             if(string.IsNullOrEmpty(playerClass))
             {
@@ -105,6 +85,8 @@ namespace Magi.UI
                 new DeathSystem(world),
                 new LevelUpSystem(world),
             };
+
+
         }
 
         private void InitWindows()
@@ -114,6 +96,7 @@ namespace Magi.UI
             windows = new List<Window>()
             {
                 new GameWindow(world, targetingOverlay),
+                new EffectOverlay(world),
                 new InventoryWindow(world),
                 targetingOverlay,
                 new LevelUpWindow(world),
@@ -173,14 +156,14 @@ namespace Magi.UI
             bool handled = false;
             for(int i = windows.Count - 1; i >= 0; i--) 
             {
-                if (windows[i].Visible)
+                if (windows[i].Visible && windows[i].GetType() != typeof(EffectOverlay))
                 {
                     handled = windows[i].HandleKeyboard(keyboard);
                     break;
                 }
             }
 
-            if(!handled && windows.Where(a => a.Visible).Count() == 1)
+            if(!handled && windows.Where(a => a.Visible).Count() == 2)
             {
                 if(keyboard.IsKeyPressed(Keys.Escape))
                 {
