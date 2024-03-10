@@ -181,7 +181,7 @@ namespace Magi.Utils
             var itemTable = new RandomTable<string>();
             foreach (var item in ItemSpawner.GetItemsForLevel(playerLevel))
             {
-                itemTable = itemTable.Add(item, 1);
+                itemTable = itemTable.Add(item, item.Contains("Potion") ? 3 : 1);
             }
 
             if (Tomb.CurrentLevel == Tomb.Levels.Keys.Max())

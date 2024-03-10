@@ -40,8 +40,8 @@
       "Offhand": "",
       "Armor": "",
       "Experience": 10,
-      "MeleeChance": 10,
-      "RangedChance": 90
+      "MeleeChance": 50,
+      "RangedChance": 50
     },
     {
       "Name": "Ogre",
@@ -125,8 +125,8 @@
       "Offhand": "",
       "Armor": "",
       "Experience": 10,
-      "MeleeChance": 10,
-      "RangedChance": 90
+      "MeleeChance": 50,
+      "RangedChance": 50
     },
     {
       "Name": "Small Air Elemental",
