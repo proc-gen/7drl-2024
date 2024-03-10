@@ -38,7 +38,7 @@ namespace Magi.Utils
             int damage = GetInitialDamage(attackType, sourceStats); 
             bool melee = attackType == AttackType.Melee;
 
-            var weaponDamage = WeaponProcessor.CalculateDamage(random, sourceEquipment.MainHandReference, melee, damage);
+            var weaponDamage = WeaponProcessor.CalculateDamage(random, sourceEquipment.MainHandReference, sourceStats.CurrentDexterity, melee, damage);
             damage = weaponDamage.Damage;
 
             int damageReduction = ArmorProcessor.CalculateDamageReduction(random, weaponDamage, targetEquipment.ArmorReference, targetEquipment.OffHandReference, targetStats.CurrentDexterity, melee);

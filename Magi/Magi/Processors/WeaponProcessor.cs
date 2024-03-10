@@ -67,7 +67,7 @@ namespace Magi.Processors
                     || weaponType == WeaponTypes.TwoHandedRanged;
         }
 
-        public static DamageCalculation CalculateDamage(Random random, EntityReference weaponReference, bool melee, int bonusDamage)
+        public static DamageCalculation CalculateDamage(Random random, EntityReference weaponReference, int dexterity, bool melee, int bonusDamage)
         {
             int damage = bonusDamage;
             DamageTypes damageType = DamageTypes.Bludgeoning;
@@ -91,7 +91,7 @@ namespace Magi.Processors
                         damage += random.Next(0, numSides) + 1;
                     }
 
-                    criticalHit = random.Next(100) < (20 - weapon.CriticalHitRoll + 1) * 5;
+                    criticalHit = random.Next(100) < ((20 - weapon.CriticalHitRoll + 1) * 5 + dexterity / 5);
                     damage *= criticalHit ? weapon.CriticalHitMultiplier : 1;
 
                     if (weaponReference.Entity.Has<Imbuement>())
@@ -103,7 +103,7 @@ namespace Magi.Processors
             }
             else
             {
-                criticalHit = random.Next(100) < 5;
+                criticalHit = random.Next(100) < 5 + dexterity / 5;
                 damage = (random.Next(0, 3) + 1) * (criticalHit ? 2 : 1);
             }
 
