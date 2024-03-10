@@ -9,13 +9,14 @@ namespace Magi.UI.Helpers
 {
     public class InputDelayHelper
     {
-        const float ResponseTime = .15f;
+        float ResponseTime = .15f;
         public bool ReadyForInput { get; private set; }
         float counter = 0f;
 
-        public InputDelayHelper()
+        public InputDelayHelper(float delay = .15f)
         {
             ReadyForInput = false;
+            ResponseTime = delay;
         }
 
         public void Update(TimeSpan delta)
