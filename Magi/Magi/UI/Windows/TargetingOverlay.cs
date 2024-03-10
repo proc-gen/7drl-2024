@@ -176,6 +176,7 @@ namespace Magi.UI.Windows
         {
             string title = string.Concat("Targeting: ", Source.Entity.Get<Name>().EntityName);
             Console.Print(Console.Width / 2 - title.Length / 2, 5, title, Color.White, Color.Black);
+            Console.Print(Console.Width / 2 - 9, 6, "Press Enter to fire", Color.White, Color.Black);
         }
 
         private void RenderTrajectory()
