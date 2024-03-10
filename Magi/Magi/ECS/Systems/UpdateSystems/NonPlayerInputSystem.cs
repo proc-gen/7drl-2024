@@ -53,6 +53,8 @@ namespace Magi.ECS.Systems.UpdateSystems
                             case AttackType.Skill:
                                 var target = World.PlayerReference;
                                 var targetLocation = playerPosition.Point;
+                                bool cantUseSkill = false;
+
                                 if (whichAttack.Item2.Entity.Get<Skill>().TargetSpace == TargetSpace.Empty)
                                 {
                                     target = EntityReference.Null;
@@ -84,15 +86,24 @@ namespace Magi.ECS.Systems.UpdateSystems
 
                                     if (targetLocation == playerPosition.Point)
                                     {
-                                        var meleePath = AStarSearch.RunSearch(new Location(position.Point), new Location(playerPosition.Point));
-                                        input.Direction = meleePath - position.Point;
-                                        input.SkipTurn = meleePath == position.Point;
+                                        cantUseSkill = true;
+                                        
                                     }
                                 }
 
-                                World.World.Create(new SkillAttack() { Source = entity.Reference(), SourceSkill = whichAttack.Item2, Target = target, TargetLocation = targetLocation, TurnsLeft = whichAttack.Item2.Entity.Get<Skill>().LifetimeTurns });
-                                input.SkipTurn = true;
-                                input.Direction = Point.None;
+                                if (cantUseSkill)
+                                {
+                                    var meleePath = AStarSearch.RunSearch(new Location(position.Point), new Location(playerPosition.Point));
+                                    input.Direction = meleePath - position.Point;
+                                    input.SkipTurn = meleePath == position.Point;
+                                }
+                                else
+                                {
+                                    var skillInfo = whichAttack.Item2.Entity.Get<Skill>();
+                                    World.World.Create(new SkillAttack() { Source = entity.Reference(), SourceSkill = whichAttack.Item2, Target = skillInfo.TargetRange > 0 ? target : EntityReference.Null, TargetLocation = skillInfo.TargetRange > 0 ? targetLocation : position.Point, TurnsLeft = whichAttack.Item2.Entity.Get<Skill>().LifetimeTurns });
+                                    input.SkipTurn = true;
+                                    input.Direction = Point.None;
+                                }
                                 break;
                         }
                     }

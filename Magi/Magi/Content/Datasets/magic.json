@@ -328,10 +328,10 @@
       "TargetingType": 4,
       "TargetSpace": 0,
       "PostSkillEffect": 0,
-      "ManaCost": 12,
+      "ManaCost": 20,
       "DamageRoll": "2d4",
       "TargetRange": 0,
-      "EffectRange": 3,
+      "EffectRange": 2,
       "LifetimeTurns": 0,
       "CriticalHitRoll": 20,
       "CriticalHitMultiplier": 3
