@@ -5,12 +5,12 @@ namespace Magi.Scenes
 {
     public class RootScreen : ScreenObject
     {
-        Dictionary<Screens, ScreenObject> ActiveScreens;
+        Dictionary<Screens, MagiScreen> ActiveScreens;
         Screens ActiveScreen;
 
         public RootScreen()
         {
-            ActiveScreens = new Dictionary<Screens, ScreenObject>
+            ActiveScreens = new Dictionary<Screens, MagiScreen>
             {
                 { Screens.Splash, new SplashScreen(this) }
             };
@@ -30,7 +30,7 @@ namespace Magi.Scenes
             base.Render(delta);
         }
 
-        public void AddScreen(Screens screen, ScreenObject screenObject, bool makeActive = true)
+        public void AddScreen(Screens screen, MagiScreen screenObject, bool makeActive = true)
         {
             ActiveScreens.Add(screen, screenObject);
             if (makeActive)
@@ -47,6 +47,8 @@ namespace Magi.Scenes
         public void SwitchScreen(Screens screen, bool removeOthers = false)
         {
             ActiveScreen = screen;
+            ActiveScreens[ActiveScreen].Activate();
+
             if (removeOthers)
             {
                 foreach (var key in ActiveScreens.Keys.Where(a => a != screen))
