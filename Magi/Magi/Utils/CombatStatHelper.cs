@@ -41,7 +41,7 @@ namespace Magi.Utils
             var weaponDamage = WeaponProcessor.CalculateDamage(random, sourceEquipment.MainHandReference, melee, damage);
             damage = weaponDamage.Damage;
 
-            int damageReduction = ArmorProcessor.CalculateDamageReduction(random, weaponDamage, targetEquipment.ArmorReference, targetEquipment.OffHandReference, melee);
+            int damageReduction = ArmorProcessor.CalculateDamageReduction(random, weaponDamage, targetEquipment.ArmorReference, targetEquipment.OffHandReference, targetStats.CurrentDexterity, melee);
             damage += (int)(weaponDamage.ImbuementDamage * (1f + sourceStats.CurrentIntelligence / 100f));
                 
             return damage - damageReduction;
