@@ -29,13 +29,18 @@ namespace Magi.ECS.Systems.RealTimeRenderSystems
             int minX = position.X - GameSettings.GAME_WIDTH / 2;
             int minY = position.Y - GameSettings.GAME_HEIGHT / 2;
 
-            World.World.Query(in realTimeRenderablesQuery, (ref Renderable renderable, ref Position position) =>
+            World.World.Query(in realTimeRenderablesQuery, (Entity entity, ref Renderable renderable, ref Position position) =>
             {
-                RenderRenderable(screen, World.Map, minX, minY, renderable, position);
+                float timeLeft = 1;
+                if (entity.Has<TimedLife>())
+                {
+                    timeLeft = entity.Get<TimedLife>().TimeLeft;
+                }
+                RenderRenderable(screen, World.Map, minX, minY, renderable, position, timeLeft);
             });
         }
 
-        private void RenderRenderable(ScreenSurface screen, Map map, int minX, int minY, Renderable renderable, Position position)
+        private void RenderRenderable(ScreenSurface screen, Map map, int minX, int minY, Renderable renderable, Position position, float timeLeft)
         {
             if (position.Point.X - minX >= 0
                         && position.Point.X - minX < GameSettings.GAME_WIDTH
@@ -48,7 +53,7 @@ namespace Magi.ECS.Systems.RealTimeRenderSystems
                 if ((renderable.ShowOutsidePlayerFov && tile.Explored) || inPlayerFov)
                 {
                     screen.Surface[position.Point.X - minX, position.Point.Y - minY].Glyph = renderable.Glyph;
-                    screen.Surface[position.Point.X - minX, position.Point.Y - minY].Foreground = new Color(renderable.Color * (inPlayerFov ? 1f : 0.75f), AlphaFactor);
+                    screen.Surface[position.Point.X - minX, position.Point.Y - minY].Foreground = new Color(renderable.Color * (inPlayerFov ? 1f : 0.75f), AlphaFactor * Math.Min(timeLeft, 1));
                 }
             }
         }
