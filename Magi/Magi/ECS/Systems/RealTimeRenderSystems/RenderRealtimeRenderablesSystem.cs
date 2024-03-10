@@ -14,7 +14,7 @@ namespace Magi.ECS.Systems.RealTimeRenderSystems
 {
     public class RenderRealtimeRenderablesSystem : ArchSystem, IRenderSystem
     {
-        const float AlphaFactor = 0.5f;
+        const float AlphaFactor = 0.8f;
         QueryDescription realTimeRenderablesQuery = new QueryDescription().WithAll<Renderable, Position, RealTime>();
 
         public RenderRealtimeRenderablesSystem(GameWorld world)
