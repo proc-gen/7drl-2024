@@ -193,6 +193,7 @@ namespace Magi.UI.Windows
             Console.Print(2, GameSettings.GAME_HEIGHT - 8, string.Concat("Level: ", stats.Level));
 
             string weaponText = "Fist";
+            bool reloading = false;
             if(equipment.MainHandReference != EntityReference.Null)
             {
                 weaponText = equipment.MainHandReference.Entity.Get<Name>().EntityName;
@@ -201,9 +202,10 @@ namespace Magi.UI.Windows
                     var imbuement = equipment.MainHandReference.Entity.Get<Imbuement>();
                     weaponText += string.Concat(" (", imbuement.Element.ToString().Substring(0, 1), "-", imbuement.TurnsLeft, ")");
                 }
+                reloading = equipment.MainHandReference.Entity.Has<Reloading>();
             }
 
-            Console.Print(2, GameSettings.GAME_HEIGHT - 6, string.Concat("Weapon: ", weaponText));
+            Console.Print(2, GameSettings.GAME_HEIGHT - 6, string.Concat("Weapon: ", weaponText, reloading ? " (Reloading) " : ""));
             Console.Print(2, GameSettings.GAME_HEIGHT - 5, string.Concat("Skill 1: ", skills.Skill1 == EntityReference.Null ? string.Empty : string.Concat(skills.Skill1.Entity.Get<Name>().EntityName, " (", skills.Skill1.Entity.Get<Skill>().ManaCost, "mp)")));
             Console.Print(2, GameSettings.GAME_HEIGHT - 4, string.Concat("Skill 2: ", skills.Skill2 == EntityReference.Null ? string.Empty : string.Concat(skills.Skill2.Entity.Get<Name>().EntityName, " (", skills.Skill2.Entity.Get<Skill>().ManaCost, "mp)")));
             Console.Print(2, GameSettings.GAME_HEIGHT - 3, string.Concat("Skill 3: ", skills.Skill3 == EntityReference.Null ? string.Empty : string.Concat(skills.Skill3.Entity.Get<Name>().EntityName, " (", skills.Skill3.Entity.Get<Skill>().ManaCost, "mp)")));

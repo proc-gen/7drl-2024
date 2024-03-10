@@ -70,7 +70,7 @@ namespace Magi.UI.Windows
             {
                 Visible = false;
                 ClearTargetingData();
-                World.CurrentState = Constants.GameState.AwaitingPlayerInput;
+                World.CurrentState = GameState.AwaitingPlayerInput;
                 retVal = true;
             }
             else if (keyboard.IsKeyPressed(Keys.Up))
@@ -106,17 +106,17 @@ namespace Magi.UI.Windows
                     else
                     {
                         var skillInfo = Source.Entity.Get<Skill>();
-                        if((skillInfo.TargetSpace == Constants.TargetSpace.Any || skillInfo.TargetSpace == Constants.TargetSpace.Enemy) && Target != EntityReference.Null)
+                        if((skillInfo.TargetSpace == TargetSpace.Any || skillInfo.TargetSpace == TargetSpace.Enemy) && Target != EntityReference.Null)
                         {
                             World.World.Create(new SkillAttack() { Source = World.PlayerReference, SourceSkill = Source, Target = Target, TargetLocation = End, TurnsLeft = skillInfo.LifetimeTurns });
                             attacked = true;
                         }
-                        else if ((skillInfo.TargetSpace == Constants.TargetSpace.Any || skillInfo.TargetSpace == Constants.TargetSpace.Empty) && Target == EntityReference.Null)
+                        else if ((skillInfo.TargetSpace == TargetSpace.Any || skillInfo.TargetSpace == TargetSpace.Empty) && Target == EntityReference.Null)
                         {
                             World.World.Create(new SkillAttack() { Source = World.PlayerReference, SourceSkill = Source, Target = Target, TargetLocation = End, TurnsLeft = skillInfo.LifetimeTurns });
                             attacked = true;
                         }
-                        else if ((skillInfo.TargetSpace == Constants.TargetSpace.Any || skillInfo.TargetSpace == Constants.TargetSpace.Wall) && World.Map.GetTile(End).BaseTileType == Constants.TileTypes.Wall)
+                        else if ((skillInfo.TargetSpace == TargetSpace.Any || skillInfo.TargetSpace == TargetSpace.Wall) && World.Map.GetTile(End).BaseTileType == TileTypes.Wall)
                         {
                             World.World.Create(new SkillAttack() { Source = World.PlayerReference, SourceSkill = Source, Target = Target, TargetLocation = End, TurnsLeft = skillInfo.LifetimeTurns });
                             attacked = true;
@@ -155,7 +155,7 @@ namespace Magi.UI.Windows
 
         public override void Update(TimeSpan delta)
         {
-            if (!Visible && World.CurrentState == Constants.GameState.Targeting)
+            if (!Visible && World.CurrentState == GameState.Targeting)
             {
                 Visible = true;
             }
