@@ -26,7 +26,7 @@ namespace Magi.UI.Windows
             : base(GameSettings.GAME_WIDTH / 4,
                     GameSettings.GAME_HEIGHT / 4 - 5,
                     GameSettings.GAME_WIDTH / 2,
-                    GameSettings.GAME_HEIGHT / 2)
+                    19)
         {
             World = world;
         }
