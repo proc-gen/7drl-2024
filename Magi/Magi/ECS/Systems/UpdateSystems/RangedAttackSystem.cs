@@ -42,6 +42,12 @@ namespace Magi.ECS.Systems.UpdateSystems
                 var targetStats = rangedAttack.Target.Entity.Get<CombatStats>();
                 var targetEquipment = rangedAttack.Target.Entity.Get<CombatEquipment>();
 
+                World.World.Create(
+                                new RealTime(),
+                                new Renderable() { Glyph = sourceEquipment.MainHandReference.Entity.Get<Renderable>().Glyph, Color = Color.DarkGray },
+                                new TimedLife() { TimeLeft = 1f },
+                                new Position() { Point = rangedAttack.Target.Entity.Get<Position>().Point });
+
                 var damage = CombatStatHelper.CalculatePhysicalDamage(random, Constants.AttackType.Ranged, sourceStats, sourceEquipment, targetStats, targetEquipment);
                 if (damage > 0)
                 {
