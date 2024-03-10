@@ -67,7 +67,7 @@
       "TargetRange": 5,
       "EffectRange": 0,
       "LifetimeTurns": 0,
-      "CriticalHitRoll": 20,
+      "CriticalHitRoll": 19,
       "CriticalHitMultiplier": 2
     },
     {
@@ -81,7 +81,7 @@
       "TargetRange": 0,
       "EffectRange": 0,
       "LifetimeTurns": 10,
-      "CriticalHitRoll": 20,
+      "CriticalHitRoll": 19,
       "CriticalHitMultiplier": 2
     },
     {
@@ -95,7 +95,7 @@
       "TargetRange": 5,
       "EffectRange": 3,
       "LifetimeTurns": 0,
-      "CriticalHitRoll": 20,
+      "CriticalHitRoll": 19,
       "CriticalHitMultiplier": 2
     },
     {
@@ -108,8 +108,8 @@
       "DamageRoll": "1d4",
       "TargetRange": 5,
       "EffectRange": 3,
-      "LifetimeTurns": 3,
-      "CriticalHitRoll": 20,
+      "LifetimeTurns": 6,
+      "CriticalHitRoll": 19,
       "CriticalHitMultiplier": 2
     },
     {
@@ -258,7 +258,7 @@
       "TargetingType": 3,
       "TargetSpace": 2,
       "PostSkillEffect": 0,
-      "ManaCost": 15,
+      "ManaCost": 25,
       "DamageRoll": "1d4",
       "TargetRange": 5,
       "EffectRange": 0,
@@ -306,7 +306,7 @@
       "EffectRange": 0,
       "LifetimeTurns": 0,
       "CriticalHitRoll": 20,
-      "CriticalHitMultiplier": 2
+      "CriticalHitMultiplier": 3
     },
     {
       "Name": "Blizzard",
@@ -318,9 +318,9 @@
       "DamageRoll": "1d4",
       "TargetRange": 5,
       "EffectRange": 3,
-      "LifetimeTurns": 3,
+      "LifetimeTurns": 6,
       "CriticalHitRoll": 20,
-      "CriticalHitMultiplier": 2
+      "CriticalHitMultiplier": 3
     },
     {
       "Name": "Ice Nova",
@@ -334,7 +334,7 @@
       "EffectRange": 3,
       "LifetimeTurns": 0,
       "CriticalHitRoll": 20,
-      "CriticalHitMultiplier": 2
+      "CriticalHitMultiplier": 3
     }
   ]
 }
