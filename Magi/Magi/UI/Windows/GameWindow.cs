@@ -111,7 +111,9 @@ namespace Magi.UI.Windows
 
                 if (stats.CurrentMana >= skillInfo.ManaCost)
                 {
-                    if (skillInfo.TargetingType != Constants.TargetingType.Self && skillInfo.TargetingType != Constants.TargetingType.Imbuement)
+                    if (skillInfo.TargetingType != Constants.TargetingType.Self 
+                        && skillInfo.TargetingType != Constants.TargetingType.Imbuement
+                        && skillInfo.TargetRange > 0)
                     {
                         targetingOverlay.SetEntityForTargeting(skill);
                         world.CurrentState = Constants.GameState.Targeting;

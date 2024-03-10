@@ -21,9 +21,9 @@ namespace Magi.ECS.Systems.UpdateSystems
 
         public void Update(TimeSpan delta)
         {
-            World.World.Query(in deathQuery, (Entity entity, ref Position position) =>
+            World.World.Query(in deathQuery, (Entity entity) =>
             {
-                DeathProcessor.MarkEntityForRemoval(World, entity.Reference(), position);
+                DeathProcessor.MarkEntityForRemoval(World, entity.Reference());
             });
 
             World.World.Destroy(in deathQuery);

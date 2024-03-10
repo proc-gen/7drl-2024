@@ -59,11 +59,11 @@ namespace Magi.ECS.Systems.UpdateSystems
                                 new TimedLife() { TimeLeft = 1f },
                                 new Position() { Point = skillAttack.Source.Entity.Get<Position>().Point });
                 }
-                else if (skillInfo.TargetingType == Constants.TargetingType.ChainTargetDamage)
+                else if (skillInfo.TargetingType == TargetingType.ChainTargetDamage)
                 {
                     HashSet<EntityReference> affectedEntities = new HashSet<EntityReference>() { skillAttack.Target };
                     int radius = 1;
-                    while(radius < skillInfo.EffectRange && affectedEntities.Count < 3)
+                    while(radius < skillInfo.TargetRange && affectedEntities.Count < 3)
                     {
                         var aoePoints = FieldOfView.CalculateFOV(World, skillAttack.TargetLocation, radius + 1, false);
                         foreach (var aoePoint in aoePoints)
@@ -80,6 +80,7 @@ namespace Magi.ECS.Systems.UpdateSystems
                                 }
                             }
                         }
+                        radius++;
                     }
 
                     HashSet<Point> effectPoints = FieldOfView.GetPointsInLine(skillAttack.Source.Entity.Get<Position>().Point, affectedEntities.First().Entity.Get<Position>().Point);
@@ -123,41 +124,44 @@ namespace Magi.ECS.Systems.UpdateSystems
 
                     foreach( var aoePoint in aoePoints)
                     {
-                        if(skillAttack.TurnsLeft == 0 && skillInfo.LifetimeTurns == 0)
+                        if (World.Map.GetTile(aoePoint).BaseTileType != TileTypes.Wall)
                         {
-                            World.World.Create(
-                                new RealTime(),
-                                new Renderable() { Glyph = (char)19, Color = effectColor },
-                                new TimedLife() { TimeLeft = 1f },
-                                new Position() { Point = aoePoint });
-                        }
-                        else if(skillAttack.TurnsLeft == skillInfo.LifetimeTurns)
-                        {
-                            World.World.Create(
-                                new RealTime(),
-                                new Renderable() { Glyph = (char)192, Color = effectColor },
-                                new Owner() { OwnerReference = entity.Reference() },
-                                new Position() { Point = aoePoint });
-                        }
-
-                        var entitiesAtLocation = World.PhysicsWorld.GetEntitiesAtLocation(aoePoint);
-                        if (entitiesAtLocation != null)
-                        {
-                            foreach(var entityAtLocation in entitiesAtLocation)
+                            if (skillAttack.TurnsLeft == 0 && skillInfo.LifetimeTurns == 0)
                             {
-                                if(entityAtLocation != skillAttack.Source && entityAtLocation.Entity.Has<CombatStats>())
-                                {
-                                    HandleTargetDamage(skillAttack.Source,
-                                                        entityAtLocation,
-                                                        sourceName,
-                                                        skillName,
-                                                        skillInfo,
-                                                        ref sourceStats,
-                                                        sourceEquipment
-                                                    );
-                                }
+                                World.World.Create(
+                                    new RealTime(),
+                                    new Renderable() { Glyph = (char)19, Color = effectColor },
+                                    new TimedLife() { TimeLeft = 1f },
+                                    new Position() { Point = aoePoint });
                             }
-                            
+                            else if (skillAttack.TurnsLeft == skillInfo.LifetimeTurns)
+                            {
+                                World.World.Create(
+                                    new RealTime(),
+                                    new Renderable() { Glyph = (char)176, Color = effectColor },
+                                    new Owner() { OwnerReference = entity.Reference() },
+                                    new Position() { Point = aoePoint });
+                            }
+
+                            var entitiesAtLocation = World.PhysicsWorld.GetEntitiesAtLocation(aoePoint);
+                            if (entitiesAtLocation != null)
+                            {
+                                foreach (var entityAtLocation in entitiesAtLocation)
+                                {
+                                    if (entityAtLocation != skillAttack.Source && entityAtLocation.Entity.Has<CombatStats>())
+                                    {
+                                        HandleTargetDamage(skillAttack.Source,
+                                                            entityAtLocation,
+                                                            sourceName,
+                                                            skillName,
+                                                            skillInfo,
+                                                            ref sourceStats,
+                                                            sourceEquipment
+                                                        );
+                                    }
+                                }
+
+                            }
                         }
                     }
                 }
@@ -166,13 +170,11 @@ namespace Magi.ECS.Systems.UpdateSystems
                 HandlePostProcessSkill(skillAttack, skillInfo);
                 
                 skillAttack.TurnsLeft--;
-                if(skillAttack.TurnsLeft == 0)
+                if(skillAttack.TurnsLeft <= 0)
                 {
-                    entity.Add(new Remove());
+                    entity.Add(new Dead());
                 }
             });
-
-            World.World.Destroy(in skillAttacksQuery);
         }
 
         private void HandleTargetDamage(EntityReference Source, EntityReference Target, Name sourceName, Name skillName, Skill skillInfo, ref CombatStats sourceStats, CombatEquipment sourceEquipment)

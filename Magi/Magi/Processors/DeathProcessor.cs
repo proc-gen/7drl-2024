@@ -47,11 +47,14 @@ namespace Magi.Processors
             }
         }
 
-        public static void MarkEntityForRemoval(GameWorld World, EntityReference entityReference, Position position)
+        public static void MarkEntityForRemoval(GameWorld World, EntityReference entityReference)
         {
             QueryDescription ownerQuery = new QueryDescription().WithAll<Owner>();
 
-            World.PhysicsWorld.RemoveEntity(entityReference, position.Point);
+            if (entityReference.Entity.Has<Position>())
+            {
+                World.PhysicsWorld.RemoveEntity(entityReference, entityReference.Entity.Get<Position>().Point);
+            }
 
             World.World.Query(in ownerQuery, (Entity ownedEntity, ref Owner owner) =>
             {

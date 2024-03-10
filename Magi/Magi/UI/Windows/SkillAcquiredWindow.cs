@@ -57,7 +57,7 @@ namespace Magi.UI.Windows
 
                 if (boss != EntityReference.Null)
                 {
-                    DeathProcessor.MarkEntityForRemoval(World, boss, boss.Entity.Get<Position>());
+                    DeathProcessor.MarkEntityForRemoval(World, boss);
                     DeathProcessor.RemoveMarkedEntities(World);
                     World.World.Destroy(boss);
                 }
