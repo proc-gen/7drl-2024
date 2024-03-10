@@ -57,8 +57,21 @@ namespace Magi.UI
             screen.Clear();
             screen.Print(screen.Width / 2 - 22, 15, "It's the end of the line for you, justicar...", Color.White, Color.Black);
 
+            RenderGameLog();
+
             screen.Print(screen.Width / 2 - 19, 50, "Press enter to go back to the main menu", Color.White, Color.Black);
             screen.Render(delta);
+        }
+
+        private void RenderGameLog()
+        {
+            int y = 27;
+            var LogItems = world.GetLogItems();
+            for (int i = 1; i <= Math.Min(9, LogItems.Count); i++)
+            {
+                screen.Print(GameSettings.GAME_WIDTH / 4 + 2, y, LogItems[LogItems.Count - i].ToString());
+                y--;
+            }
         }
     }
 }
