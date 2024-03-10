@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace Magi.UI
 {
-    public class MainMenuScreen : ScreenObject
+    public class MainMenuScreen : MagiScreen
     {
         RootScreen RootScreen;
 
@@ -23,6 +23,11 @@ namespace Magi.UI
             RootScreen = rootScreen;
             InputDelayHelper = new InputDelayHelper();
             screen = new ScreenSurface(GameSettings.GAME_WIDTH, GameSettings.GAME_HEIGHT);
+        }
+
+        public override void Activate()
+        {
+            InputDelayHelper.Reset();
         }
 
         public override void Update(TimeSpan delta)

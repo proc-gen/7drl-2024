@@ -17,7 +17,7 @@ namespace Magi.Maps.Generators
         public static Tile Wall = new Tile()
         {
             BaseTileType = Constants.TileTypes.Wall,
-            BackgroundColor = new Color(.5f, .5f, .5f),
+            BackgroundColor = Color.DarkGray,
         };
         public static Tile Floor = new Tile()
         {
@@ -141,8 +141,8 @@ namespace Magi.Maps.Generators
         {
             var playerStats = world.PlayerReference.Entity.Get<CombatStats>();
 
-            var health = CombatStatHelper.CalculateMaxHealth(playerStats.Level, 10 + 2 * playerStats.Level);
-            var mana = CombatStatHelper.CalculateMaxMana(playerStats.Level, 10 + 2 * playerStats.Level);
+            var health = CombatStatHelper.CalculateMaxHealth(playerStats.Level, 10 + playerStats.Level);
+            var mana = CombatStatHelper.CalculateMaxMana(playerStats.Level, 10 + playerStats.Level);
 
             var weaponTable = new RandomTable<string>();
             var armorTable = new RandomTable<string>();
@@ -169,10 +169,10 @@ namespace Magi.Maps.Generators
                 Name = world.Tomb.Mage,
                 Health = health,
                 Mana = mana,
-                Strength = 10 + 2 * playerStats.Level,
-                Intelligence = 10 + 2 * playerStats.Level,
-                Vitality = 10 + 2 * playerStats.Level,
-                Dexterity = 10 + 2 * playerStats.Level,
+                Strength = 10 + playerStats.Level,
+                Intelligence = 10 + playerStats.Level,
+                Vitality = 10 + playerStats.Level,
+                Dexterity = 10 + playerStats.Level,
                 ViewDistance = 10,
                 Experience = 20 * playerStats.Level,
                 Glyph = (char)Random.Next(224, 233),
@@ -220,7 +220,7 @@ namespace Magi.Maps.Generators
                 new Exit(),
                 new Name() { EntityName = string.Concat("Exit ", endOfTomb ? "to next tomb" : "to next level") },
                 new Position() { Point = position },
-                new Renderable() { Color = Color.Black, Glyph = exitGlyph, ShowOutsidePlayerFov = true }
+                new Renderable() { Color = Color.DarkGray, Glyph = exitGlyph, ShowOutsidePlayerFov = true }
             ).Reference(), position);
         }
     }

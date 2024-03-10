@@ -36,6 +36,8 @@ namespace Magi.Utils
         [JsonProperty]
         protected List<LogItem> LogItems { get; set; }
         public string PlayerClass { get; set; }
+        public Dictionary<string, int> ConfirmedKills { get; set; }
+        public int TombsCleared { get; set; }
          
         public GameWorld() 
         {
@@ -44,7 +46,9 @@ namespace Magi.Utils
             PlayerReference = EntityReference.Null;
             PlayerFov = new HashSet<Point>();
             LogItems = new List<LogItem>();
+            ConfirmedKills = new Dictionary<string, int>();
             PlayerClass = "Warrior";
+            TombsCleared = 0;
         }
 
         public void AddLogEntry(string entry)
@@ -115,6 +119,11 @@ namespace Magi.Utils
         {
             if (Tomb == null || Tomb.CurrentLevel == Tomb.Levels.Keys.Max())
             {
+                if(Tomb != null && Tomb.CurrentLevel == Tomb.Levels.Keys.Max())
+                {
+                    TombsCleared++;
+                }
+
                 GenerateTomb(playerLevel);
                 AddLogEntry(string.Concat("You have ventured into the tomb of ", Tomb.Mage, " the ", Tomb.Element.ToString(), " mage"));
             }
@@ -172,7 +181,7 @@ namespace Magi.Utils
             var itemTable = new RandomTable<string>();
             foreach (var item in ItemSpawner.GetItemsForLevel(playerLevel))
             {
-                itemTable = itemTable.Add(item, 1);
+                itemTable = itemTable.Add(item, item.Contains("Potion") ? 3 : 1);
             }
 
             if (Tomb.CurrentLevel == Tomb.Levels.Keys.Max())

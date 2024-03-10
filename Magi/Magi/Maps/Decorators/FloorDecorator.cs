@@ -68,7 +68,7 @@ namespace Magi.Maps.Decorators
                     var tile = generator.Map.GetTile(i, j);
                     if(tile.BaseTileType == TileTypes.Floor)
                     {
-                        tile.BackgroundColor = i % 2 == j % 2 ? colorA.GetDark() : colorB.GetDark();
+                        tile.BackgroundColor = i % 2 == j % 2 ? colorA.GetDarkest() : colorB.GetDarkest();
                         generator.Map.SetTile(i, j, tile);
                     }
                 }
@@ -85,8 +85,8 @@ namespace Magi.Maps.Decorators
                     if (tile.BaseTileType == TileTypes.Floor)
                     {
                         tile.Glyph = i % 2 == 0 ? (char)16 : (char)17;
-                        tile.BackgroundColor = colorA.GetDark();
-                        tile.GlyphColor = colorB.GetDark();
+                        tile.BackgroundColor = colorA.GetDarkest();
+                        tile.GlyphColor = colorB.GetDarkest();
                         generator.Map.SetTile(i, j, tile);
                     }
                 }

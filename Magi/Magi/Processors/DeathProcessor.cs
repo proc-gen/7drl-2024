@@ -30,6 +30,15 @@ namespace Magi.Processors
                     {
                         Target.Entity.Add(new Dead());
                     }
+
+                    if(World.ConfirmedKills.ContainsKey(targetName.EntityName))
+                    {
+                        World.ConfirmedKills[targetName.EntityName]++;
+                    }
+                    else
+                    {
+                        World.ConfirmedKills[targetName.EntityName] = 1;
+                    }
                 }
                 else if (Target.Entity.Has<Player>())
                 {

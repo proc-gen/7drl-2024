@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace Magi.UI
 {
-    public class SplashScreen : ScreenObject
+    public class SplashScreen : MagiScreen
     {
         RootScreen RootScreen;
         ScreenSurface screen;
@@ -20,6 +20,10 @@ namespace Magi.UI
         {
             RootScreen = rootScreen;
             screen = new ScreenSurface(GameSettings.GAME_WIDTH, GameSettings.GAME_HEIGHT);
+        }
+
+        public override void Activate()
+        {
         }
 
         public override void Update(TimeSpan delta)

@@ -10,6 +10,7 @@ using Magi.Maps;
 using Magi.Maps.Generators;
 using Magi.Maps.Spawners;
 using Magi.Scenes;
+using Magi.UI.Helpers;
 using Magi.UI.Windows;
 using Magi.Utils;
 using SadConsole.Input;
@@ -21,7 +22,7 @@ using System.Threading.Tasks;
 
 namespace Magi.UI
 {
-    public class GameScreen : ScreenObject
+    public class GameScreen : MagiScreen
     {
         RootScreen RootScreen;
         ScreenSurface screen;
@@ -49,6 +50,11 @@ namespace Magi.UI
 
             InitWindows();
             InitSystems();
+        }
+
+        public override void Activate()
+        {
+            
         }
 
         private void NewGame(string playerClass)
@@ -136,7 +142,7 @@ namespace Magi.UI
                         world.CurrentState = GameState.AwaitingPlayerInput;
                         break;
                     case GameState.PlayerDeath:
-                        GoToMainMenu(false);
+                        RootScreen.AddScreen(Screens.GameOver, new GameOverScreen(RootScreen, world));
                         break;
 
                 }
@@ -167,7 +173,8 @@ namespace Magi.UI
             {
                 if(keyboard.IsKeyPressed(Keys.Escape))
                 {
-                    GoToMainMenu(true);
+                    SaveGameManager.SaveGame(world);
+                    RootScreen.SwitchScreen(Screens.MainMenu, true);
                 }
                 else if (keyboard.IsKeyPressed(Keys.D))
                 {
@@ -178,15 +185,6 @@ namespace Magi.UI
                     }
                 }
             }
-        }
-
-        private void GoToMainMenu(bool saveGame)
-        {
-            if(saveGame)
-            {
-                SaveGameManager.SaveGame(world);
-            }
-            RootScreen.SwitchScreen(Screens.MainMenu, true);
         }
 
         public override void Render(TimeSpan delta)

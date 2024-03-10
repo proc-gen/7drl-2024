@@ -40,8 +40,8 @@
       "Offhand": "",
       "Armor": "",
       "Experience": 10,
-      "MeleeChance": 10,
-      "RangedChance": 90
+      "MeleeChance": 50,
+      "RangedChance": 50
     },
     {
       "Name": "Ogre",
@@ -58,7 +58,7 @@
       "Intelligence": 8,
       "Vitality": 15,
       "Dexterity": 8,
-      "Mainhand": "Greatclub",
+      "Mainhand": "Light Hammer",
       "Offhand": "",
       "Armor": "",
       "Experience": 15,
@@ -125,8 +125,8 @@
       "Offhand": "",
       "Armor": "",
       "Experience": 10,
-      "MeleeChance": 10,
-      "RangedChance": 90
+      "MeleeChance": 50,
+      "RangedChance": 50
     },
     {
       "Name": "Small Air Elemental",
