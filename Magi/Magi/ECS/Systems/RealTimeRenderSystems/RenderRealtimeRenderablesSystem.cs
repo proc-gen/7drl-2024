@@ -1,6 +1,7 @@
 ﻿using Arch.Core;
 using Arch.Core.Extensions;
 using Magi.ECS.Components;
+using Magi.ECS.Systems.RenderSystems;
 using Magi.Maps;
 using Magi.Utils;
 using System;
@@ -9,16 +10,16 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Magi.ECS.Systems.RenderSystems
+namespace Magi.ECS.Systems.RealTimeRenderSystems
 {
-    public class RenderRenderablesSystem : ArchSystem, IRenderSystem
+    public class RenderRealtimeRenderablesSystem : ArchSystem, IRenderSystem
     {
-        QueryDescription renderEntitiesQuery = new QueryDescription().WithAll<Renderable, Position, Blocker>().WithNone<RealTime>();
-        QueryDescription renderItemsQuery = new QueryDescription().WithAll<Renderable, Position>().WithNone<Blocker, RealTime>();
+        const float AlphaFactor = 0.5f;
+        QueryDescription realTimeRenderablesQuery = new QueryDescription().WithAll<Renderable, Position, RealTime>();
 
-        public RenderRenderablesSystem(GameWorld world)
-            : base(world)
-        {
+        public RenderRealtimeRenderablesSystem(GameWorld world)
+            : base(world) 
+        { 
         }
 
         public void Render(ScreenSurface screen)
@@ -28,12 +29,7 @@ namespace Magi.ECS.Systems.RenderSystems
             int minX = position.X - GameSettings.GAME_WIDTH / 2;
             int minY = position.Y - GameSettings.GAME_HEIGHT / 2;
 
-            World.World.Query(in renderItemsQuery, (ref Renderable renderable, ref Position position) =>
-            {
-                RenderRenderable(screen, World.Map, minX, minY, renderable, position);
-            });
-
-            World.World.Query(in renderEntitiesQuery, (ref Renderable renderable, ref Position position) =>
+            World.World.Query(in realTimeRenderablesQuery, (ref Renderable renderable, ref Position position) =>
             {
                 RenderRenderable(screen, World.Map, minX, minY, renderable, position);
             });
@@ -52,7 +48,7 @@ namespace Magi.ECS.Systems.RenderSystems
                 if ((renderable.ShowOutsidePlayerFov && tile.Explored) || inPlayerFov)
                 {
                     screen.Surface[position.Point.X - minX, position.Point.Y - minY].Glyph = renderable.Glyph;
-                    screen.Surface[position.Point.X - minX, position.Point.Y - minY].Foreground = renderable.Color * (inPlayerFov ? 1f : 0.75f);
+                    screen.Surface[position.Point.X - minX, position.Point.Y - minY].Foreground = new Color(renderable.Color * (inPlayerFov ? 1f : 0.75f), AlphaFactor);
                 }
             }
         }
