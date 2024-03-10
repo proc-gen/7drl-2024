@@ -12,7 +12,7 @@ namespace Magi.Processors
 {
     public static class SkillDamageProcessor
     {
-        public static DamageCalculation CalculateDamage(Random random, Skill skill, int bonusDamage)
+        public static DamageCalculation CalculateDamage(Random random, Skill skill, int dexterity, int bonusDamage)
         {
             int damage = bonusDamage;
             DamageTypes damageType = DamageTypes.Bludgeoning;
@@ -27,7 +27,7 @@ namespace Magi.Processors
                 damage += random.Next(0, numSides) + 1;
             }
 
-            criticalHit = random.Next(100) < (20 - skill.CriticalHitRoll + 1) * 5;
+            criticalHit = random.Next(100) < (20 - skill.CriticalHitRoll + 1) * 5 + dexterity / 5;
             damage *= criticalHit ? skill.CriticalHitMultiplier : 1;                
 
             return new DamageCalculation()

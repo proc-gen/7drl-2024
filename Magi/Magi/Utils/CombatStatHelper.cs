@@ -51,7 +51,7 @@ namespace Magi.Utils
         {
             int damage = GetInitialDamage(AttackType.Skill, sourceStats);
 
-            var skillDamage = SkillDamageProcessor.CalculateDamage(random, skill, damage);
+            var skillDamage = SkillDamageProcessor.CalculateDamage(random, skill, sourceStats.CurrentDexterity, damage);
             damage += skillDamage.Damage;
 
             return damage;
